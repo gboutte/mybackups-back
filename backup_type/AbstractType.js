@@ -28,7 +28,9 @@ class AbstractType{
     var requiredMethodsDestination = [
       "getDestinationParameters",
       "doDestination",
-      "checkDestinationParameters"
+      "checkDestinationParameters",
+      "getBackup",
+      "deleteBackup"
     ];
 
     var resultRequired = AbstractType.haveMethods(object,requiredMethods);

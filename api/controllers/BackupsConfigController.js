@@ -5,6 +5,30 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+function validParameters(values){
+  var valid = true;
+  var fromType = BackupTypes.getTypeByCode(values.from_type);
+  if(fromType != null){
+    if(!fromType.checkOriginParameters(values.from_parameters).valid){
+      valid = false;
+    }
+
+  }else{
+    valid = false;
+  }
+  var destType = BackupTypes.getTypeByCode(values.to_type);
+  if(destType != null){
+    if(!destType.checkOriginParameters(values.to_parameters).valid){
+      valid = false;
+    }
+  }else{
+    valid = false;
+  }
+  return valid;
+
+}
+
+
 module.exports = {
 
 
@@ -33,7 +57,20 @@ module.exports = {
       to_parameters:req.param("to_parameters")
     };
 
-    var record = await BackupsConfig.create(values).fetch();
+    if(typeof values.from_parameters != "undefined"){
+      values.from_parameters = JSON.parse(values.from_parameters);
+    }
+    if(typeof values.to_parameters != "undefined"){
+      values.to_parameters = JSON.parse(values.to_parameters);
+    }
+    var valid = validParameters(values);
+    if(valid){
+      var record = await BackupsConfig.create(values).fetch();
+      BackupCron.addCron(record);
+    }else{
+      var record = null;
+    }
+
     return res.json(record);
   },
 
@@ -54,8 +91,21 @@ module.exports = {
       to_type:req.param("to_type"),
       to_parameters:req.param("to_parameters")
     };
+    if(typeof values.from_parameters != "undefined"){
+      values.from_parameters = JSON.parse(values.from_parameters);
+    }
+    if(typeof values.to_parameters != "undefined"){
+      values.to_parameters = JSON.parse(values.to_parameters);
+    }
 
-    var record = await BackupsConfig.update(criteria).set(values).fetch();
+    var valid = validParameters(values);
+    if(valid){
+      var record = await BackupsConfig.updateOne(criteria).set(values);
+      BackupCron.removeCron(record.id);
+      BackupCron.addCron(record);
+    }else{
+      var record = null;
+    }
     return res.json(record);
   },
 
@@ -67,6 +117,7 @@ module.exports = {
         id:req.param("id")
     };
     var destroyedRecord = await BackupsConfig.destroy(criteria).fetch();
+    BackupCron.removeCron(destroyedRecord.id);
     return res.json(destroyedRecord);
   }
 

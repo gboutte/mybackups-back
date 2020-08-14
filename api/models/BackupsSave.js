@@ -1,6 +1,7 @@
 module.exports = {
   attributes: {
-    filename: { type: 'string',required:true},
+    data: { type: 'json',required:true},
+    type: {type:'string',required:true},
     config: { model:'backupsconfig'}
   },
 };

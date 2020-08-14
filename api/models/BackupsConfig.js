@@ -12,5 +12,6 @@ module.exports = {
     from_parameters: {type:'json',required:true},
     to_parameters: {type:'json',required:true},
     saves:{collection:'backupssave',via:'config'}
-  }
+  },
+  
 };

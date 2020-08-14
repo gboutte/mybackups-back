@@ -54,7 +54,7 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
 
-   migrate: 'drop',
+   migrate: 'alter',
 
 
   /***************************************************************************
@@ -87,8 +87,10 @@ module.exports.models = {
   },
   beforeCreate: function (recordToCreate, proceed) {
 
+
    recordToCreate.id = uuidv4();
    return proceed();
+
  },
 
   /******************************************************************************

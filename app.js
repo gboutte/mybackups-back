@@ -34,10 +34,10 @@ var rc;
 var dotenv;
 try {
   global.BackupTypes = require("./backup_type");
-  global.cron = [];
   dotenv = require('dotenv').config();
   sails = require('sails');
   rc = require('sails/accessible/rc');
+  global.BackupCron = require("./backup_cron/BackupCron");
 } catch (err) {
   console.error('Encountered an error when attempting to require(\'sails\'):');
   console.error(err.stack);
@@ -55,4 +55,6 @@ try {
 
 
 // Start server
-sails.lift(rc('sails'));
+sails.lift(rc('sails'),function(err){
+  BackupCron.initCron();
+});

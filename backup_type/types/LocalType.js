@@ -49,16 +49,41 @@ class LocalType extends AbstractType{
       parameters:parameters
     };
   }
-  doDestination(parameters,pathToFile){
+  async doDestination(config,parameters,pathToFile){
+    return new Promise((resolve,reject)=>{
+      var newName =
+      config.name+
+      "-"+moment().format('DDMMYYYYHHmmss')+
+      path.extname(pathToFile);
 
-    var newName =
-    this.getName()+
-    "-"+moment().format('DDMMYYYYHHmmss')+
-    "."+path.extname(parameters.path);
+      fs.copyFile(pathToFile, parameters.path+newName, (err) => {
+        if (err){
+          sails.log.error(err);
+          reject(err);
+        }else {
+          resolve({
+            backupData: {
+              path:parameters.path+newName
+            }
+          });
+        }
+      });
+    })
+  }
 
-    fs.copyFile(pathToFile, parameters.path+newName, (err) => {
-      if (err) sails.log.error(err);
-    });
+  getBackup(data){
+    var global_data = fs.readFileSync(data.path).toString();
+    return global_data;
+
+  }
+  deleteBackup(data){
+    const path = data.path;
+    try {
+      fs.unlinkSync(path)
+      return true;
+    } catch(err) {
+      return false;
+    }
   }
 
   //Origin part
@@ -86,18 +111,27 @@ class LocalType extends AbstractType{
 
   //tmpDir always end with "/"
   //Must return object with attribut tmpFile
-  doOrigin(parameters,tmpDir){
-    var newName =
-    this.getName()+
-    "-"+moment().format('DDMMYYYY')+
-    "."+path.extname(parameters.path);
+  doOrigin(config,parameters,tmpDir){
+    return new Promise((resolve,reject)=>{
+      var newName =
+      config.name+
+      "-"+moment().format('DDMMYYYYHHmmss')+
+      path.extname(parameters.path);
 
-    fs.copyFile(parameters.path, tmpDir+newName, (err) => {
-      if (err) sails.log.error(err);
+      fs.copyFile(parameters.path, tmpDir+newName, (err) => {
+        if (err)
+        {
+          sails.log.error(err);
+          reject(err);
+        }else{
+          resolve( {
+            tmpFile: newName
+          });
+        }
+      });
+
     });
-    return {
-      tmpFile: newName
-    }
+
   }
 
 

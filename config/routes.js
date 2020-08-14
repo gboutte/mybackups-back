@@ -28,7 +28,6 @@ module.exports.routes = {
   'post /api/backup/config' : 'BackupsConfigController.create',
   'delete /api/backup/config' : 'BackupsConfigController.delete',
   'put /api/backup/config' : 'BackupsConfigController.update',
-  'get /test' : 'TestController.types',
 
   /***************************************************************************
   *                                                                          *
