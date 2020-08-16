@@ -19,7 +19,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': { view: 'pages/homepage' },
+
 
 
   //Backups Config
@@ -28,7 +28,7 @@ module.exports.routes = {
   'post /api/backup/config' : 'BackupsConfigController.create',
   'delete /api/backup/config' : 'BackupsConfigController.delete',
   'put /api/backup/config' : 'BackupsConfigController.update',
-
+  '/*': { view: 'pages/homepage',skipAssets:true },
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
