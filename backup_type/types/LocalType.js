@@ -1,6 +1,6 @@
 var sails = require('sails');
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
 var moment = require('moment');
 var AbstractType = require('../AbstractType');
 
