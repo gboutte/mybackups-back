@@ -20,7 +20,7 @@ class BackupCron {
 
   removeCron(id) {
     for (let i = 0; i < this.cron.length; i++) {
-      if (id == this.cron[i].id) {
+      if (id === this.cron[i].id) {
         sails.log.info('[CRON] remove: ' + id);
         this.cron[i].sh.cancel();
         this.cron.splice(i, 1);
@@ -41,7 +41,7 @@ class BackupCron {
             self.doBackup(config.id);
           })
 
-        })
+        });
       } else {
         sails.log.warn('[CRON] invalid configuration: ' + config.id);
       }
@@ -49,7 +49,7 @@ class BackupCron {
   }
 
   addCronFromId(id) {
-    console.log(id)
+    console.log(id);
     //@Todo implement
   }
 

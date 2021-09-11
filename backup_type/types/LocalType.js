@@ -133,11 +133,7 @@ class LocalType extends AbstractType {
       });
 
     });
-
   }
-
-
-
 }
 
 
