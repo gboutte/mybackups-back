@@ -11,7 +11,6 @@ class AbstractType {
   }
 
   static isImplemented(object) {
-    var missingMethods = [];
     var isImplemented = true;
     var requiredMethods = [
       'getName',

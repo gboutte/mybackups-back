@@ -31,13 +31,12 @@ process.chdir(__dirname);
 // Attempt to import `sails` dependency, as well as `rc` (for loading `.sailsrc` files).
 var sails;
 var rc;
-var dotenv;
 try {
-  global.BackupTypes = require("./backup_type");
-  dotenv = require('dotenv').config();
+  global.BackupTypes = require('./backup_type');
+  require('dotenv').config();
   sails = require('sails');
   rc = require('sails/accessible/rc');
-  global.BackupCron = require("./backup_cron/BackupCron");
+  global.BackupCron = require('./backup_cron/BackupCron');
 } catch (err) {
   console.error('Encountered an error when attempting to require(\'sails\'):');
   console.error(err.stack);
@@ -55,6 +54,6 @@ try {
 
 
 // Start server
-sails.lift(rc('sails'),function(err){
+sails.lift(rc('sails'), () => {
   BackupCron.initCron();
 });

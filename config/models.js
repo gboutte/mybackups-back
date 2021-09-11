@@ -54,7 +54,7 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
 
-   migrate: 'alter',
+  migrate: 'alter',
 
 
   /***************************************************************************
@@ -70,7 +70,7 @@ module.exports.models = {
   ***************************************************************************/
 
   attributes: {
-    id: {type: 'string', required: true, unique: true},
+    id: { type: 'string', required: true, unique: true },
     createdAt: { type: 'number', autoCreatedAt: true, },
     updatedAt: { type: 'number', autoUpdatedAt: true, },
     //--------------------------------------------------------------------------
@@ -88,10 +88,10 @@ module.exports.models = {
   beforeCreate: function (recordToCreate, proceed) {
 
 
-   recordToCreate.id = uuidv4();
-   return proceed();
+    recordToCreate.id = uuidv4();
+    return proceed();
 
- },
+  },
 
   /******************************************************************************
   *                                                                             *

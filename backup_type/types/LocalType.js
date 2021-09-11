@@ -41,6 +41,7 @@ class LocalType extends AbstractType {
       fs.accessSync(parameters.path, fs.constants.W_OK);
     }
     catch (err) {
+      sails.log.error(err);
       parametersOk = false;
     }
 
@@ -68,7 +69,7 @@ class LocalType extends AbstractType {
           });
         }
       });
-    })
+    });
   }
 
   getBackup(data) {
@@ -82,6 +83,7 @@ class LocalType extends AbstractType {
       fs.unlinkSync(path);
       return true;
     } catch (err) {
+      sails.log.error(err);
       return false;
     }
   }
@@ -100,6 +102,7 @@ class LocalType extends AbstractType {
       fs.accessSync(parameters.path, fs.constants.R_OK);
     }
     catch (err) {
+      sails.log.error(err);
       parametersOk = false;
     }
     return {
