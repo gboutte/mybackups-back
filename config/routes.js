@@ -24,11 +24,13 @@ module.exports.routes = {
 
   //Backups Config
 
-  'get /api/backup/config' : 'BackupsConfigController.list',
-  'post /api/backup/config' : 'BackupsConfigController.create',
-  'delete /api/backup/config' : 'BackupsConfigController.delete',
-  'put /api/backup/config' : 'BackupsConfigController.update',
+  'get /backup/config' : 'BackupsConfigController.list',
+  'post /backup/config' : 'BackupsConfigController.create',
+  'delete /backup/config' : 'BackupsConfigController.delete',
+  'put /backup/config' : 'BackupsConfigController.update',
 
+  
+  'get /backup/type' : 'BackupsTypesController.list',
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

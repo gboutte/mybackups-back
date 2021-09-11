@@ -1,10 +1,10 @@
 var AbstractType = require('./AbstractType');
 
 
-var normalizedPath = require("path").join(__dirname, "types");
+var normalizedPath = require('path').join(__dirname, 'types');
 var types = [];
-require("fs").readdirSync(normalizedPath).forEach(function(file) {
-  var tmp = require("./types/" + file);
+require('fs').readdirSync(normalizedPath).forEach((file) => {
+  var tmp = require('./types/' + file);
   if(AbstractType.isImplemented(tmp)){
     types.push(tmp);
   }

@@ -5,23 +5,23 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
-function validParameters(values){
+function validParameters(values) {
   var valid = true;
   var fromType = BackupTypes.getTypeByCode(values.from_type);
-  if(fromType != null){
-    if(!fromType.checkOriginParameters(values.from_parameters).valid){
+  if (fromType !== null) {
+    if (!fromType.checkOriginParameters(values.from_parameters).valid) {
       valid = false;
     }
 
-  }else{
+  } else {
     valid = false;
   }
   var destType = BackupTypes.getTypeByCode(values.to_type);
-  if(destType != null){
-    if(!destType.checkOriginParameters(values.to_parameters).valid){
+  if (destType !== null) {
+    if (!destType.checkOriginParameters(values.to_parameters).valid) {
       valid = false;
     }
-  }else{
+  } else {
     valid = false;
   }
   return valid;
@@ -46,29 +46,30 @@ module.exports = {
   create: async function (req, res) {
 
     var values = {
-      id:"uuid", //Will be generated on beforeCreate
-      name:req.param("name"),
+      id: 'uuid', //Will be generated on beforeCreate
+      name: req.param('name'),
       enabled: true,
-      to_keep:req.param("to_keep"),
-      frequency:req.param("frequency"),
-      from_type:req.param("from_type"),
-      from_parameters:req.param("from_parameters"),
-      to_type:req.param("to_type"),
-      to_parameters:req.param("to_parameters")
+      to_keep: req.param('to_keep'),
+      frequency: req.param('frequency'),
+      from_type: req.param('from_type'),
+      from_parameters: req.param('from_parameters'),
+      to_type: req.param('to_type'),
+      to_parameters: req.param('to_parameters')
     };
 
-    if(typeof values.from_parameters != "undefined"){
+    if (typeof values.from_parameters !== 'undefined') {
       values.from_parameters = JSON.parse(values.from_parameters);
     }
-    if(typeof values.to_parameters != "undefined"){
+    if (typeof values.to_parameters !== 'undefined') {
       values.to_parameters = JSON.parse(values.to_parameters);
     }
     var valid = validParameters(values);
-    if(valid){
-      var record = await BackupsConfig.create(values).fetch();
+    var record;
+    if (valid) {
+      record = await BackupsConfig.create(values).fetch();
       BackupCron.addCron(record);
-    }else{
-      var record = null;
+    } else {
+      record = null;
     }
 
     return res.json(record);
@@ -79,32 +80,33 @@ module.exports = {
    */
   update: async function (req, res) {
     var criteria = {
-        id:req.param("id")
+      id: req.param('id')
     };
     var values = {
-      name:req.param("name"),
+      name: req.param('name'),
       enabled: req.param('enabled'),
-      to_keep:req.param("to_keep"),
-      frequency:req.param("frequency"),
-      from_type:req.param("from_type"),
-      from_parameters:req.param("from_parameters"),
-      to_type:req.param("to_type"),
-      to_parameters:req.param("to_parameters")
+      to_keep: req.param('to_keep'),
+      frequency: req.param('frequency'),
+      from_type: req.param('from_type'),
+      from_parameters: req.param('from_parameters'),
+      to_type: req.param('to_type'),
+      to_parameters: req.param('to_parameters')
     };
-    if(typeof values.from_parameters != "undefined"){
+    if (typeof values.from_parameters !== 'undefined') {
       values.from_parameters = JSON.parse(values.from_parameters);
     }
-    if(typeof values.to_parameters != "undefined"){
+    if (typeof values.to_parameters !== 'undefined') {
       values.to_parameters = JSON.parse(values.to_parameters);
     }
 
     var valid = validParameters(values);
-    if(valid){
-      var record = await BackupsConfig.updateOne(criteria).set(values);
+    var record;
+    if (valid) {
+      record = await BackupsConfig.updateOne(criteria).set(values);
       BackupCron.removeCron(record.id);
       BackupCron.addCron(record);
-    }else{
-      var record = null;
+    } else {
+      record = null;
     }
     return res.json(record);
   },
@@ -114,7 +116,7 @@ module.exports = {
    */
   delete: async function (req, res) {
     var criteria = {
-        id:req.param("id")
+      id: req.param('id')
     };
     var destroyedRecord = await BackupsConfig.destroy(criteria).fetch();
     BackupCron.removeCron(destroyedRecord.id);

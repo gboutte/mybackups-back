@@ -2,7 +2,7 @@
   "name": "mybackups",
   "private": true,
   "version": "0.0.0",
-  "description": "a Sails application",
+  "description": "API Backend of MyBackups",
   "keywords": [],
   "dependencies": {
     "@sailshq/connect-redis": "^3.2.1",
@@ -17,7 +17,7 @@
     "sails-hook-grunt": "^4.0.0",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^2.0.0",
-    "sails-postgresql": "^1.0.2",
+    "sails-postgresql": "^2.0.0",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
@@ -33,7 +33,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/dev/mybackups.git"
+    "url": "https://github.com/gboutte/mybackups-back.git"
   },
   "author": "dev",
   "license": "",
