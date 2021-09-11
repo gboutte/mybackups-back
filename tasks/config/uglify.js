@@ -9,7 +9,7 @@
  *   https://sailsjs.com/anatomy/tasks/config/uglify.js
  *
  */
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   grunt.config.set('uglify', {
     dist: {
@@ -28,10 +28,10 @@ module.exports = function(grunt) {
           'Location',
           'RttcRefPlaceholder',
         ],
-        keep_fnames: true//eslint-disable-line
+        keep_fnames: true
       },
       compress: {
-        keep_fnames: true//eslint-disable-line
+        keep_fnames: true
       }
     }
   });
