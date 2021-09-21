@@ -5,6 +5,8 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+const BackupCron = require('../../backup_cron/BackupCron');
+
 function validParameters(values) {
   var valid = true;
   var fromType = BackupTypes.getTypeByCode(values.from_type);
@@ -22,6 +24,9 @@ function validParameters(values) {
       valid = false;
     }
   } else {
+    valid = false;
+  }
+  if(!BackupCron.isValidFrequency(values.frequency)){
     valid = false;
   }
   return valid;
@@ -56,11 +61,10 @@ module.exports = {
       to_type: req.param('to_type'),
       to_parameters: req.param('to_parameters')
     };
-
-    if (typeof values.from_parameters !== 'undefined') {
+    if (typeof values.from_parameters !== 'undefined' && typeof values.from_parameters !== 'object') {
       values.from_parameters = JSON.parse(values.from_parameters);
     }
-    if (typeof values.to_parameters !== 'undefined') {
+    if (typeof values.to_parameters !== 'undefined' && typeof values.to_parameters !== 'object') {
       values.to_parameters = JSON.parse(values.to_parameters);
     }
     var valid = validParameters(values);

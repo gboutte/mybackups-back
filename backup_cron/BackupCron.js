@@ -1,4 +1,5 @@
 var schedule = require('node-schedule');
+const cronValidator = require('cron-validator');
 var sails = require('sails');
 
 class BackupCron {
@@ -16,6 +17,10 @@ class BackupCron {
       });
       this.initiated = true;
     }
+  }
+
+  isValidFrequency(frequency) {
+    return cronValidator.isValidCron(frequency);
   }
 
   removeCron(id) {
