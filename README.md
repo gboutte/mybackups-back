@@ -10,4 +10,3 @@
 ## Todo
 
 - [ ] Windows support
-- [ ] Windows support
