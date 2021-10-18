@@ -6,3 +6,8 @@
 ## Install
 
 ## Deploy
+
+## Todo
+
+- [ ] Windows support
+- [ ] Windows support

@@ -33,7 +33,7 @@ class LocalType extends AbstractType {
     return true;
   }
   getDestinationParameters() {
-    return getParameters();
+    return this.getParameters();
   }
   checkDestinationParameters(parameters) {
     var parametersOk = true;
@@ -94,7 +94,7 @@ class LocalType extends AbstractType {
     return true;
   }
   getOriginParameters() {
-    return getParameters();
+    return this.getParameters();
   }
   checkOriginParameters(parameters) {
     var parametersOk = true;
