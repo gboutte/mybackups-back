@@ -37,16 +37,25 @@ class LocalType extends AbstractType {
   }
   checkDestinationParameters(parameters) {
     var parametersOk = true;
+    let errors = {
+      path: {
+        error: false,
+        message: null
+      }
+    };
     try {
       fs.accessSync(parameters.path, fs.constants.W_OK);
     }
     catch (err) {
-      sails.log.error(err);
+      // sails.log.error(err);
       parametersOk = false;
+      errors.path.error = true;
+      errors.path.message = 'The path isn\'t writable.';
     }
 
     return {
       valid: parametersOk,
+      errors: errors,
       parameters: parameters
     };
   }
@@ -97,16 +106,25 @@ class LocalType extends AbstractType {
     return this.getParameters();
   }
   checkOriginParameters(parameters) {
+    let errors = {
+      path: {
+        error: false,
+        message: null
+      }
+    };
     var parametersOk = true;
     try {
       fs.accessSync(parameters.path, fs.constants.R_OK);
     }
     catch (err) {
-      sails.log.error(err);
+      // sails.log.error(err);
+      errors.path.error = true;
+      errors.path.message = 'The path isn\'t readable.';
       parametersOk = false;
     }
     return {
       valid: parametersOk,
+      errors: errors,
       parameters: parameters
     };
   }
