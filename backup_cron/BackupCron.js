@@ -1,6 +1,7 @@
 var schedule = require('node-schedule');
 const cronValidator = require('cron-validator');
 var sails = require('sails');
+const os = require('os');
 
 class BackupCron {
 
@@ -59,15 +60,16 @@ class BackupCron {
   }
 
   async doBackup(id) {
-
     sails.log.info('[CRON] backup: ' + id);
     var config = await BackupsConfig.findOne({ id: id }).populate('saves');
     var fromType = BackupTypes.getTypeByCode(config.from_type);
     var toType = BackupTypes.getTypeByCode(config.to_type);
     if (fromType !== null && toType !== null && fromType.checkOriginParameters(config.from_parameters).valid && toType.checkDestinationParameters(config.to_parameters).valid) {
-      var tmpDir = '/tmp/';
+
+      var tmpDir = os.tmpdir() + '/';
       var fromResult = await fromType.doOrigin(config, config.from_parameters, tmpDir);
       var backupResult = await toType.doDestination(config, config.to_parameters, tmpDir + fromResult.tmpFile);
+      console.log(backupResult.backupData)
       //create backup
       await BackupsSave.create({
         id: 'uuid',
@@ -96,7 +98,7 @@ class BackupCron {
     var toType = BackupTypes.getTypeByCode(save.type);
     if (toType !== null) {
       await toType.deleteBackup(save.data);
-      await BackupsConfig.destroy({ id: save.id });
+      await BackupsSave.destroy({ id: save.id });
     }
   }
 

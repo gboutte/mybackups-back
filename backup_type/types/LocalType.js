@@ -66,14 +66,19 @@ class LocalType extends AbstractType {
         '-' + moment().format('DDMMYYYYHHmmss') +
         path.extname(pathToFile);
 
-      fs.copyFile(pathToFile, parameters.path + newName, (err) => {
+      let destination_dir = parameters.path.trim();
+      if (destination_dir.slice(-1) !== '/' && destination_dir.slice(-1) !== '\\') {
+        destination_dir += '/';
+      }
+
+      fs.copyFile(pathToFile, destination_dir + newName, (err) => {
         if (err) {
           sails.log.error(err);
           reject(err);
         } else {
           resolve({
             backupData: {
-              path: parameters.path + newName
+              path: destination_dir + newName
             }
           });
         }
@@ -87,14 +92,18 @@ class LocalType extends AbstractType {
 
   }
   deleteBackup(data) {
-    const path = data.path;
-    try {
-      fs.unlinkSync(path);
-      return true;
-    } catch (err) {
-      sails.log.error(err);
-      return false;
-    }
+    return new Promise((resolve, reject) => {
+      const path = data.path;
+      sails.log.info('Delete: ' + path);
+      try {
+        fs.unlinkSync(path);
+        resolve(true);
+      } catch (err) {
+        sails.log.info('Cannot remove the file, one day i will send the error to the frontend');
+        sails.log.error(err);
+        resolve(false);
+      }
+    });
   }
 
   //Origin part
