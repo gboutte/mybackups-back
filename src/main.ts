@@ -5,6 +5,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -21,6 +22,32 @@ async function bootstrap() {
       },
     }),
   );
+
+  const config = new DocumentBuilder()
+    .setTitle('MyBackups api')
+    .setDescription('MyBackups api')
+    .setVersion('1.0')
+    .addBearerAuth({
+      type: 'http',
+      description: 'You can get the token on the /auth/login endpoint',
+    })
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      defaultModelsExpandDepth: -1,
+      docExpansion: 'none',
+      filter: true,
+      syntaxHighlight: {
+        activate: true,
+        theme: 'tomorrow-night',
+      },
+      tryItOutEnabled: true,
+    },
+  });
+
   await app.listen(3000);
 }
 
