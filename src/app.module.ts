@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { InstallModule } from './install/install.module';
 import * as Joi from 'joi';
+import { APP_GUARD } from '@nestjs/core';
+import { InstalledGuard } from './global/guards/installed.guard';
 
 @Module({
   imports: [
@@ -26,8 +28,15 @@ import * as Joi from 'joi';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    UsersModule,
+    InstallModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: InstalledGuard,
+    },
+  ],
 })
 export class AppModule {}

@@ -22,7 +22,6 @@ async function bootstrap() {
       },
     }),
   );
-
   const config = new DocumentBuilder()
     .setTitle('MyBackups api')
     .setDescription('MyBackups api')
