@@ -6,6 +6,8 @@ import { InstallModule } from './install/install.module';
 import * as Joi from 'joi';
 import { APP_GUARD } from '@nestjs/core';
 import { InstalledGuard } from './global/guards/installed.guard';
+import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { InstalledGuard } from './global/guards/installed.guard';
         DATABASE_PASSWORD: Joi.required(),
         DATABASE_NAME: Joi.required(),
         DATABASE_PORT: Joi.number().default(5432),
+        APP_SECRET: Joi.required(),
+        ACCESS_TOKEN_EXPIRATION: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -30,12 +34,17 @@ import { InstalledGuard } from './global/guards/installed.guard';
     }),
     UsersModule,
     InstallModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [
     {
       provide: APP_GUARD,
       useClass: InstalledGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
     },
   ],
 })
