@@ -10,7 +10,7 @@ export class BackupSaveDestination {
   date_created: Date;
 
   @Column('simple-json')
-  data: any;
+  parameters: any;
 
   @ManyToOne(() => BackupSave, (save) => save.destinations)
   save: BackupSave;

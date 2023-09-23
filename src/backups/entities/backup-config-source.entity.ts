@@ -13,7 +13,7 @@ export class BackupConfigSource {
   type: string;
 
   @Column('simple-json')
-  data: any;
+  parameters: any;
 
   @ManyToOne(() => BackupConfig, (config) => config.sources)
   config: BackupConfig;

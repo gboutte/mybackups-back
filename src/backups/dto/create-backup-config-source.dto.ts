@@ -10,13 +10,11 @@ export class CreateBackupConfigSourceDto {
   readonly type: string;
 
   @ApiProperty({
-    description: 'The data of the backup source',
+    description: 'The parameters of the backup source',
     example: {
-      path: 'myFolderSource',
-      label: 'Path',
-      type: 'string',
+      path: 'sourceFile',
     },
   })
   @IsObject()
-  readonly data: any;
+  readonly parameters: any;
 }

@@ -46,6 +46,16 @@ export class BackupsController {
     return this.backupsService.createConfig(createBackupConfigDto);
   }
 
+  @Post('config/validate')
+  @ApiBearerAuth()
+  validate(@Body() createBackupConfigDto: CreateBackupConfigDto) {
+    // if (validation === true) {
+    //   this.backupsService.runBackup(createBackupConfigDto);
+    // }
+
+    return this.backupsService.validate(createBackupConfigDto);
+  }
+
   @Patch('config/:id')
   @ApiBearerAuth()
   @ApiParam({
