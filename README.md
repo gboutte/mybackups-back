@@ -95,7 +95,7 @@ The `AbstractType` will give you access to some methods that you can use to help
 - `getTemporaryDirectory` will give you the path to the directory to put the backup done by the source. Then the
   destination will take it from there.
 
-Then the there is two interface that you can implement. One to allow your type to be used as a source, and another for
+Then there is two interface that you can implement. One to allow your type to be used as a source, and another for
 the destination.
 
 - `BackupSourceInterface`
@@ -123,12 +123,6 @@ The `BackupSourceParameterInterface` has the following properties:
   `BackupParameterTypeEnum.BOOLEAN` )
 - `required` if the parameter is required or not
 
-Here is an example:
-
-```typescript
-
-```
-
 ##### validateSourceParameters
 
 That's where you will validate the parameters that the user set.
@@ -138,22 +132,17 @@ This method will be called when the backup is triggered. It will receive the par
 Before calling this method the system will automatically check that the required parameters are set, so you don't need
 to do it.
 
-You can return `true` or an array of `BackupParameterErrorInterface` that will explain why the parameter is invalid.
-
-Here is an example:
-
-```typescript
- 
-```
+You can return `true` if all the parameters are valid, or an array of `BackupParameterErrorInterface` that will explain
+why the parameter is invalid.
 
 ##### doSource
 
 This method will be called when the backup is triggered. It will receive the parameters that the user set.
 
-At this step the parameters are validated by the system using the required then by calling the
+At this step the parameters are validated by the system using the required, and also by calling the
 method `validateSourceParameters`.
 
-You will need to put the backup file in the temporary directory using the method `getTemporaryDirectory`.
+You will need to put the backup file or directory in the temporary directory using the method `getTemporaryDirectory`.
 
 And then you will return the path to the backup file inside a `BackupSourceResultInterface` object.
 
