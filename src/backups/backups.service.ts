@@ -59,7 +59,9 @@ export class BackupsService {
     }
   }
 
-  validate(createBackupConfigDto: CreateBackupConfigDto) {
+  validate(
+    createBackupConfigDto: CreateBackupConfigDto | UpdateBackupConfigDto,
+  ) {
     const errors = [];
 
     // Verification of the sources

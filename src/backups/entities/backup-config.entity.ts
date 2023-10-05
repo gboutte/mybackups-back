@@ -30,11 +30,13 @@ export class BackupConfig {
 
   @OneToMany(() => BackupConfigSource, (save) => save.config, {
     cascade: true,
+    eager: true,
   })
   sources: BackupConfigSource[];
 
   @OneToMany(() => BackupConfigDestination, (save) => save.config, {
     cascade: true,
+    eager: true,
   })
   destinations: BackupConfigDestination[];
 }
