@@ -12,6 +12,7 @@ import { BackupsService } from './backups.service';
 import { BackupConfig } from './entities/backup-config.entity';
 import { CreateBackupConfigDto } from './dto/create-backup-config.dto';
 import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
+import types from './backups-types/types';
 
 @Controller('backups')
 @ApiTags('backups')
@@ -22,6 +23,14 @@ export class BackupsController {
   @ApiBearerAuth()
   getAllConfig() {
     return this.backupsService.findAllConfig();
+  }
+
+  @Get('types')
+  @ApiBearerAuth()
+  async getTypes() {
+    const backupTypes = await types.getTypes();
+
+    return backupTypes.map((type) => type.getJsonSchema());
   }
 
   @Get('config/:id')

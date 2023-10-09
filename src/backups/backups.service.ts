@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { BackupConfig } from './entities/backup-config.entity';
 import { CreateBackupConfigDto } from './dto/create-backup-config.dto';
 import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
-import { LocalType } from './backups-types/types/local-type';
+import { LocalType } from './backups-types/types/implementations/local-type';
 import { AbstractType } from './backups-types/abstract-type';
 import { instanceOfBackupSource } from './backups-types/interfaces/backup-source.interface';
 import { instanceOfBackupDestination } from './backups-types/interfaces/backup-destination.interface';
