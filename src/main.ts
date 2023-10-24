@@ -22,6 +22,7 @@ async function bootstrap() {
       },
     }),
   );
+  app.setGlobalPrefix('api');
   const config = new DocumentBuilder()
     .setTitle('MyBackups api')
     .setDescription('MyBackups api')
