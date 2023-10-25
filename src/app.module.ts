@@ -11,6 +11,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { BackupsModule } from './backups/backups.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { StatusModule } from './status/status.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { join } from 'path';
     InstallModule,
     AuthModule,
     BackupsModule,
+    StatusModule,
   ],
   controllers: [],
   providers: [
