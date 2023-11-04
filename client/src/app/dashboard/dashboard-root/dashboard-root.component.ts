@@ -41,7 +41,7 @@ export class DashboardRootComponent {
         })
         .catch(() => {
           if (window.location.pathname !== '/login') {
-            console.log('Session expired');
+            this.router.navigate(['/logout']);
           }
         });
     } else {

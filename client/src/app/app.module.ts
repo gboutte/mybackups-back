@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthInterceptor } from './auth/interceptor/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RetryInterceptor } from './global/interceptors/retry.interceptor';
+import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
   declarations: [AppRootComponent],
@@ -21,6 +22,7 @@ import { RetryInterceptor } from './global/interceptors/retry.interceptor';
     AuthModule,
   ],
   providers: [
+    AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

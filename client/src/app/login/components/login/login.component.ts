@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../auth/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from '../../../auth/session.service';
 
 @Component({
@@ -17,15 +17,18 @@ export class LoginComponent implements OnInit {
   private authService: AuthService;
   private sessionService: SessionService;
   private router: Router;
+  private route: ActivatedRoute;
 
   constructor(
     authService: AuthService,
     router: Router,
     sessionService: SessionService,
+    route: ActivatedRoute,
   ) {
     this.authService = authService;
     this.router = router;
     this.sessionService = sessionService;
+    this.route = route;
   }
 
   get username(): FormControl {
@@ -37,6 +40,17 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //If has logout query param, logout
+    if (this.route.snapshot.queryParamMap.get('logout') !== null) {
+      this.sessionService.logout();
+      //remove logout query param
+      this.router.navigate([], {
+        queryParams: {
+          logout: null,
+        },
+      });
+    }
+
     if (
       this.sessionService.isLoggedIn() &&
       this.sessionService.isSessionValid()
