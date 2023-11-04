@@ -6,11 +6,26 @@ import { AppRoutingModule } from './app-routing.module';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 import { ConfigStore } from './config/config.store';
+import { AuthModule } from './auth/auth.module';
+import { AuthInterceptor } from './auth/interceptor/auth.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppRootComponent],
-  imports: [BrowserModule, RouterOutlet, AppRoutingModule, ConfigModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    RouterOutlet,
+    AppRoutingModule,
+    ConfigModule,
+    AuthModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppRootComponent],
 })
 export class AppModule {

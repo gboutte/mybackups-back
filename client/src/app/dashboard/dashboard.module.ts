@@ -4,10 +4,12 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { Subscription } from 'rxjs';
 import { ConfigStore } from '../config/config.store';
 import { Router } from '@angular/router';
+import { DashboardRootComponent } from './dashboard-root/dashboard-root.component';
+import { NavigationModule } from '@gboutte/glassui';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, DashboardRoutingModule],
+  declarations: [DashboardRootComponent],
+  imports: [CommonModule, DashboardRoutingModule, NavigationModule],
 })
 export class DashboardModule implements OnDestroy {
   private installSubscription!: Subscription;

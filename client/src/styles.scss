@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+
+}
+
+html {
+
+  background-image: url("/assets/clouds.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom;
+}

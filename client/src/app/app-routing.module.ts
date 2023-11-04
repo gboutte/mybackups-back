@@ -1,7 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DashboardRootComponent } from './dashboard/dashboard-root/dashboard-root.component';
 
 const routes: Routes = [
+  {
+    // Redirect to login page
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'login',
+  },
   {
     path: 'login',
     loadChildren: () =>
@@ -9,6 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
+    component: DashboardRootComponent,
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },

@@ -5,10 +5,21 @@ import { LoginRoutingModule } from './login-routing.module';
 import { Subscription } from 'rxjs';
 import { ConfigStore } from '../config/config.store';
 import { Router } from '@angular/router';
+import { ButtonsModule, ContentModule, InputsModule } from '@gboutte/glassui';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   declarations: [LoginComponent],
-  imports: [CommonModule, LoginRoutingModule],
+  imports: [
+    CommonModule,
+    LoginRoutingModule,
+    ContentModule,
+    InputsModule,
+    ButtonsModule,
+    ReactiveFormsModule,
+    AuthModule,
+  ],
 })
 export class LoginModule implements OnDestroy {
   private installSubscription!: Subscription;

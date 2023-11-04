@@ -7,6 +7,16 @@ const routes: Routes = [
     loadChildren: (): any =>
       import('./home/home.module').then((m): any => m.HomeModule),
   },
+  {
+    path: 'users',
+    loadChildren: (): any =>
+      import('./users/users.module').then((m): any => m.UsersModule),
+  },
+  {
+    path: 'backups',
+    loadChildren: (): any =>
+      import('./backups/backups.module').then((m): any => m.BackupsModule),
+  },
 ];
 
 @NgModule({
