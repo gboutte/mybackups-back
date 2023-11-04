@@ -1,11 +1,14 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   NotFoundException,
   Param,
   Patch,
   Post,
+  Request,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
@@ -40,6 +43,18 @@ export class UsersController {
     }
   }
 
+  @Get('me')
+  @ApiBearerAuth()
+  @UseInterceptors(ClassSerializerInterceptor) // Intercept response (User) to remove password field
+  async getMe(@Request() req): Promise<User> {
+    const user = await this.usersService.findOne(req.user.userId);
+    if (user !== null) {
+      return user;
+    } else {
+      throw new NotFoundException(); // You can get information only on registered user
+    }
+  }
+
   @Patch(':id')
   @ApiBearerAuth()
   @ApiParam({
@@ -47,13 +62,21 @@ export class UsersController {
     required: true,
     description: 'The uuid of the user',
   })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Param('id')
+    id: string,
+    @Body()
+    updateUserDto: UpdateUserDto,
+  ) {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Post()
   @ApiBearerAuth()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(
+    @Body()
+    createUserDto: CreateUserDto,
+  ) {
     return this.usersService.create(createUserDto);
   }
 }
