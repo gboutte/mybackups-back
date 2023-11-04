@@ -9,6 +9,7 @@ import { ConfigStore } from './config/config.store';
 import { AuthModule } from './auth/auth.module';
 import { AuthInterceptor } from './auth/interceptor/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RetryInterceptor } from './global/interceptors/retry.interceptor';
 
 @NgModule({
   declarations: [AppRootComponent],
@@ -23,6 +24,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RetryInterceptor,
       multi: true,
     },
   ],
