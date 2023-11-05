@@ -13,7 +13,7 @@ export class DashboardRootComponent {
   menu: MenuModel[] = [
     {
       label: 'Home',
-      link: '/dashboard',
+      link: '/dashboard/home',
     },
     {
       label: 'Users',
