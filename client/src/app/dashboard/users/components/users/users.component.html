@@ -1,1 +1,25 @@
-<p>users works!</p>
+<ng-template [ngIfElse]="loaded" [ngIf]="users === undefined">
+  <gl-loader/>
+</ng-template>
+<ng-template #loaded>
+  <h1>Users</h1>
+  <gl-table>
+    <thead>
+    <tr>
+      <th>Username</th>
+      <th>Date created</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{user.username}}</td>
+      <td>{{user.date_created|date: 'dd/mm/YYYY'}}</td>
+      <td class="actions">
+        <gl-button [round]="true">
+          <span class="material-symbols-outlined">settings</span>
+        </gl-button>
+      </td>
+    </tr>
+  </gl-table>
+</ng-template>

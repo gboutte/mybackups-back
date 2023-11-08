@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from './model/user.model';
+import { User } from '../dashboard/users/models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class SessionStore {

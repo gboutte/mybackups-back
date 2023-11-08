@@ -15,7 +15,7 @@ html {
   background-position: bottom;
 }
 
-* {
+* :not(.material-symbols-outlined) {
   font-family: 'Inter' !important;
 }
 

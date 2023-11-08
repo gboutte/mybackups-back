@@ -1,5 +1,5 @@
 import { serializable } from 'serializr';
-import { date } from '../../global/date-serializable';
+import { date } from '../../../global/date-serializable';
 
 export class User {
   @serializable

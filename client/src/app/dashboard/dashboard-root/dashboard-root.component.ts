@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../../auth/session.service';
 import { Router } from '@angular/router';
 import { MenuModel } from '@gboutte/glassui/lib/navigation/sidebar/menu.model';
@@ -8,7 +8,7 @@ import { MenuModel } from '@gboutte/glassui/lib/navigation/sidebar/menu.model';
   templateUrl: './dashboard-root.component.html',
   styleUrls: ['./dashboard-root.component.scss'],
 })
-export class DashboardRootComponent {
+export class DashboardRootComponent implements OnInit {
   loading: boolean = true;
   menu: MenuModel[] = [
     {
@@ -46,6 +46,7 @@ export class DashboardRootComponent {
         });
     } else {
       this.loading = false;
+      this.router.navigate(['/logout']);
     }
   }
 }

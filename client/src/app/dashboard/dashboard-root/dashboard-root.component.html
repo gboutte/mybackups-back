@@ -1,5 +1,5 @@
 <ng-template [ngIfElse]="loaded" [ngIf]="loading">
-  Loading...
+  <gl-loader/>
 </ng-template>
 <ng-template #loaded>
   <gl-navbar key="navbar-mybackups">
@@ -9,7 +9,9 @@
   </gl-navbar>
   <gl-sidebar [menu]="menu" key="navbar-mybackups"></gl-sidebar>
   <gl-page key="navbar-mybackups">
-    <router-outlet></router-outlet>
+    <gl-card class="page-content">
+      <router-outlet></router-outlet>
+    </gl-card>
   </gl-page>
 </ng-template>
 

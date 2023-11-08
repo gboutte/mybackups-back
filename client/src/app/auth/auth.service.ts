@@ -3,7 +3,7 @@ import { AbstractService } from '../global/abstract.service';
 import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { deserialize } from 'serializr';
-import { User } from './model/user.model';
+import { User } from '../dashboard/users/models/user.model';
 
 @Injectable()
 export class AuthService extends AbstractService {
