@@ -18,7 +18,7 @@
     "@angular/platform-browser": "^16.1.0",
     "@angular/platform-browser-dynamic": "^16.1.0",
     "@angular/router": "^16.1.0",
-    "@gboutte/glassui": "^0.0.2-beta.4",
+    "@gboutte/glassui": "^0.1.0",
     "jwt-decode": "^4.0.0",
     "rxjs": "~7.8.0",
     "serializr": "^3.0.2",

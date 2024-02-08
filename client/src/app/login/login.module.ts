@@ -27,6 +27,7 @@ export class LoginModule implements OnDestroy {
   constructor(configStore: ConfigStore, router: Router) {
     this.installSubscription = configStore.isInstalled$.subscribe(
       (isInstalled) => {
+        console.log('isInstalled', isInstalled);
         if (isInstalled !== null && !isInstalled) {
           router.navigate(['/installation']);
         }

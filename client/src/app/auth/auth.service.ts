@@ -30,4 +30,14 @@ export class AuthService extends AbstractService {
       this.httpOptions,
     );
   }
+  install(username: string, password: string): Observable<any> {
+    return this.httpClient.post<any>(
+      this.getUrl() + '/install/register',
+      {
+        username: username,
+        password: password,
+      },
+      this.httpOptions,
+    );
+  }
 }

@@ -5,10 +5,25 @@ import { InstallationRoutingModule } from './installation-routing.module';
 import { Subscription } from 'rxjs';
 import { ConfigStore } from '../config/config.store';
 import { Router } from '@angular/router';
+import {
+  ButtonsModule,
+  ContentModule,
+  InputsModule,
+  ToastModule,
+} from '@gboutte/glassui';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [InstallComponent],
-  imports: [CommonModule, InstallationRoutingModule],
+  imports: [
+    CommonModule,
+    InstallationRoutingModule,
+    ButtonsModule,
+    ContentModule,
+    InputsModule,
+    ReactiveFormsModule,
+    ToastModule,
+  ],
 })
 export class InstallationModule implements OnDestroy {
   private installSubscription!: Subscription;

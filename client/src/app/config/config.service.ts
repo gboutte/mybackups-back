@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AbstractService } from '../global/abstract.service';
-import { Observable } from 'rxjs';
+import {BehaviorSubject, Observable, take} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import {ConfigStore} from "./config.store";
 
 @Injectable()
 export class ConfigService extends AbstractService {
-  constructor(httpClient: HttpClient) {
+
+  private configStore: ConfigStore;
+  constructor(httpClient: HttpClient, configStore: ConfigStore) {
     super(httpClient);
+    this.configStore = configStore;
   }
 
   getConfig(): Observable<{ isInstalled: boolean }> {
@@ -14,5 +18,15 @@ export class ConfigService extends AbstractService {
       this.getUrl() + '/status',
       this.httpOptions,
     );
+  }
+  refreshConfigStore() {
+    const observable = new BehaviorSubject(null);
+    observable.pipe(take(1));
+    this.getConfig().subscribe((config) => {
+      this.configStore.isInstalled = config.isInstalled;
+      observable.next(null);
+    });
+
+    return observable;
   }
 }

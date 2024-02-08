@@ -5,13 +5,12 @@ import { UsersModule } from './users/users.module';
 import { InstallModule } from './install/install.module';
 import * as Joi from 'joi';
 import { APP_GUARD } from '@nestjs/core';
-import { InstalledGuard } from './global/guards/installed.guard';
 import { AuthModule } from './auth/auth.module';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { BackupsModule } from './backups/backups.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { StatusModule } from './status/status.module';
+import { InstalledJwtGuard } from './global/guards/installed-jwt.guard';
 
 @Module({
   imports: [
@@ -49,11 +48,7 @@ import { StatusModule } from './status/status.module';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: InstalledGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useClass: InstalledJwtGuard,
     },
   ],
 })

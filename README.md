@@ -48,6 +48,8 @@ DATABASE_PORT=5432
 DATABASE_USER=username
 DATABASE_PASSWORD=password
 DATABASE_NAME=database
+APP_SECRET=secret
+ACCESS_TOKEN_EXPIRATION=1h
 ```
 
 ### Running the app

@@ -37,9 +37,7 @@ import { AuthGuard } from './auth/auth.guard';
   bootstrap: [AppRootComponent],
 })
 export class AppModule {
-  constructor(configService: ConfigService, configStore: ConfigStore) {
-    configService.getConfig().subscribe((config) => {
-      configStore.isInstalled = config.isInstalled;
-    });
+  constructor(configService: ConfigService) {
+    configService.refreshConfigStore();
   }
 }

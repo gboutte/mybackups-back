@@ -20,11 +20,6 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    console.log(
-      'AuthInterceptor',
-      req.url,
-      this.sessionService.isSessionValid(),
-    );
     if (this.sessionService.isSessionValid()) {
       const request = this.addAuthHeader(req);
       return next.handle(request);
