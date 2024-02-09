@@ -1,0 +1,48 @@
+{
+	"dashboard": {
+		"users": {
+			"title": "Utilisateurs",
+			"table": {
+				"username": "Nom d'utilisateur",
+				"date_created": "Date de création"
+			}
+		}
+	},
+	"installation": {
+		"title": "Installation",
+		"form": {
+			"username": "Nom d'utilisateur",
+			"password": "Mot de passe"
+		},
+		"toast": {
+			"success": {
+				"description": "Vous pouvez maintenant vous connecter.",
+				"title": "Installation réussie"
+			},
+			"error": {
+				"description": "Une erreur est survenue lors de l'installation. Veuillez réessayer.",
+				"title": "Erreur"
+			}
+		}
+	},
+	"login": {
+		"title": "Connexion",
+		"form": {
+			"username": "Nom d'utilisateur",
+			"password": "Mot de passe"
+		},
+		"toast": {
+			"error": {
+				"description": "Nom d'utilisateur ou mot de passe incorrect. Veuillez réessayer.",
+				"title": "Erreur"
+			}
+		}
+	},
+	"menu": {
+		"links": {
+			"home": "Accueil",
+			"users": "Utilisateurs",
+			"backups": "Backups"
+		}
+	}
+}

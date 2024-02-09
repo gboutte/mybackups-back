@@ -8,19 +8,21 @@ import { Router } from '@angular/router';
 import {ButtonsModule, ContentModule, InputsModule, ToastModule} from '@gboutte/glassui';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '../auth/auth.module';
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [LoginComponent],
-  imports: [
-    CommonModule,
-    LoginRoutingModule,
-    ContentModule,
-    InputsModule,
-    ButtonsModule,
-    ReactiveFormsModule,
-    AuthModule,
-    ToastModule,
-  ],
+    imports: [
+        CommonModule,
+        LoginRoutingModule,
+        ContentModule,
+        InputsModule,
+        ButtonsModule,
+        ReactiveFormsModule,
+        AuthModule,
+        ToastModule,
+        TranslateModule,
+    ],
 })
 export class LoginModule implements OnDestroy {
   private installSubscription!: Subscription;

@@ -5,6 +5,7 @@ import { SessionService } from '../../../auth/session.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '@gboutte/glassui';
 import { ConfigService } from '../../../config/config.service';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'mb-install',
@@ -23,6 +24,7 @@ export class InstallComponent {
   private route: ActivatedRoute;
   private toastService: ToastService;
   private configService: ConfigService;
+  private translate: TranslateService
 
   constructor(
     authService: AuthService,
@@ -31,6 +33,7 @@ export class InstallComponent {
     route: ActivatedRoute,
     toastService: ToastService,
     configService: ConfigService,
+    translate: TranslateService,
   ) {
     this.authService = authService;
     this.router = router;
@@ -38,6 +41,7 @@ export class InstallComponent {
     this.route = route;
     this.toastService = toastService;
     this.configService = configService;
+    this.translate = translate;
   }
 
   get username(): FormControl {
@@ -56,9 +60,9 @@ export class InstallComponent {
         .subscribe({
           next: () => {
             this.toastService.alert({
-              description: 'User created successfully',
+              description: this.translate.instant('installation.toast.success.description'),
               icon: 'success',
-              title: 'Installation successful',
+              title: this.translate.instant('installation.toast.success.title'),
               color: 'white',
             });
             this.configService.refreshConfigStore().subscribe(()=>{
@@ -67,10 +71,9 @@ export class InstallComponent {
           },
           error: () => {
             this.toastService.alert({
-              description: 'Error',
+              description: this.translate.instant('installation.toast.error.description'),
               icon: 'error',
-              title:
-                'An error occurred while creating the user. Please try again.',
+              title: this.translate.instant('installation.toast.error.title'),
               color: 'white',
             });
             console.error('Invalid credentials');

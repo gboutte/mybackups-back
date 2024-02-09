@@ -4,6 +4,7 @@ import { AuthService } from '../../../auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from '../../../auth/session.service';
 import {ToastService} from "@gboutte/glassui";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'mb-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
   private router: Router;
   private route: ActivatedRoute;
   private toastService: ToastService;
+  private translate: TranslateService;
 
   constructor(
     authService: AuthService,
@@ -27,12 +29,14 @@ export class LoginComponent implements OnInit {
     sessionService: SessionService,
     route: ActivatedRoute,
     toastService: ToastService,
+    translate: TranslateService,
   ) {
     this.authService = authService;
     this.router = router;
     this.sessionService = sessionService;
     this.route = route;
     this.toastService = toastService;
+    this.translate = translate;
   }
 
   get username(): FormControl {
@@ -75,10 +79,9 @@ export class LoginComponent implements OnInit {
           },
           error: () => {
             this.toastService.alert({
-              description: 'Error',
+              description: this.translate.instant('login.toast.error.description'),
               icon: 'error',
-              title:
-                'An error occurred while creating the user. Please try again.',
+              title: this.translate.instant('login.toast.error.title'),
               color: 'white',
             });
             console.error('Invalid credentials');

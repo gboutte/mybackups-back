@@ -1,0 +1,48 @@
+{
+	"dashboard": {
+		"users": {
+			"title": "Users",
+			"table": {
+				"username": "Username",
+				"date_created": "Date created"
+			}
+		}
+	},
+	"installation": {
+		"title": "Installation",
+		"form": {
+			"username": "Username",
+			"password": "Password"
+		},
+		"toast": {
+			"success": {
+				"description": "User created successfully",
+				"title": "Installation successful"
+			},
+			"error": {
+				"description": "An error occurred while creating the user. Please try again.",
+				"title": "Installation failed"
+			}
+		}
+	},
+	"login": {
+		"title": "Login",
+		"form": {
+			"username": "Username",
+			"password": "Password"
+		},
+		"toast": {
+			"error": {
+				"description": "Password or username is incorrect. Please try again.",
+				"title": "Login failed"
+			}
+		}
+	},
+	"menu": {
+		"links": {
+			"home": "Home",
+			"users": "Users",
+			"backups": "Backups"
+		}
+	}
+}

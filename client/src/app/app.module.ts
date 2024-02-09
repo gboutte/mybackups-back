@@ -8,10 +8,14 @@ import { ConfigService } from './config/config.service';
 import { ConfigStore } from './config/config.store';
 import { AuthModule } from './auth/auth.module';
 import { AuthInterceptor } from './auth/interceptor/auth.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import { RetryInterceptor } from './global/interceptors/retry.interceptor';
 import { AuthGuard } from './auth/auth.guard';
-
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 @NgModule({
   declarations: [AppRootComponent],
   imports: [
@@ -20,6 +24,14 @@ import { AuthGuard } from './auth/auth.guard';
     AppRoutingModule,
     ConfigModule,
     AuthModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'en',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     AuthGuard,

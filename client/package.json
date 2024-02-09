@@ -6,7 +6,11 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "i18n:extract":
+      "npm run i18n:extract:en && npm run i18n:extract:fr",
+    "i18n:extract:en": "ngx-translate-extract --input ./src --output ./src/assets/i18n/en.json --clean --format namespaced-json  --key-as-default-value",
+    "i18n:extract:fr": "ngx-translate-extract --input ./src --output ./src/assets/i18n/fr.json --clean --format namespaced-json  --key-as-default-value"
   },
   "private": true,
   "dependencies": {
@@ -19,6 +23,8 @@
     "@angular/platform-browser-dynamic": "^16.1.0",
     "@angular/router": "^16.1.0",
     "@gboutte/glassui": "^0.1.0",
+    "@ngx-translate/core": "^15.0.0",
+    "@ngx-translate/http-loader": "^8.0.0",
     "jwt-decode": "^4.0.0",
     "rxjs": "~7.8.0",
     "serializr": "^3.0.2",
@@ -30,6 +36,7 @@
     "@angular/cli": "~16.1.4",
     "@angular/compiler-cli": "^16.1.0",
     "@types/jasmine": "~4.3.0",
+    "@vendure/ngx-translate-extract": "^8.3.0",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
