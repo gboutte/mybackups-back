@@ -5,7 +5,7 @@ import { LoginRoutingModule } from './login-routing.module';
 import { Subscription } from 'rxjs';
 import { ConfigStore } from '../config/config.store';
 import { Router } from '@angular/router';
-import { ButtonsModule, ContentModule, InputsModule } from '@gboutte/glassui';
+import {ButtonsModule, ContentModule, InputsModule, ToastModule} from '@gboutte/glassui';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '../auth/auth.module';
 
@@ -19,6 +19,7 @@ import { AuthModule } from '../auth/auth.module';
     ButtonsModule,
     ReactiveFormsModule,
     AuthModule,
+    ToastModule,
   ],
 })
 export class LoginModule implements OnDestroy {
@@ -27,7 +28,6 @@ export class LoginModule implements OnDestroy {
   constructor(configStore: ConfigStore, router: Router) {
     this.installSubscription = configStore.isInstalled$.subscribe(
       (isInstalled) => {
-        console.log('isInstalled', isInstalled);
         if (isInstalled !== null && !isInstalled) {
           router.navigate(['/installation']);
         }

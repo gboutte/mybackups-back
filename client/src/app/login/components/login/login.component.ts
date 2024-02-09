@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from '../../../auth/session.service';
+import {ToastService} from "@gboutte/glassui";
 
 @Component({
   selector: 'mb-login',
@@ -18,17 +19,20 @@ export class LoginComponent implements OnInit {
   private sessionService: SessionService;
   private router: Router;
   private route: ActivatedRoute;
+  private toastService: ToastService;
 
   constructor(
     authService: AuthService,
     router: Router,
     sessionService: SessionService,
     route: ActivatedRoute,
+    toastService: ToastService,
   ) {
     this.authService = authService;
     this.router = router;
     this.sessionService = sessionService;
     this.route = route;
+    this.toastService = toastService;
   }
 
   get username(): FormControl {
@@ -66,18 +70,21 @@ export class LoginComponent implements OnInit {
         .login(this.username.value, this.password.value)
         .subscribe({
           next: (response) => {
-            //@todo add toast
             this.sessionService.setTokens(response.access_token);
             this.router.navigate(['/dashboard']);
           },
           error: () => {
-            //@todo add toast
+            this.toastService.alert({
+              description: 'Error',
+              icon: 'error',
+              title:
+                'An error occurred while creating the user. Please try again.',
+              color: 'white',
+            });
             console.error('Invalid credentials');
             this.loginForm.enable();
           },
         });
-    } else {
-      //@todo add toast
     }
   }
 }
