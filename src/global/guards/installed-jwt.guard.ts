@@ -34,6 +34,12 @@ export class InstalledJwtGuard extends AuthGuard('jwt') {
       return true;
     }
 
+
+    if(isInstalled && isInstallation){
+        return false;
+    }
+
+
     // Check if the result is an Observable
     const result = super.canActivate(context);
 

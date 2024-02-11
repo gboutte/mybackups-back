@@ -22,4 +22,25 @@ export class UsersService extends AbstractService {
         }),
       );
   }
+
+  create(username: string, password: string): Observable<any> {
+    return this.httpClient.post<any>(
+      this.getUrl() + '/users',
+      {
+        username: username,
+        password: password,
+      },
+      this.httpOptions,
+    );
+  }
+
+  update(id:number, password: string): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.getUrl() + '/users/' + id,
+      {
+        password: password,
+      },
+      this.httpOptions,
+    );
+  }
 }

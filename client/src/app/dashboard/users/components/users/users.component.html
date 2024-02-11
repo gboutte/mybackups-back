@@ -3,6 +3,9 @@
 </ng-template>
 <ng-template #loaded>
   <h1>{{'dashboard.users.title'|translate}}</h1>
+  <div style="margin: 10px 0;">
+    <gl-button (click)="add()">{{'dashboard.users.actions.add'|translate}}</gl-button>
+  </div>
   <gl-table>
     <thead>
     <tr>
@@ -16,7 +19,7 @@
       <td>{{user.username}}</td>
       <td>{{user.date_created|date: 'dd/mm/YYYY'}}</td>
       <td class="actions">
-        <gl-button [round]="true">
+        <gl-button [round]="true" (click)="edit(user)">
           <span class="material-symbols-outlined">settings</span>
         </gl-button>
       </td>

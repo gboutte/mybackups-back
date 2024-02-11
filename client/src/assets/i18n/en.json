@@ -1,7 +1,26 @@
 {
 	"dashboard": {
 		"users": {
+			"modal": {
+				"add": {
+					"form": {
+						"username": "Username",
+						"password": "Password",
+						"submit": "Add"
+					},
+					"title": "Add user"
+				},
+				"edit": {
+					"form": {
+						"submit": "Save"
+					},
+					"title": "Edit {{username}}"
+				}
+			},
 			"title": "Users",
+			"actions": {
+				"add": "Add user"
+			},
 			"table": {
 				"username": "Username",
 				"date_created": "Date created"

@@ -7,8 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "i18n:extract":
-      "npm run i18n:extract:en && npm run i18n:extract:fr",
+    "i18n:extract": "npm run i18n:extract:en && npm run i18n:extract:fr",
     "i18n:extract:en": "ngx-translate-extract --input ./src --output ./src/assets/i18n/en.json --clean --format namespaced-json  --key-as-default-value",
     "i18n:extract:fr": "ngx-translate-extract --input ./src --output ./src/assets/i18n/fr.json --clean --format namespaced-json  --key-as-default-value"
   },
@@ -22,7 +21,7 @@
     "@angular/platform-browser": "^16.1.0",
     "@angular/platform-browser-dynamic": "^16.1.0",
     "@angular/router": "^16.1.0",
-    "@gboutte/glassui": "^0.1.0",
+    "@gboutte/glassui": "^0.1.3",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "jwt-decode": "^4.0.0",
