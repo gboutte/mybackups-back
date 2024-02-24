@@ -1,0 +1,9 @@
+<ng-template [ngIfElse]="loaded" [ngIf]="backupConfig === undefined">
+  <gl-loader/>
+</ng-template>
+<ng-template #loaded>
+  <gl-button routerLink="/dashboard/backups"><i class="ph ph-arrow-fat-line-left"></i> {{'dashboard.backups-settings.back'|translate }}</gl-button>
+  <h1>{{'dashboard.backups-settings.title'|translate: {name:backupConfig.name} }}</h1>
+  <gl-button (click)="addSource()"><i class="ph ph-plus"></i> {{'dashboard.backups-settings.add-source'|translate }}</gl-button>
+  <gl-button (click)="addDestination()"><i class="ph ph-plus"></i> {{'dashboard.backups-settings.add-destination'|translate }}</gl-button>
+</ng-template>

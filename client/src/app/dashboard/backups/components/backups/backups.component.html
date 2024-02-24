@@ -1,1 +1,28 @@
-<p>backups works!</p>
+
+<h1>{{'dashboard.backups.title'|translate}}</h1>
+
+<div style="margin: 10px 0;">
+  <gl-button (click)="add()"><i class="ph ph-plus"></i> {{'dashboard.backups.actions.add'|translate}}</gl-button>
+</div>
+
+<div>
+  <gl-card *ngFor="let config of backupConfigs">
+    <div>
+      {{config.name}}
+    </div>
+    <div>
+      {{'dashboard.backups.config.sources'| translate: {sourcesCount: config.sources.length} }}
+    </div>
+    <div>
+      {{'dashboard.backups.config.destinsations'| translate: {sourcesCount: config.sources.length} }}
+    </div>
+
+    <gl-button [round]="true" (click)="edit(config)">
+
+      <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
+    </gl-button>
+    <gl-button [round]="true" [routerLink]="'/dashboard/backups/'+config.id+'/settings'">
+      <i class="ph-thin ph-gear-six" style="font-size:20px"></i>
+    </gl-button>
+  </gl-card>
+</div>

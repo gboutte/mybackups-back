@@ -1,0 +1,24 @@
+<form [formGroup]="sourceForm">
+
+  <gl-select formControlName="type" label="Type" [options]="selectTypeOptions"/>
+
+</form>
+<ng-template [ngIf]="type.value !== null">
+  {{selectedType.config.description}}
+
+  <ng-template ngFor let-parameter [ngForOf]="selectedType.source.parameters">
+    <div>
+      <ng-template [ngIf]="parameter.type === 'string'">
+        <gl-input [label]="parameter.name" />
+      </ng-template>
+      <ng-template [ngIf]="parameter.type === 'number'">
+        <gl-input [label]="parameter.name" />
+      </ng-template>
+      <ng-template [ngIf]="parameter.type === 'boolean'">
+        <gl-checkbox [label]="parameter.name" />
+      </ng-template>
+      {{parameter.description}}
+    </div>
+  </ng-template>
+
+</ng-template>

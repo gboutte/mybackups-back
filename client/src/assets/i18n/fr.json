@@ -1,5 +1,51 @@
 {
 	"dashboard": {
+		"backups": {
+			"title": "dashboard.backups.title",
+			"actions": {
+				"add": "Ajouter une configuration"
+			},
+			"config": {
+				"sources": "{{sourcesCount}} source(s)",
+				"destinsations": "{{sourcesCount}} destinsation(s)"
+			},
+			"modal": {
+				"add": {
+					"form": {
+						"name": "Nom",
+						"frequency": "Frequence",
+						"enabled": "Activé",
+						"to_keep": "Nombre de backups à conserver",
+						"submit": "dashboard.backups.modal.add.form.submit"
+					},
+					"title": "Créer une configuration"
+				},
+				"edit": {
+					"form": {
+						"submit": "dashboard.backups.modal.edit.form.submit"
+					},
+					"title": "dashboard.backups.modal.edit.title"
+				}
+			}
+		},
+		"backups-settings": {
+			"back": "Retour",
+			"title": "Configuration de \"{{name}}\"",
+			"add-source": "Ajouter une source",
+			"add-destination": "Ajouter une destination",
+			"modal": {
+				"source": {
+					"add": {
+						"title": "dashboard.backups-settings.modal.source.add.title"
+					}
+				},
+				"destination": {
+					"add": {
+						"title": "dashboard.backups-settings.modal.destination.add.title"
+					}
+				}
+			}
+		},
 		"users": {
 			"modal": {
 				"add": {

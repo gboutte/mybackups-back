@@ -30,7 +30,10 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/@gboutte/glassui/styles/theme.scss"
+              "node_modules/@gboutte/glassui/styles/theme.scss",
+              "node_modules/@phosphor-icons/web/src/thin/style.css",
+              "node_modules/@phosphor-icons/web/src/light/style.css",
+              "node_modules/@phosphor-icons/web/src/regular/style.css"
             ],
             "scripts": []
           },

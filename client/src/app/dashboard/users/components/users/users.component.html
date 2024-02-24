@@ -4,7 +4,7 @@
 <ng-template #loaded>
   <h1>{{'dashboard.users.title'|translate}}</h1>
   <div style="margin: 10px 0;">
-    <gl-button (click)="add()">{{'dashboard.users.actions.add'|translate}}</gl-button>
+    <gl-button (click)="add()"><i class="ph ph-plus"></i> {{'dashboard.users.actions.add'|translate}}</gl-button>
   </div>
   <gl-table>
     <thead>
@@ -20,7 +20,7 @@
       <td>{{user.date_created|date: 'dd/mm/YYYY'}}</td>
       <td class="actions">
         <gl-button [round]="true" (click)="edit(user)">
-          <span class="material-symbols-outlined">settings</span>
+          <i class="ph-thin ph-gear-six" style="font-size:20px"></i>
         </gl-button>
       </td>
     </tr>

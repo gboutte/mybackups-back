@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BackupConfig } from './entities/backup-config.entity';
@@ -11,12 +11,18 @@ import { instanceOfBackupDestination } from './backups-types/interfaces/backup-d
 import { CreateBackupConfigSourceDto } from './dto/create-backup-config-source.dto';
 import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-destination.dto';
 import { BackupSourceResultInterface } from './backups-types/interfaces/backup-source-result.interface';
+import {BackupConfigSource} from "./entities/backup-config-source.entity";
+import {BackupConfigDestination} from "./entities/backup-config-destination.entity";
 
 @Injectable()
 export class BackupsService {
   constructor(
     @InjectRepository(BackupConfig)
     private backupConfigRepository: Repository<BackupConfig>,
+    @InjectRepository(BackupConfigSource)
+    private backupConfigSourceRepository: Repository<BackupConfigSource>,
+    @InjectRepository(BackupConfigDestination)
+    private backupConfigDestinationRepository: Repository<BackupConfigDestination>,
   ) {}
 
   createConfig(createBackupConfigDto: CreateBackupConfigDto) {
@@ -26,8 +32,16 @@ export class BackupsService {
     return this.backupConfigRepository.save(backupConfig);
   }
 
-  updateConfig(id: string, updateConfigDto: UpdateBackupConfigDto) {
-    return this.backupConfigRepository.update(id, updateConfigDto);
+  async updateConfig(id: string, updateConfigDto: UpdateBackupConfigDto) {
+    const config = await this.backupConfigRepository.preload({
+      id: id,
+      ...updateConfigDto,
+    });
+
+    if (!config) {
+      throw new NotFoundException();
+    }
+    return this.backupConfigRepository.save(config);
   }
 
   findAllConfig(): Promise<BackupConfig[]> {

@@ -1,0 +1,17 @@
+<ng-template [ngIf]="backupTypes !== undefined">
+  <div class="form-container">
+
+    <form (ngSubmit)="save()" [formGroup]="configForm">
+
+      <gl-input formControlName="name" [label]="'dashboard.backups.modal.add.form.name'|translate"/>
+      <gl-input formControlName="frequency" [label]="'dashboard.backups.modal.add.form.frequency'|translate"/>
+      <gl-checkbox  formControlName="enabled" [label]="'dashboard.backups.modal.add.form.enabled'|translate"/>
+      <gl-input formControlName="to_keep" [label]="'dashboard.backups.modal.add.form.to_keep'|translate"/>
+
+      <div class="submit">
+        <gl-button *ngIf="modalConfig.data?.config === undefined">{{'dashboard.backups.modal.add.form.submit'|translate}}</gl-button>
+        <gl-button *ngIf="modalConfig.data?.config !== undefined">{{'dashboard.backups.modal.edit.form.submit'|translate}}</gl-button>
+      </div>
+    </form>
+  </div>
+</ng-template>
