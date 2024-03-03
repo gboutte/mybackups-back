@@ -1,8 +1,7 @@
-import {serializable} from "serializr";
-import {BackupParameterTypeEnum} from "../../../../../../../src/backups/backups-types/enums/backup-parameter-type.enum";
+import { serializable } from 'serializr';
+import { BackupParameterTypeEnum } from '../../../../../../../src/backups/backups-types/enums/backup-parameter-type.enum';
 
-
-export class BackupTypeParameter{
+export class BackupTypeParameter {
   @serializable
   name: string = '';
   @serializable

@@ -1,6 +1,6 @@
-import {list, object, serializable} from 'serializr';
-import {BackupSaveDestination} from "./backup-save-destination.model";
-import {date} from "../../../../global/date-serializable";
+import { list, object, serializable } from 'serializr';
+import { BackupSaveDestination } from './backup-save-destination.model';
+import { date } from '../../../../global/date-serializable';
 
 export class BackupSave {
   @serializable

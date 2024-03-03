@@ -5,7 +5,7 @@ import { SessionService } from '../../../auth/session.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '@gboutte/glassui';
 import { ConfigService } from '../../../config/config.service';
-import {TranslateService} from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'mb-install',
@@ -24,7 +24,7 @@ export class InstallComponent {
   private route: ActivatedRoute;
   private toastService: ToastService;
   private configService: ConfigService;
-  private translate: TranslateService
+  private translate: TranslateService;
 
   constructor(
     authService: AuthService,
@@ -60,18 +60,22 @@ export class InstallComponent {
         .subscribe({
           next: () => {
             this.toastService.alert({
-              description: this.translate.instant('installation.toast.success.description'),
+              description: this.translate.instant(
+                'installation.toast.success.description',
+              ),
               icon: 'success',
               title: this.translate.instant('installation.toast.success.title'),
               color: 'white',
             });
-            this.configService.refreshConfigStore().subscribe(()=>{
+            this.configService.refreshConfigStore().subscribe(() => {
               this.router.navigate(['/login']);
             });
           },
           error: () => {
             this.toastService.alert({
-              description: this.translate.instant('installation.toast.error.description'),
+              description: this.translate.instant(
+                'installation.toast.error.description',
+              ),
               icon: 'error',
               title: this.translate.instant('installation.toast.error.title'),
               color: 'white',

@@ -1,7 +1,6 @@
-import {serializable} from "serializr";
+import { serializable } from 'serializr';
 
-
-export class BackupTypeConfig{
+export class BackupTypeConfig {
   @serializable
   name: string = '';
   @serializable

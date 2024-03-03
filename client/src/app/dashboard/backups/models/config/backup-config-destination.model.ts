@@ -1,6 +1,6 @@
-import {object, serializable} from 'serializr';
-import {date} from "../../../../global/date-serializable";
-import {anyType} from "../../../../global/any-type-serializable";
+import { object, serializable } from 'serializr';
+import { date } from '../../../../global/date-serializable';
+import { anyType } from '../../../../global/any-type-serializable';
 
 export class BackupConfigDestination {
   @serializable

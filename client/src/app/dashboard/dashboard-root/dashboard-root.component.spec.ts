@@ -8,7 +8,7 @@ describe('DashboardRootComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DashboardRootComponent]
+      declarations: [DashboardRootComponent],
     });
     fixture = TestBed.createComponent(DashboardRootComponent);
     component = fixture.componentInstance;

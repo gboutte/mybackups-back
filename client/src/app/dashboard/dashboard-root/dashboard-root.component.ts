@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {SessionService} from '../../auth/session.service';
-import {Router} from '@angular/router';
-import {MenuModel} from '@gboutte/glassui/lib/navigation/sidebar/menu.model';
-import {TranslateService} from "@ngx-translate/core";
+import { Component, OnInit } from '@angular/core';
+import { SessionService } from '../../auth/session.service';
+import { Router } from '@angular/router';
+import { MenuModel } from '@gboutte/glassui/lib/navigation/sidebar/menu.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'mb-dashboard-root',
@@ -16,7 +16,11 @@ export class DashboardRootComponent implements OnInit {
   private router: Router;
   private translate: TranslateService;
 
-  constructor(sessionService: SessionService, router: Router,translate: TranslateService) {
+  constructor(
+    sessionService: SessionService,
+    router: Router,
+    translate: TranslateService,
+  ) {
     this.sessionService = sessionService;
     this.router = router;
     this.translate = translate;

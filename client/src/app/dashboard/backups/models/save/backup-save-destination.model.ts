@@ -1,5 +1,5 @@
-import {object, serializable} from 'serializr';
-import {date} from "../../../../global/date-serializable";
+import { object, serializable } from 'serializr';
+import { date } from '../../../../global/date-serializable';
 
 export class BackupSaveDestination {
   @serializable

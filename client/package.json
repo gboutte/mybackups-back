@@ -7,6 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "format": "prettier --write \"**/*.{js,ts,d.ts}\"",
+    "format:check": "prettier --check \"**/*.{js,ts,d.ts}\"",
     "i18n:extract": "npm run i18n:extract:en && npm run i18n:extract:fr",
     "i18n:extract:en": "ngx-translate-extract --input ./src --output ./src/assets/i18n/en.json --clean --format namespaced-json  --key-as-default-value",
     "i18n:extract:fr": "ngx-translate-extract --input ./src --output ./src/assets/i18n/fr.json --clean --format namespaced-json  --key-as-default-value"
@@ -43,6 +45,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-organize-imports": "^3.2.4",
     "typescript": "~5.1.3"
   }
 }

@@ -34,7 +34,7 @@ export class UsersService extends AbstractService {
     );
   }
 
-  update(id:string, password: string): Observable<any> {
+  update(id: string, password: string): Observable<any> {
     return this.httpClient.patch<any>(
       this.getUrl() + '/users/' + id,
       {

@@ -12,20 +12,20 @@ import {
   ToastModule,
 } from '@gboutte/glassui';
 import { ReactiveFormsModule } from '@angular/forms';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [InstallComponent],
-    imports: [
-        CommonModule,
-        InstallationRoutingModule,
-        ButtonsModule,
-        ContentModule,
-        InputsModule,
-        ReactiveFormsModule,
-        ToastModule,
-        TranslateModule,
-    ],
+  imports: [
+    CommonModule,
+    InstallationRoutingModule,
+    ButtonsModule,
+    ContentModule,
+    InputsModule,
+    ReactiveFormsModule,
+    ToastModule,
+    TranslateModule,
+  ],
 })
 export class InstallationModule implements OnDestroy {
   private installSubscription!: Subscription;

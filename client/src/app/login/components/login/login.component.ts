@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from '../../../auth/session.service';
-import {ToastService} from "@gboutte/glassui";
-import {TranslateService} from "@ngx-translate/core";
+import { ToastService } from '@gboutte/glassui';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'mb-login',
@@ -79,7 +79,9 @@ export class LoginComponent implements OnInit {
           },
           error: () => {
             this.toastService.alert({
-              description: this.translate.instant('login.toast.error.description'),
+              description: this.translate.instant(
+                'login.toast.error.description',
+              ),
               icon: 'error',
               title: this.translate.instant('login.toast.error.title'),
               color: 'white',
