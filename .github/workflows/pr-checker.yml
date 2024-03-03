@@ -26,11 +26,13 @@ jobs:
           npm install
 
       - name: Code Format Client
+        if: always()
         id: codeFormatClient
         run: |
           cd client && npm run format:check
 
       - name: Code Format Nestjs
+        if: always()
         id: codeFormatNest
         run: |
           npm run format:check
