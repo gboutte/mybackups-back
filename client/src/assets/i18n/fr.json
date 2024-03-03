@@ -1,13 +1,13 @@
 {
 	"dashboard": {
 		"backups": {
-			"title": "dashboard.backups.title",
+			"title": "Configurations de backups",
 			"actions": {
 				"add": "Ajouter une configuration"
 			},
 			"config": {
 				"sources": "{{sourcesCount}} source(s)",
-				"destinsations": "{{sourcesCount}} destinsation(s)"
+				"destinsations": "{{sourcesCount}} destination(s)"
 			},
 			"modal": {
 				"add": {
@@ -16,15 +16,15 @@
 						"frequency": "Frequence",
 						"enabled": "Activé",
 						"to_keep": "Nombre de backups à conserver",
-						"submit": "dashboard.backups.modal.add.form.submit"
+						"submit": "Créer"
 					},
 					"title": "Créer une configuration"
 				},
 				"edit": {
 					"form": {
-						"submit": "dashboard.backups.modal.edit.form.submit"
+						"submit": "Sauegarder"
 					},
-					"title": "dashboard.backups.modal.edit.title"
+					"title": "Modifier la configuration"
 				}
 			}
 		},
@@ -36,12 +36,13 @@
 			"modal": {
 				"source": {
 					"add": {
-						"title": "dashboard.backups-settings.modal.source.add.title"
+						"submit": "Ajouter",
+						"title": "Ajouter une source"
 					}
 				},
 				"destination": {
 					"add": {
-						"title": "dashboard.backups-settings.modal.destination.add.title"
+						"title": "Ajouter une destination"
 					}
 				}
 			}
@@ -94,7 +95,8 @@
 		"title": "Connexion",
 		"form": {
 			"username": "Nom d'utilisateur",
-			"password": "Mot de passe"
+			"password": "Mot de passe",
+			"submit": "login.form.submit"
 		},
 		"toast": {
 			"error": {

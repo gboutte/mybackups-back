@@ -1,24 +1,35 @@
-<form [formGroup]="sourceForm">
+<form [formGroup]="sourceForm" (submit)="submit()">
 
   <gl-select formControlName="type" label="Type" [options]="selectTypeOptions"/>
 
-</form>
 <ng-template [ngIf]="type.value !== null">
+  <hr>
   {{selectedType.config.description}}
+  <hr>
 
   <ng-template ngFor let-parameter [ngForOf]="selectedType.source.parameters">
     <div>
       <ng-template [ngIf]="parameter.type === 'string'">
-        <gl-input [label]="parameter.name" />
+        <gl-input [label]="parameter.name" [formControl]="getParameterControl(parameter.name)" [showErrors]="true"/>
       </ng-template>
       <ng-template [ngIf]="parameter.type === 'number'">
-        <gl-input [label]="parameter.name" />
+        <gl-input [label]="parameter.name" [formControl]="getParameterControl(parameter.name)" />
       </ng-template>
       <ng-template [ngIf]="parameter.type === 'boolean'">
-        <gl-checkbox [label]="parameter.name" />
+        <gl-checkbox [label]="parameter.name" [formControl]="getParameterControl(parameter.name)" />
       </ng-template>
       {{parameter.description}}
     </div>
   </ng-template>
 
+  <gl-button>
+    <ng-template [ngIf]="validating">
+      {{"dashboard.backups-settings.modal.source.add.validating"|translate}}
+    </ng-template>
+    <ng-template [ngIf]="!validating">
+    {{"dashboard.backups-settings.modal.source.add.submit"|translate}}
+    </ng-template>
+  </gl-button>
 </ng-template>
+
+</form>
