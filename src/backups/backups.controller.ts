@@ -13,6 +13,8 @@ import { BackupConfig } from './entities/backup-config.entity';
 import { CreateBackupConfigDto } from './dto/create-backup-config.dto';
 import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
 import types from './backups-types/types';
+import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-destination.dto';
+import { CreateBackupConfigSourceDto } from './dto/create-backup-config-source.dto';
 
 @Controller('backups')
 @ApiTags('backups')
@@ -55,14 +57,40 @@ export class BackupsController {
     return this.backupsService.createConfig(createBackupConfigDto);
   }
 
-  @Post('config/validate')
+  @Post('config/validate/source')
   @ApiBearerAuth()
-  validate(@Body() createBackupConfigDto: CreateBackupConfigDto) {
+  validateSource(
+    @Body() createBackupConfigSource: CreateBackupConfigSourceDto,
+  ) {
     // if (validation === true) {
     //   this.backupsService.runBackup(createBackupConfigDto);
     // }
 
-    return this.backupsService.validate(createBackupConfigDto);
+    const errors = this.backupsService.validateSourceConfig(
+      createBackupConfigSource,
+    );
+    return {
+      valid: errors.length === 0,
+      errors: errors,
+    };
+  }
+
+  @Post('config/validate/destination')
+  @ApiBearerAuth()
+  validateDestination(
+    @Body() createBackupConfigDestination: CreateBackupConfigDestinationDto,
+  ) {
+    // if (validation === true) {
+    //   this.backupsService.runBackup(createBackupConfigDto);
+    // }
+
+    const errors = this.backupsService.validateDestinationConfig(
+      createBackupConfigDestination,
+    );
+    return {
+      valid: errors.length === 0,
+      errors: errors,
+    };
   }
 
   @Patch('config/:id')

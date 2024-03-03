@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
+import { BackupConfigSource } from '../../../models/config/backup-config-source.model';
 import { BackupConfig } from '../../../models/config/backup-config.model';
 import { BackupsService } from '../../../services/backups.service';
 import { DestinationFormComponent } from './destination-form/destination-form.component';
@@ -35,26 +36,52 @@ export class BackupsConfigSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addSource();
     if (this.route.snapshot.params['id'] !== undefined) {
-      this.backupsService
-        .getBackupConfig(this.route.snapshot.params['id'])
-        .subscribe((config: BackupConfig) => {
-          this.backupConfig = config;
-        });
+      this.refreshConfig();
     } else {
       this.router.navigate(['dashboard', 'backups']);
     }
   }
 
+  refreshConfig() {
+    this.backupsService
+      .getBackupConfig(this.route.snapshot.params['id'])
+      .subscribe((config: BackupConfig) => {
+        this.backupConfig = config;
+      });
+  }
+
   addSource() {
     this.modalService
       .open(SourceFormComponent, {
+        data: { backupConfig: this.backupConfig },
         title: this.translate.instant(
           'dashboard.backups-settings.modal.source.add.title',
         ),
       })
-      .subscribe({});
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            this.refreshConfig();
+          }
+        },
+      });
+  }
+  editSource(source: BackupConfigSource) {
+    this.modalService
+      .open(SourceFormComponent, {
+        data: { backupConfig: this.backupConfig, source },
+        title: this.translate.instant(
+          'dashboard.backups-settings.modal.source.edit.title',
+        ),
+      })
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            this.refreshConfig();
+          }
+        },
+      });
   }
   addDestination() {
     this.modalService

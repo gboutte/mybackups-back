@@ -7,7 +7,7 @@
 			},
 			"config": {
 				"sources": "{{sourcesCount}} source(s)",
-				"destinsations": "{{sourcesCount}} destinsation(s)"
+				"destinations": "{{sourcesCount}} destinsation(s)"
 			},
 			"modal": {
 				"add": {
@@ -33,11 +33,30 @@
 			"title": "Settings of \"{{name}}\"",
 			"add-source": "Add source",
 			"add-destination": "Add destination",
+			"sources": "Sources",
+			"destination": "Destination",
 			"modal": {
 				"source": {
+					"submit": {
+						"validating": "Validating...",
+						"edit": "Save",
+						"add": "Add"
+					},
 					"add": {
-						"submit": "Add",
 						"title": "Add source"
+					},
+					"edit": {
+						"title": "Edit source"
+					},
+					"form": {
+						"error": {
+							"description": "A field is invalid. Please check the form and try again.",
+							"title": "Error"
+						},
+						"success": {
+							"description": "Configuration saved successfully.",
+							"title": "Success"
+						}
 					}
 				},
 				"destination": {

@@ -4,6 +4,25 @@
 <ng-template #loaded>
   <gl-button routerLink="/dashboard/backups"><i class="ph ph-arrow-fat-line-left"></i> {{'dashboard.backups-settings.back'|translate }}</gl-button>
   <h1>{{'dashboard.backups-settings.title'|translate: {name:backupConfig.name} }}</h1>
-  <gl-button (click)="addSource()"><i class="ph ph-plus"></i> {{'dashboard.backups-settings.add-source'|translate }}</gl-button>
-  <gl-button (click)="addDestination()"><i class="ph ph-plus"></i> {{'dashboard.backups-settings.add-destination'|translate }}</gl-button>
+  <div>
+    <gl-button (click)="addSource()"><i class="ph ph-plus"></i> {{'dashboard.backups-settings.add-source'|translate }}</gl-button>
+    <gl-button (click)="addDestination()"><i class="ph ph-plus"></i> {{'dashboard.backups-settings.add-destination'|translate }}</gl-button>
+  </div>
+  <div>
+    <gl-card>
+      <h2>{{'dashboard.backups-settings.sources'|translate}}</h2>
+      <gl-card *ngFor="let source of backupConfig.sources">
+        {{source.type}}
+        <gl-button [round]="true" (click)="editSource(source)">
+          <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
+        </gl-button>
+      </gl-card>
+    </gl-card>
+    <gl-card>
+      <h2>{{'dashboard.backups-settings.destination'|translate}}</h2>
+      <gl-card *ngFor="let destination of backupConfig.destinations">
+        {{destination.type}}
+      </gl-card>
+    </gl-card>
+  </div>
 </ng-template>

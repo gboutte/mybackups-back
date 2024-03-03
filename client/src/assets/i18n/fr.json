@@ -7,7 +7,7 @@
 			},
 			"config": {
 				"sources": "{{sourcesCount}} source(s)",
-				"destinsations": "{{sourcesCount}} destination(s)"
+				"destinations": "{{sourcesCount}} destination(s)"
 			},
 			"modal": {
 				"add": {
@@ -33,11 +33,30 @@
 			"title": "Configuration de \"{{name}}\"",
 			"add-source": "Ajouter une source",
 			"add-destination": "Ajouter une destination",
+			"sources": "Sources",
+			"destination": "Destinations",
 			"modal": {
 				"source": {
+					"submit": {
+						"validating": "Valitation...",
+						"edit": "Sauegarder",
+						"add": "Créer"
+					},
 					"add": {
-						"submit": "Ajouter",
 						"title": "Ajouter une source"
+					},
+					"edit": {
+						"title": "Modifier la source"
+					},
+					"form": {
+						"error": {
+							"description": "Un des champs est invalide. Veuillez vérifier les informations saisies.",
+							"title": "Erreur"
+						},
+						"success": {
+							"description": "La configuration a été sauvegardée.",
+							"title": "Sauvegarde réussie"
+						}
 					}
 				},
 				"destination": {

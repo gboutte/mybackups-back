@@ -10,13 +10,13 @@
   <ng-template ngFor let-parameter [ngForOf]="selectedType.source.parameters">
     <div>
       <ng-template [ngIf]="parameter.type === 'string'">
-        <gl-input [label]="parameter.name" [formControl]="getParameterControl(parameter.name)" [showErrors]="true"/>
+        <gl-input [label]="parameter.name" [formControl]="getParameterControl(parameter.code)" [showErrors]="true"/>
       </ng-template>
       <ng-template [ngIf]="parameter.type === 'number'">
-        <gl-input [label]="parameter.name" [formControl]="getParameterControl(parameter.name)" />
+        <gl-input [label]="parameter.name" [formControl]="getParameterControl(parameter.code)"  [showErrors]="true"/>
       </ng-template>
       <ng-template [ngIf]="parameter.type === 'boolean'">
-        <gl-checkbox [label]="parameter.name" [formControl]="getParameterControl(parameter.name)" />
+        <gl-checkbox [label]="parameter.name" [formControl]="getParameterControl(parameter.code)"  [showErrors]="true"/>
       </ng-template>
       {{parameter.description}}
     </div>
@@ -24,10 +24,15 @@
 
   <gl-button>
     <ng-template [ngIf]="validating">
-      {{"dashboard.backups-settings.modal.source.add.validating"|translate}}
+      {{"dashboard.backups-settings.modal.source.submit.validating"|translate}}
     </ng-template>
     <ng-template [ngIf]="!validating">
-    {{"dashboard.backups-settings.modal.source.add.submit"|translate}}
+      <ng-template [ngIf]="this.modalConfig.data.source" [ngIfElse]="addlibelle">
+        {{"dashboard.backups-settings.modal.source.submit.edit"|translate}}
+      </ng-template>
+      <ng-template #addlibelle >
+        {{"dashboard.backups-settings.modal.source.submit.add"|translate}}
+      </ng-template>
     </ng-template>
   </gl-button>
 </ng-template>

@@ -66,7 +66,8 @@ export class LocalType
   getDestinationParameters(): BackupParameterInterface[] {
     return [
       {
-        name: 'path',
+        code: 'path',
+        name: 'Relative Path',
         description: 'The path to folder to save the backup',
         type: BackupParameterTypeEnum.STRING,
         required: true,
@@ -124,7 +125,8 @@ export class LocalType
   getSourceParameters(): BackupParameterInterface[] {
     return [
       {
-        name: 'path',
+        code: 'path',
+        name: 'Relative Path',
         description: 'The path to backup',
         type: BackupParameterTypeEnum.STRING,
         required: true,
@@ -132,8 +134,7 @@ export class LocalType
     ];
   }
 
-  private createAbsolutePath(relativePath: string): string {
-    const rootPath = 'C:\\Users\\Gregory\\Documents\\backups test';
-    return path.join(rootPath, relativePath);
+  private createAbsolutePath(paramPath: string): string {
+    return path.resolve(paramPath);
   }
 }

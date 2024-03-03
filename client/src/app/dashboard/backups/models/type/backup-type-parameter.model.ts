@@ -3,6 +3,8 @@ import { BackupParameterTypeEnum } from '../../../../../../../src/backups/backup
 
 export class BackupTypeParameter {
   @serializable
+  code: string = '';
+  @serializable
   name: string = '';
   @serializable
   description: string = '';

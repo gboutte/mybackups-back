@@ -17,6 +17,7 @@ import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-des
 import { BackupSourceResultInterface } from './backups-types/interfaces/backup-source-result.interface';
 import { BackupConfigSource } from './entities/backup-config-source.entity';
 import { BackupConfigDestination } from './entities/backup-config-destination.entity';
+import { BackupParameterErrorInterface } from './backups-types/interfaces/backup-parameter-error.interface';
 
 @Injectable()
 export class BackupsService {
@@ -100,18 +101,22 @@ export class BackupsService {
     return true;
   }
 
-  validateSourceConfig(source: CreateBackupConfigSourceDto) {
-    const errors = [];
+  validateSourceConfig(
+    source: CreateBackupConfigSourceDto,
+  ): BackupParameterErrorInterface[] {
+    const errors: BackupParameterErrorInterface[] = [];
     const backupType = this.getBackupType(source.type);
     if (instanceOfBackupSource(backupType)) {
-      // Verifier que tous les parametres requis sont presents
+      // We verify that all the required parameters are present
       const sourceParameters = backupType.getSourceParameters();
 
       for (const parameter of sourceParameters) {
-        if (parameter.required && !source.parameters[parameter.name]) {
-          errors.push(
-            `Parameter ${parameter.name} is required for source type ${source.type}`,
-          );
+        if (parameter.required && !source.parameters[parameter.code]) {
+          const parameterError: BackupParameterErrorInterface = {
+            parameter: parameter.code,
+            message: `This parameter: "${parameter.name}" is required.`,
+          };
+          errors.push(parameterError);
         }
       }
       if (errors.length === 0) {
@@ -125,18 +130,22 @@ export class BackupsService {
     return errors;
   }
 
-  validateDestinationConfig(destination: CreateBackupConfigDestinationDto) {
-    const errors = [];
+  validateDestinationConfig(
+    destination: CreateBackupConfigDestinationDto,
+  ): BackupParameterErrorInterface[] {
+    const errors: BackupParameterErrorInterface[] = [];
     const backupType = this.getBackupType(destination.type);
     if (instanceOfBackupDestination(backupType)) {
-      // Verifier que tous les parametres requis sont presents
+      // We verify that all the required parameters are present
       const destinationParameters = backupType.getDestinationParameters();
 
       for (const parameter of destinationParameters) {
-        if (parameter.required && !destination.parameters[parameter.name]) {
-          errors.push(
-            `Parameter ${parameter.name} is required for destination type ${destination.type}`,
-          );
+        if (parameter.required && !destination.parameters[parameter.code]) {
+          const parameterError: BackupParameterErrorInterface = {
+            parameter: parameter.code,
+            message: `This parameter: "${parameter.name}" is required.`,
+          };
+          errors.push(parameterError);
         }
       }
       if (errors.length === 0) {

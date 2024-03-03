@@ -14,11 +14,10 @@
       {{'dashboard.backups.config.sources'| translate: {sourcesCount: config.sources.length} }}
     </div>
     <div>
-      {{'dashboard.backups.config.destinsations'| translate: {sourcesCount: config.sources.length} }}
+      {{'dashboard.backups.config.destinations'| translate: {sourcesCount: config.destinations.length} }}
     </div>
 
     <gl-button [round]="true" (click)="edit(config)">
-
       <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
     </gl-button>
     <gl-button [round]="true" [routerLink]="'/dashboard/backups/'+config.id+'/settings'">

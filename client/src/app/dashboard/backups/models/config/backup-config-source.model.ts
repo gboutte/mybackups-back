@@ -4,11 +4,11 @@ import { date } from '../../../../global/date-serializable';
 
 export class BackupConfigSource {
   @serializable
-  id: string = '';
+  id!: string;
   @serializable
   type: string = '';
   @serializable(anyType)
   parameters: any = '';
   @serializable(date)
-  date_created: Date = new Date();
+  date_created!: Date;
 }
