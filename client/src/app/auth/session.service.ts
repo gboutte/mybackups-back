@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { jwtDecode } from 'jwt-decode';
+import * as moment from 'moment';
+import { User } from '../dashboard/users/models/user.model';
 import { AuthService } from './auth.service';
 import { SessionStore } from './session.store';
-import * as moment from 'moment';
-import { jwtDecode } from 'jwt-decode';
-import { User } from '../dashboard/users/models/user.model';
 
 interface JWTPayload {
   //Id utilisateur

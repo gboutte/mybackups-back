@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { AbstractService } from '../global/abstract.service';
-import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
 import { deserialize } from 'serializr';
 import { User } from '../dashboard/users/models/user.model';
+import { AbstractService } from '../global/abstract.service';
 
 @Injectable()
 export class AuthService extends AbstractService {

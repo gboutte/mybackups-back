@@ -1,11 +1,11 @@
-import { NgModule, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardRoutingModule } from './dashboard-routing.module';
+import { NgModule, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { ContentModule, NavigationModule } from '@gboutte/glassui';
 import { Subscription } from 'rxjs';
 import { ConfigStore } from '../config/config.store';
-import { Router } from '@angular/router';
 import { DashboardRootComponent } from './dashboard-root/dashboard-root.component';
-import { ContentModule, NavigationModule } from '@gboutte/glassui';
+import { DashboardRoutingModule } from './dashboard-routing.module';
 
 @NgModule({
   declarations: [DashboardRootComponent],

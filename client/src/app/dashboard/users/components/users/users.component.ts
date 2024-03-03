@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersService } from '../../services/users.service';
-import { User } from '../../models/user.model';
 import { ModalService } from '@gboutte/glassui';
-import { UserFormComponent } from '../user-form/user-form.component';
 import { TranslateService } from '@ngx-translate/core';
+import { User } from '../../models/user.model';
+import { UsersService } from '../../services/users.service';
+import { UserFormComponent } from '../user-form/user-form.component';
 
 @Component({
   selector: 'mb-users',

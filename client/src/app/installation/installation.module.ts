@@ -1,9 +1,6 @@
-import { NgModule, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InstallComponent } from './components/install/install.component';
-import { InstallationRoutingModule } from './installation-routing.module';
-import { Subscription } from 'rxjs';
-import { ConfigStore } from '../config/config.store';
+import { NgModule, OnDestroy } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   ButtonsModule,
@@ -11,8 +8,11 @@ import {
   InputsModule,
   ToastModule,
 } from '@gboutte/glassui';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { ConfigStore } from '../config/config.store';
+import { InstallComponent } from './components/install/install.component';
+import { InstallationRoutingModule } from './installation-routing.module';
 
 @NgModule({
   declarations: [InstallComponent],

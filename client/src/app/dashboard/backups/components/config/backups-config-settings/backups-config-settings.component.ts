@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { BackupsService } from '../../../services/backups.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
 import { BackupConfig } from '../../../models/config/backup-config.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SourceFormComponent } from './source-form/source-form.component';
+import { BackupsService } from '../../../services/backups.service';
 import { DestinationFormComponent } from './destination-form/destination-form.component';
+import { SourceFormComponent } from './source-form/source-form.component';
 
 @Component({
   selector: 'mb-backups-config-settings',

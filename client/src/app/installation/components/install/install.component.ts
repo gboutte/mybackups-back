@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../../auth/auth.service';
-import { SessionService } from '../../../auth/session.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '@gboutte/glassui';
-import { ConfigService } from '../../../config/config.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../../auth/auth.service';
+import { SessionService } from '../../../auth/session.service';
+import { ConfigService } from '../../../config/config.service';
 
 @Component({
   selector: 'mb-install',

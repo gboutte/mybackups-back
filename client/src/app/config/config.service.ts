@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { AbstractService } from '../global/abstract.service';
-import { BehaviorSubject, Observable, take } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, take } from 'rxjs';
+import { AbstractService } from '../global/abstract.service';
 import { ConfigStore } from './config.store';
 
 @Injectable()

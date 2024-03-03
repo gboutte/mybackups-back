@@ -1,8 +1,8 @@
 import { list, object, serializable } from 'serializr';
-import { BackupConfigSource } from './backup-config-source.model';
-import { BackupConfigDestination } from './backup-config-destination.model';
 import { date } from '../../../../global/date-serializable';
 import { BackupSave } from '../save/backup-save.model';
+import { BackupConfigDestination } from './backup-config-destination.model';
+import { BackupConfigSource } from './backup-config-source.model';
 
 export class BackupConfig {
   @serializable

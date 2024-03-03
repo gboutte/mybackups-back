@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionService } from '../../auth/session.service';
 import { Router } from '@angular/router';
 import { MenuModel } from '@gboutte/glassui/lib/navigation/sidebar/menu.model';
 import { TranslateService } from '@ngx-translate/core';
+import { SessionService } from '../../auth/session.service';
 
 @Component({
   selector: 'mb-dashboard-root',

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { BackupsService } from '../../services/backups.service';
-import { ModalConfig, ModalRef, ModalService } from '@gboutte/glassui';
+import { ModalService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
-import { BackupConfigFormComponent } from '../config/backup-config-form/backup-config-form.component';
 import { BackupConfig } from '../../models/config/backup-config.model';
+import { BackupsService } from '../../services/backups.service';
+import { BackupConfigFormComponent } from '../config/backup-config-form/backup-config-form.component';
 
 @Component({
   selector: 'mb-backups',

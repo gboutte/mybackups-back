@@ -4,17 +4,17 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import {
+  Observable,
   concatMap,
   delay,
   finalize,
-  Observable,
   of,
   retryWhen,
   tap,
   throwError,
 } from 'rxjs';
-import { Injectable } from '@angular/core';
 
 @Injectable()
 export class RetryInterceptor implements HttpInterceptor {

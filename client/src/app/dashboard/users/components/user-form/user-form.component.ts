@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../../../auth/auth.service';
 import { ModalConfig, ModalRef, ToastService } from '@gboutte/glassui';
 import { UsersService } from '../../services/users.service';
 

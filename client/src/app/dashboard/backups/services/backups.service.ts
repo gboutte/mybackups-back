@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { AbstractService } from '../../../global/abstract.service';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { deserialize, serialize } from 'serializr';
-import { BackupType } from '../models/type/backup-type.model';
+import { AbstractService } from '../../../global/abstract.service';
 import { BackupConfig } from '../models/config/backup-config.model';
+import { BackupType } from '../models/type/backup-type.model';
 
 @Injectable()
 export class BackupsService extends AbstractService {

@@ -4,10 +4,10 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
-import { SessionService } from '../session.service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, catchError, throwError } from 'rxjs';
+import { SessionService } from '../session.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { BackupsService } from '../../../services/backups.service';
-import { BackupType } from '../../../models/type/backup-type.model';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ModalConfig, ModalRef } from '@gboutte/glassui';
 import { SelectOptionInterface } from '@gboutte/glassui/lib/forms/selects/select-option.interface';
 import { BackupConfig } from '../../../models/config/backup-config.model';
-import { ModalConfig, ModalRef } from '@gboutte/glassui';
-import { debounceTime } from 'rxjs';
+import { BackupType } from '../../../models/type/backup-type.model';
+import { BackupsService } from '../../../services/backups.service';
 
 @Component({
   selector: 'mb-backup-config-form',
