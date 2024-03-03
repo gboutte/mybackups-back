@@ -28,7 +28,7 @@ jobs:
       - name: Code Format Client
         id: codeFormatClient
         run: |
-          npm run format:check
+          cd client && npm run format:check
 
       - name: Code Format Nestjs
         id: codeFormatNest
