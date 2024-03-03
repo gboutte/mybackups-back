@@ -1,0 +1,12 @@
+<div class="form-container">
+
+    <form (ngSubmit)="save()" [formGroup]="userForm">
+
+      <gl-input formControlName="username" [label]="'dashboard.users.modal.add.form.username'|translate"/>
+      <gl-input formControlName="password" [label]="'dashboard.users.modal.add.form.password'|translate" type="password"/>
+      <div class="submit">
+        <gl-button *ngIf="modalConfig.data?.user === undefined">{{'dashboard.users.modal.add.form.submit'|translate}}</gl-button>
+        <gl-button *ngIf="modalConfig.data?.user !== undefined">{{'dashboard.users.modal.edit.form.submit'|translate}}</gl-button>
+      </div>
+    </form>
+</div>

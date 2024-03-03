@@ -1,0 +1,28 @@
+<ng-template [ngIfElse]="loaded" [ngIf]="users === undefined">
+  <gl-loader/>
+</ng-template>
+<ng-template #loaded>
+  <h1>{{'dashboard.users.title'|translate}}</h1>
+  <div style="margin: 10px 0;">
+    <gl-button (click)="add()"><i class="ph ph-plus"></i> {{'dashboard.users.actions.add'|translate}}</gl-button>
+  </div>
+  <gl-table>
+    <thead>
+    <tr>
+      <th>{{'dashboard.users.table.username'|translate}}</th>
+      <th>{{'dashboard.users.table.date_created'|translate}}</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{user.username}}</td>
+      <td>{{user.date_created|date: 'dd/mm/YYYY'}}</td>
+      <td class="actions">
+        <gl-button [round]="true" (click)="edit(user)">
+          <i class="ph-thin ph-gear-six" style="font-size:20px"></i>
+        </gl-button>
+      </td>
+    </tr>
+  </gl-table>
+</ng-template>

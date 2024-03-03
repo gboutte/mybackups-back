@@ -1,0 +1,59 @@
+name: Pr Checker
+
+on:
+  pull_request:
+    types: [edited, synchronize, opened, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  pr-open-check:
+    permissions:
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+
+      - name: Install packages
+        run: |
+          npm install
+
+      - name: Code Format Client
+        if: always()
+        id: codeFormatClient
+        run: |
+          cd client && npm run format:check
+
+      - name: Code Format Nestjs
+        if: always()
+        id: codeFormatNest
+        run: |
+          npm run format:check
+
+      - name: Add Code Format Fail Comment Client Only
+        if: always() && steps.codeFormatClient.outcome == 'failure' && steps.codeFormatNest.outcome != 'failure'
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |
+            Thanks for your contribution ! But your does not seem to fit our code format standards for the client side. Please go into the `client` folder run the `npm run format` command and commit the changes.
+
+      - name: Add Code Format Fail Comment Nest Only
+        if: always() && steps.codeFormatClient.outcome != 'failure' && steps.codeFormatNest.outcome == 'failure'
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |
+            Thanks for your contribution ! But your PR does not seem to fit our code format standards for the NestJs side. Please run the `npm run format` command and commit the changes.
+
+      - name: Add Code Format Fail Comment Both
+        if: always() && steps.codeFormatClient.outcome == 'failure' && steps.codeFormatNest.outcome == 'failure'
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |
+            Thanks for your contribution ! But your PR does not seem to fit our code format standards for both: the client side and nestjs. Please run the `npm run format` command in the root folder and in the client folder, and commit the changes.

@@ -1,0 +1,134 @@
+{
+	"dashboard": {
+		"backups": {
+			"title": "Backups configurations",
+			"actions": {
+				"add": "Create a backup config"
+			},
+			"config": {
+				"sources": "{{sourcesCount}} source(s)",
+				"destinations": "{{sourcesCount}} destinsation(s)"
+			},
+			"modal": {
+				"add": {
+					"form": {
+						"name": "Name",
+						"frequency": "Frequency",
+						"enabled": "Enabled",
+						"to_keep": "Number of backups to keep",
+						"submit": "Add"
+					},
+					"title": "Create a backup config"
+				},
+				"edit": {
+					"form": {
+						"submit": "Save"
+					},
+					"title": "Edit backup config"
+				}
+			}
+		},
+		"backups-settings": {
+			"back": "Back",
+			"title": "Settings of \"{{name}}\"",
+			"add-source": "Add source",
+			"add-destination": "Add destination",
+			"sources": "Sources",
+			"destination": "Destination",
+			"modal": {
+				"source": {
+					"submit": {
+						"validating": "Validating...",
+						"edit": "Save",
+						"add": "Add"
+					},
+					"add": {
+						"title": "Add source"
+					},
+					"edit": {
+						"title": "Edit source"
+					},
+					"form": {
+						"error": {
+							"description": "A field is invalid. Please check the form and try again.",
+							"title": "Error"
+						},
+						"success": {
+							"description": "Configuration saved successfully.",
+							"title": "Success"
+						}
+					}
+				},
+				"destination": {
+					"add": {
+						"title": "Add destination"
+					}
+				}
+			}
+		},
+		"users": {
+			"modal": {
+				"add": {
+					"form": {
+						"username": "Username",
+						"password": "Password",
+						"submit": "Add"
+					},
+					"title": "Add user"
+				},
+				"edit": {
+					"form": {
+						"submit": "Save"
+					},
+					"title": "Edit {{username}}"
+				}
+			},
+			"title": "Users",
+			"actions": {
+				"add": "Add user"
+			},
+			"table": {
+				"username": "Username",
+				"date_created": "Date created"
+			}
+		}
+	},
+	"installation": {
+		"title": "Installation",
+		"form": {
+			"username": "Username",
+			"password": "Password"
+		},
+		"toast": {
+			"success": {
+				"description": "User created successfully",
+				"title": "Installation successful"
+			},
+			"error": {
+				"description": "An error occurred while creating the user. Please try again.",
+				"title": "Installation failed"
+			}
+		}
+	},
+	"login": {
+		"title": "Login",
+		"form": {
+			"username": "Username",
+			"password": "Password",
+			"submit": "login.form.submit"
+		},
+		"toast": {
+			"error": {
+				"description": "Password or username is incorrect. Please try again.",
+				"title": "Login failed"
+			}
+		}
+	},
+	"menu": {
+		"links": {
+			"home": "Home",
+			"users": "Users",
+			"backups": "Backups"
+		}
+	}
+}

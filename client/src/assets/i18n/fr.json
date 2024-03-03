@@ -1,0 +1,134 @@
+{
+	"dashboard": {
+		"backups": {
+			"title": "Configurations de backups",
+			"actions": {
+				"add": "Ajouter une configuration"
+			},
+			"config": {
+				"sources": "{{sourcesCount}} source(s)",
+				"destinations": "{{sourcesCount}} destination(s)"
+			},
+			"modal": {
+				"add": {
+					"form": {
+						"name": "Nom",
+						"frequency": "Frequence",
+						"enabled": "Activé",
+						"to_keep": "Nombre de backups à conserver",
+						"submit": "Créer"
+					},
+					"title": "Créer une configuration"
+				},
+				"edit": {
+					"form": {
+						"submit": "Sauegarder"
+					},
+					"title": "Modifier la configuration"
+				}
+			}
+		},
+		"backups-settings": {
+			"back": "Retour",
+			"title": "Configuration de \"{{name}}\"",
+			"add-source": "Ajouter une source",
+			"add-destination": "Ajouter une destination",
+			"sources": "Sources",
+			"destination": "Destinations",
+			"modal": {
+				"source": {
+					"submit": {
+						"validating": "Valitation...",
+						"edit": "Sauegarder",
+						"add": "Créer"
+					},
+					"add": {
+						"title": "Ajouter une source"
+					},
+					"edit": {
+						"title": "Modifier la source"
+					},
+					"form": {
+						"error": {
+							"description": "Un des champs est invalide. Veuillez vérifier les informations saisies.",
+							"title": "Erreur"
+						},
+						"success": {
+							"description": "La configuration a été sauvegardée.",
+							"title": "Sauvegarde réussie"
+						}
+					}
+				},
+				"destination": {
+					"add": {
+						"title": "Ajouter une destination"
+					}
+				}
+			}
+		},
+		"users": {
+			"modal": {
+				"add": {
+					"form": {
+						"username": "Nom d'utilisateur",
+						"password": "Mot de passe",
+						"submit": "Créer"
+					},
+					"title": "Ajouter un utilisateur"
+				},
+				"edit": {
+					"form": {
+						"submit": "Sauvegarder"
+					},
+					"title": "Modifier {{username}}"
+				}
+			},
+			"title": "Utilisateurs",
+			"actions": {
+				"add": "Ajouter un utilisateur"
+			},
+			"table": {
+				"username": "Nom d'utilisateur",
+				"date_created": "Date de création"
+			}
+		}
+	},
+	"installation": {
+		"title": "Installation",
+		"form": {
+			"username": "Nom d'utilisateur",
+			"password": "Mot de passe"
+		},
+		"toast": {
+			"success": {
+				"description": "Vous pouvez maintenant vous connecter.",
+				"title": "Installation réussie"
+			},
+			"error": {
+				"description": "Une erreur est survenue lors de l'installation. Veuillez réessayer.",
+				"title": "Erreur"
+			}
+		}
+	},
+	"login": {
+		"title": "Connexion",
+		"form": {
+			"username": "Nom d'utilisateur",
+			"password": "Mot de passe",
+			"submit": "login.form.submit"
+		},
+		"toast": {
+			"error": {
+				"description": "Nom d'utilisateur ou mot de passe incorrect. Veuillez réessayer.",
+				"title": "Erreur"
+			}
+		}
+	},
+	"menu": {
+		"links": {
+			"home": "Accueil",
+			"users": "Utilisateurs",
+			"backups": "Backups"
+		}
+	}
+}

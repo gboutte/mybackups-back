@@ -1,0 +1,17 @@
+<ng-template [ngIfElse]="loaded" [ngIf]="loading">
+  <gl-loader/>
+</ng-template>
+<ng-template #loaded>
+  <gl-navbar key="navbar-mybackups">
+    <div class="logo">
+      <img src="/assets/logos/logo_orange.svg"/>
+    </div>
+  </gl-navbar>
+  <gl-sidebar [menu]="menu" key="navbar-mybackups"></gl-sidebar>
+  <gl-page key="navbar-mybackups">
+    <gl-card class="page-content">
+      <router-outlet></router-outlet>
+    </gl-card>
+  </gl-page>
+</ng-template>
+

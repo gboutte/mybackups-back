@@ -1,0 +1,14 @@
+<div class="login-container">
+
+  <gl-card class="login-block">
+    <h1>{{'login.title'|translate}}</h1>
+    <form (ngSubmit)="login()" [formGroup]="loginForm">
+
+      <gl-input formControlName="username"  [label]="'login.form.username'|translate"/>
+      <gl-input formControlName="password"  [label]="'login.form.password'|translate" type="password"/>
+      <div class="submit">
+        <gl-button>{{"login.form.submit"|translate}}</gl-button>
+      </div>
+    </form>
+  </gl-card>
+</div>

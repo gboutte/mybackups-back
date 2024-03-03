@@ -1,0 +1,19 @@
+:host {
+  ::ng-deep {
+    .navbar-content {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .logo {
+    height: 100%;
+    display: inline-block;
+
+    img {
+      aspect-ratio: 1 / 1;
+      height: 100%;
+    }
+  }
+
+}

@@ -1,0 +1,40 @@
+<form [formGroup]="sourceForm" (submit)="submit()">
+
+  <gl-select formControlName="type" label="Type" [options]="selectTypeOptions"/>
+
+<ng-template [ngIf]="type.value !== null">
+  <hr>
+  {{selectedType.config.description}}
+  <hr>
+
+  <ng-template ngFor let-parameter [ngForOf]="selectedType.source.parameters">
+    <div>
+      <ng-template [ngIf]="parameter.type === 'string'">
+        <gl-input [label]="parameter.name" [formControl]="getParameterControl(parameter.code)" [showErrors]="true"/>
+      </ng-template>
+      <ng-template [ngIf]="parameter.type === 'number'">
+        <gl-input [label]="parameter.name" [formControl]="getParameterControl(parameter.code)"  [showErrors]="true"/>
+      </ng-template>
+      <ng-template [ngIf]="parameter.type === 'boolean'">
+        <gl-checkbox [label]="parameter.name" [formControl]="getParameterControl(parameter.code)"  [showErrors]="true"/>
+      </ng-template>
+      {{parameter.description}}
+    </div>
+  </ng-template>
+
+  <gl-button>
+    <ng-template [ngIf]="validating">
+      {{"dashboard.backups-settings.modal.source.submit.validating"|translate}}
+    </ng-template>
+    <ng-template [ngIf]="!validating">
+      <ng-template [ngIf]="this.modalConfig.data.source" [ngIfElse]="addlibelle">
+        {{"dashboard.backups-settings.modal.source.submit.edit"|translate}}
+      </ng-template>
+      <ng-template #addlibelle >
+        {{"dashboard.backups-settings.modal.source.submit.add"|translate}}
+      </ng-template>
+    </ng-template>
+  </gl-button>
+</ng-template>
+
+</form>
