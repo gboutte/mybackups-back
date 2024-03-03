@@ -1,4 +1,8 @@
-import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BackupConfig } from './entities/backup-config.entity';
@@ -11,8 +15,8 @@ import { instanceOfBackupDestination } from './backups-types/interfaces/backup-d
 import { CreateBackupConfigSourceDto } from './dto/create-backup-config-source.dto';
 import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-destination.dto';
 import { BackupSourceResultInterface } from './backups-types/interfaces/backup-source-result.interface';
-import {BackupConfigSource} from "./entities/backup-config-source.entity";
-import {BackupConfigDestination} from "./entities/backup-config-destination.entity";
+import { BackupConfigSource } from './entities/backup-config-source.entity';
+import { BackupConfigDestination } from './entities/backup-config-destination.entity';
 
 @Injectable()
 export class BackupsService {

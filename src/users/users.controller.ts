@@ -2,7 +2,9 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
-  Get, HttpException, HttpStatus,
+  Get,
+  HttpException,
+  HttpStatus,
   NotFoundException,
   Param,
   Patch,
@@ -74,19 +76,17 @@ export class UsersController {
   @Post()
   @ApiBearerAuth()
   async create(
-      @Body()
-          createUserDto: CreateUserDto,
+    @Body()
+    createUserDto: CreateUserDto,
   ) {
-
     //Check if the user exists
 
-    const user = await this.usersService.findOneByUsername(createUserDto.username);
+    const user = await this.usersService.findOneByUsername(
+      createUserDto.username,
+    );
     console.log(user);
     if (user) {
-      throw new HttpException(
-          "USERNAME_ALREADY_EXISTS",
-          HttpStatus.CONFLICT,
-      );
+      throw new HttpException('USERNAME_ALREADY_EXISTS', HttpStatus.CONFLICT);
     }
     return this.usersService.create(createUserDto);
   }
