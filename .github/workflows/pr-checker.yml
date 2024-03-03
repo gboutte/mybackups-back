@@ -40,18 +40,18 @@ jobs:
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: |
-            Thanks for your contribution ! But, PR does not seem to fit our code format standards for the client side. Please go into the `client` folder run the 'npm run format' command and commit the changes.
+            Thanks for your contribution ! But your does not seem to fit our code format standards for the client side. Please go into the `client` folder run the `npm run format` command and commit the changes.
 
       - name: Add Code Format Fail Comment Nest Only
         if: always() && steps.codeFormatClient.outcome != 'failure' && steps.codeFormatNest.outcome == 'failure'
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: |
-            Thanks for your contribution ! But, PR does not seem to fit our code format standards for the NestJs side. Please run the 'npm run format' command and commit the changes.
+            Thanks for your contribution ! But your PR does not seem to fit our code format standards for the NestJs side. Please run the `npm run format` command and commit the changes.
 
       - name: Add Code Format Fail Comment Both
         if: always() && steps.codeFormatClient.outcome == 'failure' && steps.codeFormatNest.outcome == 'failure'
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: |
-            Thanks for your contribution ! But, PR does not seem to fit our code format standards for both: the client side and nestjs. Please run the 'npm run format' command in the root folder and in the client folder, and commit the changes.
+            Thanks for your contribution ! But your PR does not seem to fit our code format standards for both: the client side and nestjs. Please run the `npm run format` command in the root folder and in the client folder, and commit the changes.
