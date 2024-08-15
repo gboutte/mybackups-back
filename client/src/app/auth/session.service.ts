@@ -44,6 +44,10 @@ export class SessionService {
     return result;
   }
 
+  isExpired() {
+    return moment().isAfter(this.access_expires_at);
+  }
+
   get access_token(): string {
     return localStorage.getItem('access_token') ?? '';
   }
@@ -78,7 +82,7 @@ export class SessionService {
   }
 
   isLoggedIn() {
-    return this.access_token.length > 0 && this.access_expires_at !== null;
+    return this.access_token.length > 0 && this.access_expires_at !== null && !this.isExpired();
   }
 
   isSessionValid() {
