@@ -53,21 +53,21 @@
 						}
 					}
 				},
-				"destination": {
-					"add": {
-						"title": "Add destination"
-					},
-          "edit": {
-            "title": "Edit destination"
-          }
-				},
 				"source": {
 					"add": {
 						"title": "Add source"
 					},
-          "edit": {
-            "title": "Edit source"
-          }
+					"edit": {
+						"title": "Edit source"
+					}
+				},
+				"destination": {
+					"add": {
+						"title": "Add destination"
+					},
+					"edit": {
+						"title": "Edit destination"
+					}
 				}
 			}
 		},

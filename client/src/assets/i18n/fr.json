@@ -53,22 +53,22 @@
 						}
 					}
 				},
+				"source": {
+					"add": {
+						"title": "Ajouter une source"
+					},
+					"edit": {
+						"title": "Modifier la source"
+					}
+				},
 				"destination": {
 					"add": {
 						"title": "Ajouter une destination"
 					},
-          "edit": {
-            "title": "Modifier la destination"
-          }
-				},
-				"source": {
-          "add": {
-            "title": "Ajouter une source"
-          },
-          "edit": {
-            "title": "Modifier la source"
-          }
-        }
+					"edit": {
+						"title": "Modifier la destination"
+					}
+				}
 			}
 		},
 		"users": {
