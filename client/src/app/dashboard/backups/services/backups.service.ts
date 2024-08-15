@@ -8,6 +8,7 @@ import { BackupConfigSource } from '../models/config/backup-config-source.model'
 import { BackupConfig } from '../models/config/backup-config.model';
 import { BackupType } from '../models/type/backup-type.model';
 import { BackupConfigTypeValidation } from '../models/validation/backup-config-type-validation.model';
+import {BackupConfigDestination} from "../models/config/backup-config-destination.model";
 
 @Injectable()
 export class BackupsService extends AbstractService {
@@ -101,26 +102,8 @@ export class BackupsService extends AbstractService {
       );
   }
 
-  validateConfig(config: BackupConfig): Observable<any> {
-    let data = serialize(config);
-
-    //remove null properties
-    Object.keys(data).forEach((key) => data[key] == null && delete data[key]);
-
-    return this.httpClient
-      .post<any>(
-        this.getUrl() + '/backups/config/validate',
-        data,
-        this.httpOptions,
-      )
-      .pipe(
-        map((res: any) => {
-          return serialize(BackupConfigTypeValidation, res);
-        }),
-      );
-  }
-  validateConfigSource(
-    config: BackupConfigSource,
+  validateConfigEndpoint(
+    config: BackupConfigSource|BackupConfigDestination,
   ): Observable<BackupConfigTypeValidation> {
     let data = serialize(config);
 
@@ -129,7 +112,7 @@ export class BackupsService extends AbstractService {
 
     return this.httpClient
       .post<any>(
-        this.getUrl() + '/backups/config/validate/source',
+        this.getUrl() + '/backups/config/validate/'+(config instanceof BackupConfigSource ? 'source' : 'destination'),
         data,
         this.httpOptions,
       )

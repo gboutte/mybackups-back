@@ -1,4 +1,4 @@
-<form [formGroup]="sourceForm" (submit)="submit()">
+<form [formGroup]="endpointForm" (submit)="submit()">
 
   <gl-select formControlName="type" label="Type" [options]="selectTypeOptions"/>
 
@@ -24,14 +24,14 @@
 
   <gl-button>
     <ng-template [ngIf]="validating">
-      {{"dashboard.backups-settings.modal.source.submit.validating"|translate}}
+      {{"dashboard.backups-settings.modal.endpoint.submit.validating"|translate}}
     </ng-template>
     <ng-template [ngIf]="!validating">
       <ng-template [ngIf]="this.modalConfig.data.source" [ngIfElse]="addlibelle">
-        {{"dashboard.backups-settings.modal.source.submit.edit"|translate}}
+        {{"dashboard.backups-settings.modal.endpoint.submit.edit"|translate}}
       </ng-template>
       <ng-template #addlibelle >
-        {{"dashboard.backups-settings.modal.source.submit.add"|translate}}
+        {{"dashboard.backups-settings.modal.endpoint.submit.add"|translate}}
       </ng-template>
     </ng-template>
   </gl-button>

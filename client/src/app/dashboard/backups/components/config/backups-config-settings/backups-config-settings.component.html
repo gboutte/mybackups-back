@@ -22,6 +22,10 @@
       <h2>{{'dashboard.backups-settings.destination'|translate}}</h2>
       <gl-card *ngFor="let destination of backupConfig.destinations">
         {{destination.type}}
+
+        <gl-button [round]="true" (click)="editDestination(destination)">
+          <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
+        </gl-button>
       </gl-card>
     </gl-card>
   </div>

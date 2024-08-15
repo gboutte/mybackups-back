@@ -36,17 +36,11 @@
 			"sources": "Sources",
 			"destination": "Destinations",
 			"modal": {
-				"source": {
+				"endpoint": {
 					"submit": {
 						"validating": "Valitation...",
 						"edit": "Sauvegarder",
 						"add": "Créer"
-					},
-					"add": {
-						"title": "Ajouter une source"
-					},
-					"edit": {
-						"title": "Modifier la source"
 					},
 					"form": {
 						"error": {
@@ -62,8 +56,19 @@
 				"destination": {
 					"add": {
 						"title": "Ajouter une destination"
-					}
-				}
+					},
+          "edit": {
+            "title": "Modifier la destination"
+          }
+				},
+				"source": {
+          "add": {
+            "title": "Ajouter une source"
+          },
+          "edit": {
+            "title": "Modifier la source"
+          }
+        }
 			}
 		},
 		"users": {

@@ -13,8 +13,7 @@ import { BackupsRoutingModule } from './backups-routing.module';
 import { BackupsComponent } from './components/backups/backups.component';
 import { BackupConfigFormComponent } from './components/config/backup-config-form/backup-config-form.component';
 import { BackupsConfigSettingsComponent } from './components/config/backups-config-settings/backups-config-settings.component';
-import { DestinationFormComponent } from './components/config/backups-config-settings/destination-form/destination-form.component';
-import { SourceFormComponent } from './components/config/backups-config-settings/source-form/source-form.component';
+import { EndpointFormComponent } from './components/config/backups-config-settings/endpoint-form/endpoint-form.component';
 import { BackupsService } from './services/backups.service';
 
 @NgModule({
@@ -22,8 +21,7 @@ import { BackupsService } from './services/backups.service';
     BackupsComponent,
     BackupConfigFormComponent,
     BackupsConfigSettingsComponent,
-    SourceFormComponent,
-    DestinationFormComponent,
+    EndpointFormComponent,
   ],
   imports: [
     CommonModule,

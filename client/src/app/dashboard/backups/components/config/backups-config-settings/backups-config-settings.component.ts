@@ -5,8 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { BackupConfigSource } from '../../../models/config/backup-config-source.model';
 import { BackupConfig } from '../../../models/config/backup-config.model';
 import { BackupsService } from '../../../services/backups.service';
-import { DestinationFormComponent } from './destination-form/destination-form.component';
-import { SourceFormComponent } from './source-form/source-form.component';
+import { EndpointFormComponent } from './endpoint-form/endpoint-form.component';
+import {BackupConfigDestination} from "../../../models/config/backup-config-destination.model";
 
 @Component({
   selector: 'mb-backups-config-settings',
@@ -53,8 +53,11 @@ export class BackupsConfigSettingsComponent implements OnInit {
 
   addSource() {
     this.modalService
-      .open(SourceFormComponent, {
-        data: { backupConfig: this.backupConfig },
+      .open(EndpointFormComponent, {
+        data: {
+          backupConfig: this.backupConfig,
+          type: 'source',
+        },
         title: this.translate.instant(
           'dashboard.backups-settings.modal.source.add.title',
         ),
@@ -69,8 +72,12 @@ export class BackupsConfigSettingsComponent implements OnInit {
   }
   editSource(source: BackupConfigSource) {
     this.modalService
-      .open(SourceFormComponent, {
-        data: { backupConfig: this.backupConfig, source },
+      .open(EndpointFormComponent, {
+        data: {
+          backupConfig: this.backupConfig,
+          source,
+          type: 'source',
+        },
         title: this.translate.instant(
           'dashboard.backups-settings.modal.source.edit.title',
         ),
@@ -85,11 +92,41 @@ export class BackupsConfigSettingsComponent implements OnInit {
   }
   addDestination() {
     this.modalService
-      .open(DestinationFormComponent, {
+      .open(EndpointFormComponent, {
         title: this.translate.instant(
           'dashboard.backups-settings.modal.destination.add.title',
         ),
+        data: {
+          backupConfig: this.backupConfig,
+          type: 'destination',
+        },
       })
-      .subscribe({});
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            this.refreshConfig();
+          }
+        },
+      });
+  }
+  editDestination(destination: BackupConfigDestination) {
+    this.modalService
+      .open(EndpointFormComponent, {
+        title: this.translate.instant(
+          'dashboard.backups-settings.modal.destination.edit.title',
+        ),
+        data: {
+          backupConfig: this.backupConfig,
+          type: 'destination',
+          destination,
+        },
+      })
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            this.refreshConfig();
+          }
+        },
+      });
   }
 }

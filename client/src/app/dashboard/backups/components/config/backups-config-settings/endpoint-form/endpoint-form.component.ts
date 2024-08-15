@@ -9,13 +9,14 @@ import { BackupConfig } from '../../../../models/config/backup-config.model';
 import { BackupType } from '../../../../models/type/backup-type.model';
 import { BackupConfigTypeValidation } from '../../../../models/validation/backup-config-type-validation.model';
 import { BackupsService } from '../../../../services/backups.service';
+import {BackupConfigDestination} from "../../../../models/config/backup-config-destination.model";
 
 @Component({
-  selector: 'mb-source-form',
-  templateUrl: './source-form.component.html',
-  styleUrls: ['./source-form.component.scss'],
+  selector: 'mb-endpoint-form',
+  templateUrl: './endpoint-form.component.html',
+  styleUrls: ['./endpoint-form.component.scss'],
 })
-export class SourceFormComponent implements OnInit {
+export class EndpointFormComponent implements OnInit {
   backupsService: BackupsService;
   toastService: ToastService;
   translateService: TranslateService;
@@ -23,7 +24,9 @@ export class SourceFormComponent implements OnInit {
   types!: BackupType[];
   selectTypeOptions: SelectOptionInterface[] = [];
 
-  sourceForm: FormGroup = new FormGroup({
+  endpointType!: string;
+
+  endpointForm: FormGroup = new FormGroup({
     type: new FormControl(null, [Validators.required]),
     parameters: new FormGroup({}),
   });
@@ -52,7 +55,13 @@ export class SourceFormComponent implements OnInit {
    */
   refreshTypes() {
     this.backupsService.getTypes().subscribe((types) => {
-      this.types = types.filter((type) => type.source.isSource);
+      this.types = types.filter((type) => {
+        if(this.endpointType === 'source') {
+          return type.source.isSource;
+        }else{
+          return type.destination.isDestination;
+        }
+      });
       this.selectTypeOptions = this.types.map((type) => {
         return {
           value: type.config.code,
@@ -74,7 +83,7 @@ export class SourceFormComponent implements OnInit {
     });
 
     // We add the new parameters
-    const parameters = type.source.parameters;
+    const parameters = this.endpointType === 'source' ? type.source.parameters : type.destination.parameters;
     parameters.forEach((parameter) => {
       this.parameters.addControl(
         parameter.code,
@@ -84,6 +93,9 @@ export class SourceFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.endpointType = this.modalConfig.data.type;
+
     this.refreshTypes();
 
     this.loadBackupConfig();
@@ -107,7 +119,7 @@ export class SourceFormComponent implements OnInit {
   /**
    * Load the backup config from the backend
    * Allow us to refresh the data in case it was updated by another user
-   * We also load the source if we are editing one
+   * We also load the source or destination if we are editing one
    */
   loadBackupConfig() {
     const id = this.modalConfig.data.backupConfig.id;
@@ -120,7 +132,15 @@ export class SourceFormComponent implements OnInit {
             (source) => source.id === this.modalConfig.data.source.id,
           );
           if (source) {
-            this.sourceForm.patchValue(source);
+            this.endpointForm.patchValue(source);
+          }
+        }
+        if (this.modalConfig.data.destination) {
+          const destination = this.backupConfig.destinations.find(
+            (destination) => destination.id === this.modalConfig.data.destination.id,
+          );
+          if (destination) {
+            this.endpointForm.patchValue(destination);
           }
         }
       });
@@ -129,56 +149,74 @@ export class SourceFormComponent implements OnInit {
   /**
    * Convert the form control to a backup source
    */
-  formControlToBackupSource() {
-    const source = new BackupConfigSource();
-    source.type = this.type.value;
-    source.parameters = {};
+  formControlToBackupEndpoint() {
+
+    const endpoint = this.endpointType === 'source' ? new BackupConfigSource() : new BackupConfigDestination();
+
+    endpoint.type = this.type.value;
+    endpoint.parameters = {};
 
     Object.keys(this.parameters.controls).forEach((key) => {
       const parameter = this.parameters.controls[key];
-      source.parameters[key] = parameter.value;
+      endpoint.parameters[key] = parameter.value;
     });
-    return source;
+    return endpoint;
   }
 
   submit() {
-    if (!this.sourceForm.disabled) {
-      if (this.sourceForm.valid) {
-        const source = this.formControlToBackupSource();
+    if (!this.endpointForm.disabled) {
+      if (this.endpointForm.valid) {
+        const endpoint = this.formControlToBackupEndpoint();
 
-        this.sourceForm.disable();
+        this.endpointForm.disable();
 
         this.validating = true;
         // We call the backend to validate the parameters.
-        this.validate(source).subscribe((res: BackupConfigTypeValidation) => {
+        this.validate(endpoint).subscribe((res: BackupConfigTypeValidation) => {
           if (res.valid) {
             const backupConfig = this.backupConfig;
-            if (this.modalConfig.data.source) {
-              const index = backupConfig.sources.findIndex(
-                (source) => source.id === this.modalConfig.data.source.id,
-              );
-              backupConfig.sources[index] = source;
-            } else {
-              backupConfig.sources.push(source);
+
+            if(this.endpointType === 'source') {
+              // Handling the source
+              if (this.modalConfig.data.source) {
+                const index = backupConfig.sources.findIndex(
+                  (source) => source.id === this.modalConfig.data.source.id,
+                );
+                backupConfig.sources[index] = endpoint;
+              } else {
+                backupConfig.sources.push(endpoint);
+              }
+            }
+            if(this.endpointType === 'destination') {
+              // Handling the destination
+              if (this.modalConfig.data.destination) {
+                const index = backupConfig.destinations.findIndex(
+                  (destination) => destination.id === this.modalConfig.data.destination.id,
+                );
+                backupConfig.destinations[index] = endpoint;
+              } else {
+                backupConfig.destinations.push(endpoint);
+              }
             }
             this.updateBackupConfig(backupConfig);
           } else {
-            this.sourceForm.enable();
+            this.endpointForm.enable();
             this.validating = false;
             this.handleValidationResult(res);
           }
         });
       } else {
+
         this.toastService.alert({
           description: this.translateService.instant(
-            'dashboard.backups-settings.modal.source.form.error.description',
+            'dashboard.backups-settings.modal.endpoint.form.error.description',
           ),
           title: this.translateService.instant(
-            'dashboard.backups-settings.modal.source.form.error.title',
+            'dashboard.backups-settings.modal.endpoint.form.error.title',
           ),
           icon: 'error',
         });
-        this.sourceForm.updateAllValueAndValidity(this.sourceForm);
+        this.endpointForm.updateAllValueAndValidity(this.endpointForm);
       }
     }
   }
@@ -187,10 +225,10 @@ export class SourceFormComponent implements OnInit {
     this.backupsService.updateBackupConfig(backupConfig).subscribe(() => {
       this.toastService.alert({
         description: this.translateService.instant(
-          'dashboard.backups-settings.modal.source.form.success.description',
+          'dashboard.backups-settings.modal.endpoint.form.success.description',
         ),
         title: this.translateService.instant(
-          'dashboard.backups-settings.modal.source.form.success.title',
+          'dashboard.backups-settings.modal.endpoint.form.success.title',
         ),
         icon: 'success',
       });
@@ -198,8 +236,8 @@ export class SourceFormComponent implements OnInit {
     });
   }
 
-  validate(source: BackupConfigSource): Observable<BackupConfigTypeValidation> {
-    return this.backupsService.validateConfigSource(source);
+  validate(source: BackupConfigSource|BackupConfigDestination): Observable<BackupConfigTypeValidation> {
+    return this.backupsService.validateConfigEndpoint(source);
   }
 
   handleValidationResult(result: BackupConfigTypeValidation) {
@@ -211,11 +249,11 @@ export class SourceFormComponent implements OnInit {
   }
 
   get type(): FormControl {
-    return this.sourceForm.get('type') as FormControl;
+    return this.endpointForm.get('type') as FormControl;
   }
 
   get parameters(): FormGroup {
-    return this.sourceForm.get('parameters') as FormGroup;
+    return this.endpointForm.get('parameters') as FormGroup;
   }
 
   getParameterControl(key: string): FormControl {

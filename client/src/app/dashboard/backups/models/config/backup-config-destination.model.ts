@@ -4,7 +4,7 @@ import { date } from '../../../../global/date-serializable';
 
 export class BackupConfigDestination {
   @serializable
-  id: string = '';
+  id!: string;
   @serializable
   type: string = '';
   @serializable(anyType)

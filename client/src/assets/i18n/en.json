@@ -36,17 +36,11 @@
 			"sources": "Sources",
 			"destination": "Destination",
 			"modal": {
-				"source": {
+				"endpoint": {
 					"submit": {
 						"validating": "Validating...",
 						"edit": "Save",
 						"add": "Add"
-					},
-					"add": {
-						"title": "Add source"
-					},
-					"edit": {
-						"title": "Edit source"
 					},
 					"form": {
 						"error": {
@@ -62,7 +56,18 @@
 				"destination": {
 					"add": {
 						"title": "Add destination"
-					}
+					},
+          "edit": {
+            "title": "Edit destination"
+          }
+				},
+				"source": {
+					"add": {
+						"title": "Add source"
+					},
+          "edit": {
+            "title": "Edit source"
+          }
 				}
 			}
 		},
