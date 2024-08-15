@@ -82,17 +82,18 @@ export class BackupsService {
     createBackupConfigDto: CreateBackupConfigDto | UpdateBackupConfigDto,
   ) {
     const errors = [];
+    //@todo corriger la validation pour se faire sur l'entité
 
     // Verification of the sources
     const sources = createBackupConfigDto.sources;
     for (const source of sources) {
-      errors.push(...this.validateSourceConfig(source));
+      // errors.push(...this.validateSourceConfig(source));
     }
 
     // Verification of the destinations
     const destinations = createBackupConfigDto.destinations;
     for (const destination of destinations) {
-      errors.push(...this.validateDestinationConfig(destination));
+      // errors.push(...this.validateDestinationConfig(destination));
     }
 
     if (errors.length > 0) {

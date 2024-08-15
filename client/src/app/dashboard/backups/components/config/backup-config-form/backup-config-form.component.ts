@@ -49,8 +49,7 @@ export class BackupConfigFormComponent {
     if (this.configForm.valid) {
       if (this.modalConfig.data?.config) {
         this.backupsService
-          .patchBackupConfig(
-            this.modalConfig.data?.config.id,
+          .updateBackupConfig(
             this.getBackupConfig(),
           )
           .subscribe((config: BackupConfig) => {
@@ -69,12 +68,11 @@ export class BackupConfigFormComponent {
   }
 
   getBackupConfig() {
-    const backupConfig = new BackupConfig();
+    const backupConfig = this.modalConfig.data.config as BackupConfig || new BackupConfig()
     backupConfig.name = this.name.value;
     backupConfig.frequency = this.frequency.value;
     backupConfig.enabled = this.enabled.value;
     backupConfig.to_keep = this.to_keep.value;
-
     return backupConfig;
   }
 

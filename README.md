@@ -16,7 +16,7 @@ You can create backups config, for each config you can specify multiple sources 
 
 Then you can trigger the backup manually or you can specify a frequency to trigger the backup automatically.
 
-When a backup is triggerd:
+When a backup is triggered:
 
 1. First the sources will be executed. All those sources will put their backup files in a temporary directory.
 2. If the result of the sources is multiple files (inside the temporary directory), all these files will be compressed
@@ -56,9 +56,6 @@ ACCESS_TOKEN_EXPIRATION=1h
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
 $ npm run start:dev
 
 # production mode

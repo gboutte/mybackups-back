@@ -22,7 +22,7 @@
 				},
 				"edit": {
 					"form": {
-						"submit": "Sauegarder"
+						"submit": "Sauvegarder"
 					},
 					"title": "Modifier la configuration"
 				}
@@ -39,7 +39,7 @@
 				"source": {
 					"submit": {
 						"validating": "Valitation...",
-						"edit": "Sauegarder",
+						"edit": "Sauvegarder",
 						"add": "Créer"
 					},
 					"add": {

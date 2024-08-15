@@ -10,5 +10,5 @@ export class BackupConfigSource {
   @serializable(anyType)
   parameters: any = '';
   @serializable(date)
-  date_created!: Date;
+  date_created: Date| null = null;
 }

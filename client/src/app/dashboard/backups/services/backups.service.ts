@@ -75,6 +75,15 @@ export class BackupsService extends AbstractService {
     const id = config.id;
     config.id = null;
     config.date_created = null;
+
+    //remove date to source and destination
+    config.sources.forEach((source) => {
+      source.date_created = null;
+    });
+    config.destinations.forEach((destination) => {
+      destination.date_created = null;
+    });
+
     let data = serialize(config);
     //remove null properties
     data = cleanDataOfNull(data);
