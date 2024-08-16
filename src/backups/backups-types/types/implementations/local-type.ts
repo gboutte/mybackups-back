@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import * as path from 'path';
 import { BackupSourceResultInterface } from '../../interfaces/backup-source-result.interface';
 import { BackupDestinationResultInterface } from '../../interfaces/backup-destination-result.interface';
+import {Logger} from "@nestjs/common";
 
 export class LocalType
   extends AbstractType
@@ -67,8 +68,8 @@ export class LocalType
     return [
       {
         code: 'path',
-        name: 'Relative Path',
-        description: 'The path to folder to save the backup',
+        name: 'Relative Path',o
+        description: `The path to folder to save the backup, you can use an absolute path or a relative path to ${path.resolve()}`,
         type: BackupParameterTypeEnum.STRING,
         required: true,
       },
@@ -127,7 +128,7 @@ export class LocalType
       {
         code: 'path',
         name: 'Relative Path',
-        description: 'The path to backup',
+        description: `The path to backup, you can use an absolute path or a relative path to ${path.resolve()}`,
         type: BackupParameterTypeEnum.STRING,
         required: true,
       },

@@ -120,7 +120,7 @@
 		"form": {
 			"username": "Username",
 			"password": "Password",
-			"submit": "login.form.submit"
+			"submit": "Log"
 		},
 		"toast": {
 			"error": {
