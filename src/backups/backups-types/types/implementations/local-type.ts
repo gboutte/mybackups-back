@@ -68,7 +68,7 @@ export class LocalType
     return [
       {
         code: 'path',
-        name: 'Relative Path',o
+        name: 'Relative Path',
         description: `The path to folder to save the backup, you can use an absolute path or a relative path to ${path.resolve()}`,
         type: BackupParameterTypeEnum.STRING,
         required: true,
