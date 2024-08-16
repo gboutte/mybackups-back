@@ -10,7 +10,7 @@ import * as moment from 'moment';
 import * as path from 'path';
 import { BackupSourceResultInterface } from '../../interfaces/backup-source-result.interface';
 import { BackupDestinationResultInterface } from '../../interfaces/backup-destination-result.interface';
-import {Logger} from "@nestjs/common";
+import { Logger } from '@nestjs/common';
 
 export class LocalType
   extends AbstractType

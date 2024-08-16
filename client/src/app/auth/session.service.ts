@@ -82,7 +82,11 @@ export class SessionService {
   }
 
   isLoggedIn() {
-    return this.access_token.length > 0 && this.access_expires_at !== null && !this.isExpired();
+    return (
+      this.access_token.length > 0 &&
+      this.access_expires_at !== null &&
+      !this.isExpired()
+    );
   }
 
   isSessionValid() {
