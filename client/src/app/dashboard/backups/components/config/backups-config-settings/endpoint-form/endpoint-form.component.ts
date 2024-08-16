@@ -4,12 +4,12 @@ import { ModalConfig, ModalRef, ToastService } from '@gboutte/glassui';
 import { SelectOptionInterface } from '@gboutte/glassui/lib/forms/selects/select-option.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { BackupConfigDestination } from '../../../../models/config/backup-config-destination.model';
 import { BackupConfigSource } from '../../../../models/config/backup-config-source.model';
 import { BackupConfig } from '../../../../models/config/backup-config.model';
 import { BackupType } from '../../../../models/type/backup-type.model';
 import { BackupConfigTypeValidation } from '../../../../models/validation/backup-config-type-validation.model';
 import { BackupsService } from '../../../../services/backups.service';
-import {BackupConfigDestination} from "../../../../models/config/backup-config-destination.model";
 
 @Component({
   selector: 'mb-endpoint-form',
@@ -56,9 +56,9 @@ export class EndpointFormComponent implements OnInit {
   refreshTypes() {
     this.backupsService.getTypes().subscribe((types) => {
       this.types = types.filter((type) => {
-        if(this.endpointType === 'source') {
+        if (this.endpointType === 'source') {
           return type.source.isSource;
-        }else{
+        } else {
           return type.destination.isDestination;
         }
       });
@@ -83,7 +83,10 @@ export class EndpointFormComponent implements OnInit {
     });
 
     // We add the new parameters
-    const parameters = this.endpointType === 'source' ? type.source.parameters : type.destination.parameters;
+    const parameters =
+      this.endpointType === 'source'
+        ? type.source.parameters
+        : type.destination.parameters;
     parameters.forEach((parameter) => {
       this.parameters.addControl(
         parameter.code,
@@ -93,7 +96,6 @@ export class EndpointFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.endpointType = this.modalConfig.data.type;
 
     this.refreshTypes();
@@ -137,7 +139,8 @@ export class EndpointFormComponent implements OnInit {
         }
         if (this.modalConfig.data.destination) {
           const destination = this.backupConfig.destinations.find(
-            (destination) => destination.id === this.modalConfig.data.destination.id,
+            (destination) =>
+              destination.id === this.modalConfig.data.destination.id,
           );
           if (destination) {
             this.endpointForm.patchValue(destination);
@@ -150,8 +153,10 @@ export class EndpointFormComponent implements OnInit {
    * Convert the form control to a backup source
    */
   formControlToBackupEndpoint() {
-
-    const endpoint = this.endpointType === 'source' ? new BackupConfigSource() : new BackupConfigDestination();
+    const endpoint =
+      this.endpointType === 'source'
+        ? new BackupConfigSource()
+        : new BackupConfigDestination();
 
     endpoint.type = this.type.value;
     endpoint.parameters = {};
@@ -176,7 +181,7 @@ export class EndpointFormComponent implements OnInit {
           if (res.valid) {
             const backupConfig = this.backupConfig;
 
-            if(this.endpointType === 'source') {
+            if (this.endpointType === 'source') {
               // Handling the source
               if (this.modalConfig.data.source) {
                 const index = backupConfig.sources.findIndex(
@@ -187,11 +192,12 @@ export class EndpointFormComponent implements OnInit {
                 backupConfig.sources.push(endpoint);
               }
             }
-            if(this.endpointType === 'destination') {
+            if (this.endpointType === 'destination') {
               // Handling the destination
               if (this.modalConfig.data.destination) {
                 const index = backupConfig.destinations.findIndex(
-                  (destination) => destination.id === this.modalConfig.data.destination.id,
+                  (destination) =>
+                    destination.id === this.modalConfig.data.destination.id,
                 );
                 backupConfig.destinations[index] = endpoint;
               } else {
@@ -206,7 +212,6 @@ export class EndpointFormComponent implements OnInit {
           }
         });
       } else {
-
         this.toastService.alert({
           description: this.translateService.instant(
             'dashboard.backups-settings.modal.endpoint.form.error.description',
@@ -236,7 +241,9 @@ export class EndpointFormComponent implements OnInit {
     });
   }
 
-  validate(source: BackupConfigSource|BackupConfigDestination): Observable<BackupConfigTypeValidation> {
+  validate(
+    source: BackupConfigSource | BackupConfigDestination,
+  ): Observable<BackupConfigTypeValidation> {
     return this.backupsService.validateConfigEndpoint(source);
   }
 
