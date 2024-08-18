@@ -9,11 +9,14 @@ import { BackupConfigSource } from '../models/config/backup-config-source.model'
 import { BackupConfig } from '../models/config/backup-config.model';
 import { BackupType } from '../models/type/backup-type.model';
 import { BackupConfigTypeValidation } from '../models/validation/backup-config-type-validation.model';
+import { BackupsStore } from '../store/backups.store';
 
 @Injectable()
 export class BackupsService extends AbstractService {
-  constructor(httpClient: HttpClient) {
+  private backupsStore: BackupsStore;
+  constructor(httpClient: HttpClient, backupStore: BackupsStore) {
     super(httpClient);
+    this.backupsStore = backupStore;
   }
 
   getTypes(): Observable<BackupType[]> {
@@ -26,6 +29,15 @@ export class BackupsService extends AbstractService {
           });
         }),
       );
+  }
+
+  loadBackupsStore(): Observable<BackupType[]> {
+    return this.getTypes().pipe(
+      map((types) => {
+        this.backupsStore.types.set(types);
+        return types;
+      }),
+    );
   }
 
   getBackupConfigs(): Observable<BackupConfig[]> {

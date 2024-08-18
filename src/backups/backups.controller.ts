@@ -15,6 +15,8 @@ import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
 import types from './backups-types/types';
 import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-destination.dto';
 import { CreateBackupConfigSourceDto } from './dto/create-backup-config-source.dto';
+import { BackupTypeLangType } from './backups-types/interfaces/backup-type-lang.type';
+import { Public } from '../global/decorators/public.decorator';
 
 @Controller('backups')
 @ApiTags('backups')
@@ -33,6 +35,11 @@ export class BackupsController {
     const backupTypes = await types.getTypes();
 
     return backupTypes.map((type) => type.getJsonSchema());
+  }
+  @Get('i18n/:lang')
+  @Public()
+  async getI18n(@Param('lang') lang: BackupTypeLangType) {
+    return this.backupsService.getI18n(lang);
   }
 
   @Get('config/:id')

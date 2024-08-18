@@ -2,6 +2,8 @@ import { BackupTypeConfigInterface } from './interfaces/backup-type-config.inter
 import * as os from 'os';
 import { instanceOfBackupSource } from './interfaces/backup-source.interface';
 import { instanceOfBackupDestination } from './interfaces/backup-destination.interface';
+import { BackupTypeI18nInterface } from './interfaces/backup-type-i18n.interface';
+import { BackupTypeLangType } from './interfaces/backup-type-lang.type';
 
 export abstract class AbstractType {
   protected parameters: any;
@@ -14,6 +16,12 @@ export abstract class AbstractType {
    * @returns {BackupTypeConfigInterface}
    */
   abstract getConfig(): BackupTypeConfigInterface;
+
+  /**
+   * Return the internalizations parameters for this type
+   * This is used to return the information to the front-end by the controller
+   */
+  abstract getI18n(lang: BackupTypeLangType): BackupTypeI18nInterface;
 
   /**
    * This method define the user input to configure the backup type

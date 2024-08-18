@@ -1,4 +1,4 @@
-<ng-template [ngIfElse]="loaded" [ngIf]="backupConfig === undefined">
+<ng-template [ngIfElse]="loaded" [ngIf]="backupConfig === undefined || types === undefined">
   <gl-loader/>
 </ng-template>
 <ng-template #loaded>
@@ -12,7 +12,7 @@
     <gl-card>
       <h2>{{'dashboard.backups-settings.sources'|translate}}</h2>
       <gl-card *ngFor="let source of backupConfig.sources">
-        {{source.type}}
+        {{'name'|backupTranslate:source.type}}
         <gl-button [round]="true" (click)="editSource(source)">
           <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
         </gl-button>
@@ -21,7 +21,7 @@
     <gl-card>
       <h2>{{'dashboard.backups-settings.destination'|translate}}</h2>
       <gl-card *ngFor="let destination of backupConfig.destinations">
-        {{destination.type}}
+        {{'name'|backupTranslate:destination.type}}
 
         <gl-button [round]="true" (click)="editDestination(destination)">
           <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>

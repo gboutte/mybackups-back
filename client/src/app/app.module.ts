@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRootComponent } from './app-root/app-root.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './auth/auth.guard';
@@ -12,8 +11,9 @@ import { AuthInterceptor } from './auth/interceptor/auth.interceptor';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 import { RetryInterceptor } from './global/interceptors/retry.interceptor';
+import { MultiTranslateHttpLoader } from './global/multi-translate-http-loader';
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+  return new MultiTranslateHttpLoader(http);
 }
 @NgModule({
   declarations: [AppRootComponent],

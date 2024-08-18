@@ -9,7 +9,9 @@ import { BackupConfigSource } from '../../../../models/config/backup-config-sour
 import { BackupConfig } from '../../../../models/config/backup-config.model';
 import { BackupType } from '../../../../models/type/backup-type.model';
 import { BackupConfigTypeValidation } from '../../../../models/validation/backup-config-type-validation.model';
+import { BackupTranslateService } from '../../../../services/backup-translate.service';
 import { BackupsService } from '../../../../services/backups.service';
+import { BackupsStore } from '../../../../store/backups.store';
 
 @Component({
   selector: 'mb-endpoint-form',
@@ -20,6 +22,8 @@ export class EndpointFormComponent implements OnInit {
   backupsService: BackupsService;
   toastService: ToastService;
   translateService: TranslateService;
+  private backuptranslateService: BackupTranslateService;
+  private backupsStore: BackupsStore;
   validating: boolean = false;
   types!: BackupType[];
   selectTypeOptions: SelectOptionInterface[] = [];
@@ -42,32 +46,35 @@ export class EndpointFormComponent implements OnInit {
     translateService: TranslateService,
     modalConfig: ModalConfig,
     modalRef: ModalRef,
+    backuptranslateService: BackupTranslateService,
+    backupsStore: BackupsStore,
   ) {
     this.backupsService = backupsService;
     this.toastService = toastService;
     this.translateService = translateService;
     this.modalRef = modalRef;
     this.modalConfig = modalConfig;
+    this.backuptranslateService = backuptranslateService;
+    this.backupsStore = backupsStore;
   }
 
   /**
    * Load the types of backups and format them for the select component
    */
   refreshTypes() {
-    this.backupsService.getTypes().subscribe((types) => {
-      this.types = types.filter((type) => {
-        if (this.endpointType === 'source') {
-          return type.source.isSource;
-        } else {
-          return type.destination.isDestination;
-        }
-      });
-      this.selectTypeOptions = this.types.map((type) => {
-        return {
-          value: type.config.code,
-          label: type.config.name,
-        };
-      });
+    const types = this.backupsStore.types();
+    this.types = types.filter((type) => {
+      if (this.endpointType === 'source') {
+        return type.source.isSource;
+      } else {
+        return type.destination.isDestination;
+      }
+    });
+    this.selectTypeOptions = this.types.map((type) => {
+      return {
+        value: type.config.code,
+        label: this.backuptranslateService.getTranslation(type, 'name'),
+      };
     });
   }
 

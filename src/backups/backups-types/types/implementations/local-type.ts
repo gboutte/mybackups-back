@@ -11,6 +11,8 @@ import * as path from 'path';
 import { BackupSourceResultInterface } from '../../interfaces/backup-source-result.interface';
 import { BackupDestinationResultInterface } from '../../interfaces/backup-destination-result.interface';
 import { Logger } from '@nestjs/common';
+import {BackupTypeI18nInterface} from "../../interfaces/backup-type-i18n.interface";
+import {BackupTypeLangType} from "../../interfaces/backup-type-lang.type";
 
 export class LocalType
   extends AbstractType
@@ -78,9 +80,30 @@ export class LocalType
 
   getConfig(): BackupTypeConfigInterface {
     return {
-      name: 'Local',
       code: 'local',
-      description: 'Local backup',
+    };
+  }
+
+  getI18n(lang: BackupTypeLangType) :BackupTypeI18nInterface {
+    if (lang === 'fr') {
+      return this.getI18nFr();
+    } else {
+      return this.getI18nEn();
+    }
+  }
+
+  private getI18nFr() :BackupTypeI18nInterface {
+    return {
+      name: 'Local',
+      description:
+        "Directement sur le système de fichiers local de l'application",
+    };
+  }
+
+  private getI18nEn() :BackupTypeI18nInterface {
+    return {
+      name: 'Local',
+      description: 'Directly on the local file system of the application',
     };
   }
 

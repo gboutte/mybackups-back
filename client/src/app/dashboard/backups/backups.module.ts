@@ -14,6 +14,8 @@ import { BackupsComponent } from './components/backups/backups.component';
 import { BackupConfigFormComponent } from './components/config/backup-config-form/backup-config-form.component';
 import { BackupsConfigSettingsComponent } from './components/config/backups-config-settings/backups-config-settings.component';
 import { EndpointFormComponent } from './components/config/backups-config-settings/endpoint-form/endpoint-form.component';
+import { BackupTranslatePipe } from './pipes/backup-translate.pipe';
+import { BackupTranslateService } from './services/backup-translate.service';
 import { BackupsService } from './services/backups.service';
 
 @NgModule({
@@ -22,6 +24,7 @@ import { BackupsService } from './services/backups.service';
     BackupConfigFormComponent,
     BackupsConfigSettingsComponent,
     EndpointFormComponent,
+    BackupTranslatePipe,
   ],
   imports: [
     CommonModule,
@@ -34,6 +37,10 @@ import { BackupsService } from './services/backups.service';
     ContentModule,
     ToastModule,
   ],
-  providers: [BackupsService],
+  providers: [BackupsService, BackupTranslateService],
 })
-export class BackupsModule {}
+export class BackupsModule {
+  constructor(backupsService: BackupsService) {
+    backupsService.loadBackupsStore().subscribe();
+  }
+}

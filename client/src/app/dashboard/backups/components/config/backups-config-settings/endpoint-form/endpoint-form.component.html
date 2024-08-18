@@ -4,7 +4,7 @@
 
 <ng-template [ngIf]="type.value !== null">
   <hr>
-  {{selectedType.config.description}}
+  {{'description' | backupTranslate:selectedType}}
   <hr>
 
   <ng-template ngFor let-parameter [ngForOf]="selectedType.source.parameters">

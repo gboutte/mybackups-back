@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalConfig, ModalRef } from '@gboutte/glassui';
-import { SelectOptionInterface } from '@gboutte/glassui/lib/forms/selects/select-option.interface';
 import { BackupConfig } from '../../../models/config/backup-config.model';
-import { BackupType } from '../../../models/type/backup-type.model';
 import { BackupsService } from '../../../services/backups.service';
 
 @Component({
@@ -13,8 +11,6 @@ import { BackupsService } from '../../../services/backups.service';
 })
 export class BackupConfigFormComponent {
   backupsService: BackupsService;
-  backupTypes!: BackupType[];
-  backupTypesSelectOptions!: SelectOptionInterface[];
   modalRef!: ModalRef;
   modalConfig!: ModalConfig;
 
@@ -35,14 +31,7 @@ export class BackupConfigFormComponent {
     this.modalConfig = modalConfig;
     if (this.modalConfig.data?.config) {
       this.configForm.patchValue(this.modalConfig.data.config);
-      console.log(this.modalConfig.data.config);
     }
-    this.backupsService.getTypes().subscribe((types: BackupType[]) => {
-      this.backupTypes = types;
-      this.backupTypesSelectOptions = types.map((type: BackupType) => {
-        return { value: type.config.code, label: type.config.name };
-      });
-    });
   }
 
   save() {
@@ -67,7 +56,7 @@ export class BackupConfigFormComponent {
 
   getBackupConfig() {
     const backupConfig =
-      (this.modalConfig.data.config as BackupConfig) || new BackupConfig();
+      (this.modalConfig.data?.config as BackupConfig) || new BackupConfig();
     backupConfig.name = this.name.value;
     backupConfig.frequency = this.frequency.value;
     backupConfig.enabled = this.enabled.value;

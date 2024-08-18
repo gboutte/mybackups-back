@@ -5,7 +5,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { BackupConfigDestination } from '../../../models/config/backup-config-destination.model';
 import { BackupConfigSource } from '../../../models/config/backup-config-source.model';
 import { BackupConfig } from '../../../models/config/backup-config.model';
+import { BackupType } from '../../../models/type/backup-type.model';
 import { BackupsService } from '../../../services/backups.service';
+import { BackupsStore } from '../../../store/backups.store';
 import { EndpointFormComponent } from './endpoint-form/endpoint-form.component';
 
 @Component({
@@ -19,6 +21,8 @@ export class BackupsConfigSettingsComponent implements OnInit {
   private translate: TranslateService;
   private route: ActivatedRoute;
   private router: Router;
+  private backupsStore: BackupsStore;
+  types?: BackupType[];
 
   backupConfig!: BackupConfig;
   constructor(
@@ -27,12 +31,14 @@ export class BackupsConfigSettingsComponent implements OnInit {
     modalService: ModalService,
     translate: TranslateService,
     router: Router,
+    backupsStore: BackupsStore,
   ) {
     this.backupsService = backupsService;
     this.modalService = modalService;
     this.translate = translate;
     this.route = route;
     this.router = router;
+    this.backupsStore = backupsStore;
   }
 
   ngOnInit(): void {
@@ -41,6 +47,8 @@ export class BackupsConfigSettingsComponent implements OnInit {
     } else {
       this.router.navigate(['dashboard', 'backups']);
     }
+
+    this.types = this.backupsStore.types();
   }
 
   refreshConfig() {

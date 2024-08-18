@@ -18,6 +18,9 @@ import { BackupSourceResultInterface } from './backups-types/interfaces/backup-s
 import { BackupConfigSource } from './entities/backup-config-source.entity';
 import { BackupConfigDestination } from './entities/backup-config-destination.entity';
 import { BackupParameterErrorInterface } from './backups-types/interfaces/backup-parameter-error.interface';
+import { BackupTypeI18nInterface } from './backups-types/interfaces/backup-type-i18n.interface';
+import types from './backups-types/types';
+import { BackupTypeLangType } from './backups-types/interfaces/backup-type-lang.type';
 
 @Injectable()
 export class BackupsService {
@@ -183,5 +186,14 @@ export class BackupsService {
       backupType.setParameters(destination.parameters);
       return backupType.doDestination(result.temporaryFile);
     }
+  }
+
+  public async getI18n(lang: BackupTypeLangType): Promise<any> {
+    let i18n: any = {};
+    const backupTypes = await types.getTypes();
+    for (const backupType of backupTypes) {
+      i18n[backupType.getConfig().code] = backupType.getI18n(lang);
+    }
+    return i18n;
   }
 }
