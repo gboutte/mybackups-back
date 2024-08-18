@@ -10,15 +10,15 @@
   <ng-template ngFor let-parameter [ngForOf]="selectedType.source.parameters">
     <div>
       <ng-template [ngIf]="parameter.type === 'string'">
-        <gl-input [label]="parameter.name" [formControl]="getParameterControl(parameter.code)" [showErrors]="true"/>
+        <gl-input [label]="'parameters.source.'+parameter.code+'.name'|backupTranslate:selectedType" [formControl]="getParameterControl(parameter.code)" [showErrors]="true"/>
       </ng-template>
       <ng-template [ngIf]="parameter.type === 'number'">
-        <gl-input [label]="parameter.name" [formControl]="getParameterControl(parameter.code)"  [showErrors]="true"/>
+        <gl-input [label]="'parameters.source.'+parameter.code+'.name'|backupTranslate:selectedType" [formControl]="getParameterControl(parameter.code)"  [showErrors]="true"/>
       </ng-template>
       <ng-template [ngIf]="parameter.type === 'boolean'">
-        <gl-checkbox [label]="parameter.name" [formControl]="getParameterControl(parameter.code)"  [showErrors]="true"/>
+        <gl-checkbox [label]="'parameters.source.'+parameter.code+'.name'|backupTranslate:selectedType" [formControl]="getParameterControl(parameter.code)"  [showErrors]="true"/>
       </ng-template>
-      {{parameter.description}}
+      {{'parameters.source.'+parameter.code+'.description'|backupTranslate:selectedType}}
     </div>
   </ng-template>
 

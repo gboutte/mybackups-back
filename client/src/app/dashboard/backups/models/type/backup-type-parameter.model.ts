@@ -5,10 +5,6 @@ export class BackupTypeParameter {
   @serializable
   code: string = '';
   @serializable
-  name: string = '';
-  @serializable
-  description: string = '';
-  @serializable
   type: BackupParameterTypeEnum = BackupParameterTypeEnum.STRING;
   @serializable
   required: boolean = false;

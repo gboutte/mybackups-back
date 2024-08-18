@@ -10,6 +10,13 @@ You can also specify the frequency of the backup and the number of backups to ke
 However, this application won't do complex backups for you, it will only help you to save the backup files where you
 want.
 
+Available Languages:
+- English
+- French
+
+Available Backup Types:
+- Local (save the backup file on the local file system)
+
 ## How it works
 
 You can create backups config, for each config you can specify multiple sources and multiple destinations.
@@ -260,3 +267,8 @@ export class LocalType extends AbstractType implements BackupSourceInterface {
     }
 }
 ```
+
+## Todo
+
+- [ ] I18n for error messages
+- [ ] Add more backup types

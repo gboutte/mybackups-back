@@ -11,8 +11,8 @@ import * as path from 'path';
 import { BackupSourceResultInterface } from '../../interfaces/backup-source-result.interface';
 import { BackupDestinationResultInterface } from '../../interfaces/backup-destination-result.interface';
 import { Logger } from '@nestjs/common';
-import {BackupTypeI18nInterface} from "../../interfaces/backup-type-i18n.interface";
-import {BackupTypeLangType} from "../../interfaces/backup-type-lang.type";
+import { BackupTypeI18nInterface } from '../../interfaces/backup-type-i18n.interface';
+import { BackupTypeLangType } from '../../interfaces/backup-type-lang.type';
 
 export class LocalType
   extends AbstractType
@@ -70,8 +70,6 @@ export class LocalType
     return [
       {
         code: 'path',
-        name: 'Relative Path',
-        description: `The path to folder to save the backup, you can use an absolute path or a relative path to ${path.resolve()}`,
         type: BackupParameterTypeEnum.STRING,
         required: true,
       },
@@ -84,7 +82,7 @@ export class LocalType
     };
   }
 
-  getI18n(lang: BackupTypeLangType) :BackupTypeI18nInterface {
+  getI18n(lang: BackupTypeLangType): BackupTypeI18nInterface {
     if (lang === 'fr') {
       return this.getI18nFr();
     } else {
@@ -92,18 +90,46 @@ export class LocalType
     }
   }
 
-  private getI18nFr() :BackupTypeI18nInterface {
+  private getI18nFr(): BackupTypeI18nInterface {
     return {
       name: 'Local',
       description:
         "Directement sur le système de fichiers local de l'application",
+      parameters: {
+        destination: {
+          path: {
+            name: 'Chemin',
+            description: `Le chemin du dossier pour enregistrer la sauvegarde, vous pouvez utiliser un chemin absolu ou un chemin relatif à ${path.resolve()}`,
+          },
+        },
+        source: {
+          path: {
+            name: 'Chemin',
+            description: `Le chemin du fichier à sauvegarder, vous pouvez utiliser un chemin absolu ou un chemin relatif à ${path.resolve()}`,
+          },
+        },
+      },
     };
   }
 
-  private getI18nEn() :BackupTypeI18nInterface {
+  private getI18nEn(): BackupTypeI18nInterface {
     return {
       name: 'Local',
       description: 'Directly on the local file system of the application',
+      parameters: {
+        destination: {
+          path: {
+            name: 'Path',
+            description: `The path to folder to save the backup, you can use an absolute path or a relative path to ${path.resolve()}`,
+          },
+        },
+        source: {
+          path: {
+            name: 'Path',
+            description: `The path to backup, you can use an absolute path or a relative path to ${path.resolve()}`,
+          },
+        },
+      },
     };
   }
 
@@ -150,8 +176,6 @@ export class LocalType
     return [
       {
         code: 'path',
-        name: 'Relative Path',
-        description: `The path to backup, you can use an absolute path or a relative path to ${path.resolve()}`,
         type: BackupParameterTypeEnum.STRING,
         required: true,
       },

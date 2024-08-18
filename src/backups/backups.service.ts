@@ -118,7 +118,7 @@ export class BackupsService {
         if (parameter.required && !source.parameters[parameter.code]) {
           const parameterError: BackupParameterErrorInterface = {
             parameter: parameter.code,
-            message: `This parameter: "${parameter.name}" is required.`,
+            message: `This parameter: "${parameter.code}" is required.`, //@todo i18n
           };
           errors.push(parameterError);
         }
@@ -147,7 +147,7 @@ export class BackupsService {
         if (parameter.required && !destination.parameters[parameter.code]) {
           const parameterError: BackupParameterErrorInterface = {
             parameter: parameter.code,
-            message: `This parameter: "${parameter.name}" is required.`,
+            message: `This parameter: "${parameter.code}" is required.`, //@todo i18n
           };
           errors.push(parameterError);
         }
