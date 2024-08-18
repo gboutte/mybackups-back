@@ -78,13 +78,43 @@ Here is an example:
 export class LocalType extends AbstractType {
   getConfig(): BackupTypeConfigInterface {
     return {
-      name: 'Local',
       code: 'local',
-      description: 'Local backup',
     };
   }
 }
 ```
+You also need to create a method called `getI18n` that will return a `BackupTypeI18nInterface` object.
+This object will contain the translations for the type.
+
+Here is an example:
+
+```typescript
+export class LocalType extends AbstractType {
+    getI18n(lang: BackupTypeLangType): BackupTypeI18nInterface {
+        if (lang === 'fr') {
+            return this.getI18nFr();
+        } else {
+            return this.getI18nEn();
+        }
+    }
+
+    private getI18nFr(): BackupTypeI18nInterface {
+        return {
+            name: 'Local',
+            description:
+                "Directement sur le système de fichiers local de l'application",
+        };
+    }
+
+    private getI18nEn(): BackupTypeI18nInterface {
+        return {
+            name: 'Local',
+            description: 'Directly on the local file system of the application',
+        };
+    }
+}
+```
+
 
 The `AbstractType` will give you access to some methods that you can use to help you create your backup type.
 
@@ -152,59 +182,81 @@ This path need to be relative to the temporary directory.
 ```typescript
 export class LocalType extends AbstractType implements BackupSourceInterface {
 
-  getConfig(): BackupTypeConfigInterface {
-    return {
-      name: 'Local',
-      code: 'local',
-      description: 'Local backup',
-    };
-  }
-
-  // The definition off the parameters that the user can set
-  getSourceParameters(): BackupParameterInterface[] {
-    return [
-      {
-        name: 'path',
-        description: 'The path to backup',
-        type: BackupParameterTypeEnum.STRING,
-        required: true,
-      },
-    ];
-  }
-
-  // The validation of the parameters that the user set
-  validateSourceParameters(): true | BackupParameterErrorInterface[] {
-    const errors: BackupParameterErrorInterface[] = [];
-    const path = this.getParameter('path');
-
-    //Check if the path defined by the user is readable
-    try {
-      fs.accessSync(path, fs.constants.R_OK);
-    } catch (err) {
-
-      // There was an error so the path isn't readable, we add an error to the array
-      errors.push({
-        parameter: 'path',
-        message: `The path "${path}" isn't readable.`,
-      });
+    getConfig(): BackupTypeConfigInterface {
+        return {
+          code: 'local',
+        };
     }
 
-    return errors.length > 0 ? errors : true;
-  }
+    getI18n(lang: BackupTypeLangType) :BackupTypeI18nInterface {
+        if (lang === 'fr') {
+            return this.getI18nFr();
+        } else {
+            return this.getI18nEn();
+        }
+    }
+    
+    private getI18nFr() :BackupTypeI18nInterface {
+        return {
+            name: 'Local',
+            description:
+                "Directement sur le système de fichiers local de l'application",
+        };
+    }
+    
+    private getI18nEn() :BackupTypeI18nInterface {
+        return {
+            name: 'Local',
+            description: 'Directly on the local file system of the application',
+        };
+    }
 
-  // The backup process
-  doSource(): Promise<BackupSourceResultInterface> {
-    const tmpDir = this.getTemporaryDirectory();
 
-    return new Promise((resolve, reject) => {
-
-      // Do your things here to save the backup file in the temporary directory
-      // ...
-
-      resolve({
-        temporaryFile: "newbackup.zip", // Replace with the name of the backup file
-      });
-    });
-  }
+    // The definition off the parameters that the user can set
+    getSourceParameters(): BackupParameterInterface[] {
+        return [
+          {
+            name: 'path',
+            description: 'The path to backup',
+            type: BackupParameterTypeEnum.STRING,
+            required: true,
+          },
+        ];
+    }
+    
+    // The validation of the parameters that the user set
+    validateSourceParameters(): true | BackupParameterErrorInterface[] {
+        const errors: BackupParameterErrorInterface[] = [];
+        const path = this.getParameter('path');
+        
+        //Check if the path defined by the user is readable
+        try {
+          fs.accessSync(path, fs.constants.R_OK);
+        } catch (err) {
+        
+          // There was an error so the path isn't readable, we add an error to the array
+          errors.push({
+            parameter: 'path',
+            message: `The path "${path}" isn't readable.`,
+          });
+        }
+        
+        return errors.length > 0 ? errors : true;
+    }
+    
+    // The backup process
+    doSource(): Promise<BackupSourceResultInterface> {
+        const tmpDir = this.getTemporaryDirectory();
+        
+        return new Promise((resolve, reject) => {
+        
+          // Do your things here to save the backup file in the temporary directory
+          // ...
+        
+          resolve({
+            temporaryFile: "newbackup.zip", // Replace with the name of the backup file
+          });
+        });
+    }
 }
 ```
