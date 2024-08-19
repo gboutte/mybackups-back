@@ -4,29 +4,61 @@
 <ng-template #loaded>
   <gl-button routerLink="/dashboard/backups"><i class="ph ph-arrow-fat-line-left"></i> {{'dashboard.backups-settings.back'|translate }}</gl-button>
   <h1>{{'dashboard.backups-settings.title'|translate: {name:backupConfig.name} }}</h1>
-  <div>
+  <div class="actions">
     <gl-button (click)="addSource()"><i class="ph ph-plus"></i> {{'dashboard.backups-settings.add-source'|translate }}</gl-button>
     <gl-button (click)="addDestination()"><i class="ph ph-plus"></i> {{'dashboard.backups-settings.add-destination'|translate }}</gl-button>
   </div>
-  <div>
+  <div class="endpoints">
     <gl-card>
-      <h2>{{'dashboard.backups-settings.sources'|translate}}</h2>
-      <gl-card *ngFor="let source of backupConfig.sources">
-        {{'name'|backupTranslate:source.type}}
-        <gl-button [round]="true" (click)="editSource(source)">
-          <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
-        </gl-button>
-      </gl-card>
+      <div class="sources">
+        <h2>{{'dashboard.backups-settings.sources'|translate}}</h2>
+        <gl-card *ngFor="let source of backupConfig.sources">
+          <div class="endpoint">
+            <div class="details">
+              <div class="name">
+              {{'name'|backupTranslate:source.type}}
+              </div>
+              <div class="parameters">
+                <div *ngFor="let param of source.parameters | keyvalue">
+                  <div class="parameter">
+                    {{param.key}}: {{param.value}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <gl-button [round]="true" (click)="editSource(source)">
+              <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
+            </gl-button>
+          </div>
+        </gl-card>
+      </div>
     </gl-card>
     <gl-card>
+      <div class="destinations">
       <h2>{{'dashboard.backups-settings.destination'|translate}}</h2>
       <gl-card *ngFor="let destination of backupConfig.destinations">
-        {{'name'|backupTranslate:destination.type}}
+        <div class="endpoint">
+          <div class="details">
+            <div class="name">
+              {{'name'|backupTranslate:destination.type}}
+            </div>
+            <div class="parameters">
+              <div *ngFor="let param of destination.parameters | keyvalue">
+                <div class="parameter">
+                  {{param.key}}: {{param.value}}
+                </div>
+              </div>
+            </div>
 
-        <gl-button [round]="true" (click)="editDestination(destination)">
-          <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
-        </gl-button>
+          </div>
+          <div class="endpoint-actions">
+            <gl-button [round]="true" (click)="editDestination(destination)">
+              <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
+            </gl-button>
+          </div>
+        </div>
       </gl-card>
+      </div>
     </gl-card>
   </div>
 </ng-template>

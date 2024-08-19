@@ -1,14 +1,16 @@
-<form [formGroup]="endpointForm" (submit)="submit()">
+<form [formGroup]="endpointForm" (submit)="submit()" class="form">
 
-  <gl-select formControlName="type" label="Type" [options]="selectTypeOptions"/>
+  <div class="type-select">
+    <gl-select formControlName="type" label="Type" [options]="selectTypeOptions"/>
+  </div>
 
 <ng-template [ngIf]="type.value !== null">
-  <hr>
-  {{'description' | backupTranslate:selectedType}}
-  <hr>
+  <gl-card>
+    {{'description' | backupTranslate:selectedType}}
+  </gl-card>
 
   <ng-template ngFor let-parameter [ngForOf]="selectedType.source.parameters">
-    <div>
+    <div class="input">
       <ng-template [ngIf]="parameter.type === 'string'">
         <gl-input [label]="'parameters.source.'+parameter.code+'.name'|backupTranslate:selectedType" [formControl]="getParameterControl(parameter.code)" [showErrors]="true"/>
       </ng-template>
@@ -18,7 +20,9 @@
       <ng-template [ngIf]="parameter.type === 'boolean'">
         <gl-checkbox [label]="'parameters.source.'+parameter.code+'.name'|backupTranslate:selectedType" [formControl]="getParameterControl(parameter.code)"  [showErrors]="true"/>
       </ng-template>
-      {{'parameters.source.'+parameter.code+'.description'|backupTranslate:selectedType}}
+      <div class="input-description">
+        {{'parameters.source.'+parameter.code+'.description'|backupTranslate:selectedType}}
+      </div>
     </div>
   </ng-template>
 

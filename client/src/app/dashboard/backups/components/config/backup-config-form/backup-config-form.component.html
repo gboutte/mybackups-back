@@ -1,6 +1,6 @@
   <div class="form-container">
 
-    <form (ngSubmit)="save()" [formGroup]="configForm">
+    <form (ngSubmit)="save()" [formGroup]="configForm" class="form">
 
       <gl-input formControlName="name" [label]="'dashboard.backups.modal.add.form.name'|translate"/>
       <gl-input formControlName="frequency" [label]="'dashboard.backups.modal.add.form.frequency'|translate"/>

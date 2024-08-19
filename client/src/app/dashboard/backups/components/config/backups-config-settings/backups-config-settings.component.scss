@@ -1,0 +1,37 @@
+.actions{
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 10px;
+}
+
+.endpoints{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  .sources,.destinations{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .endpoint{
+      display:flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      .parameter{
+        font-size: 0.8rem;
+        color: #666;
+      }
+      .endpoint-actions{
+        display: flex;
+        gap: 10px;
+
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .endpoints{
+    grid-template-columns: 1fr;
+  }
+}
