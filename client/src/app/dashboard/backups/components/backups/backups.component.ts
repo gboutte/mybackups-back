@@ -62,4 +62,27 @@ export class BackupsComponent implements OnInit {
         },
       });
   }
+
+  delete(config: BackupConfig) {
+    this.modalService
+      .confirm(
+        this.translate.instant('dashboard.backups.modal.delete.title'),
+        this.translate.instant('dashboard.backups.modal.delete.description', {
+          name: config.name,
+        }),
+        {
+          yesLabel: this.translate.instant(
+            'dashboard.backups.modal.delete.yes',
+          ),
+          noLabel: this.translate.instant('dashboard.backups.modal.delete.no'),
+        },
+      )
+      .subscribe((result) => {
+        if (result && config.id) {
+          this.backupsService.deleteBackupConfig(config.id).subscribe(() => {
+            this.refresh();
+          });
+        }
+      });
+  }
 }

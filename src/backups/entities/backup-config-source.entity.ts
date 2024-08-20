@@ -15,6 +15,8 @@ export class BackupConfigSource {
   @Column('simple-json')
   parameters: any;
 
-  @ManyToOne(() => BackupConfig, (config) => config.sources)
+  @ManyToOne(() => BackupConfig, (config) => config.sources, {
+    onDelete: 'CASCADE',
+  })
   config: BackupConfig;
 }

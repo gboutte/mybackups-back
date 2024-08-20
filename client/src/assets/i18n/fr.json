@@ -25,6 +25,12 @@
 						"submit": "Sauvegarder"
 					},
 					"title": "Modifier la configuration"
+				},
+				"delete": {
+					"title": "Supprimer la configuration",
+					"description": "Etes vous sur de vouloir supprimer la configuration \"{{name}}\" ? Cette action est irréversible.",
+					"yes": "Oui, supprimer",
+					"no": "Non, annuler"
 				}
 			}
 		},

@@ -25,6 +25,12 @@
 						"submit": "Save"
 					},
 					"title": "Edit backup config"
+				},
+				"delete": {
+					"title": "Delete backup config",
+					"description": "Are you sure you want to delete the backup config \"{{name}}\"? This action is irreversible.",
+					"yes": "Yes, delete",
+					"no": "No, cancel"
 				}
 			}
 		},

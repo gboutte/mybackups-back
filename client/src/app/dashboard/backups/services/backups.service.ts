@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { deserialize, serialize } from 'serializr';
 import { AbstractService } from '../../../global/abstract.service';
 import { cleanDataOfNull } from '../../../global/clean-data-of-null';
@@ -157,5 +157,16 @@ export class BackupsService extends AbstractService {
           return deserialize(BackupConfig, config);
         }),
       );
+  }
+
+  deleteBackupConfig(id: string): Observable<void> {
+    return this.httpClient.delete<void>(
+      this.getUrl() + `/backups/config/${id}`,
+      {
+        headers: new HttpHeaders({
+          'Access-Control-Allow-Origin': '*',
+        }),
+      },
+    );
   }
 }

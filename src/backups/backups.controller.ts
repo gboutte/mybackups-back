@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -112,5 +113,15 @@ export class BackupsController {
     @Body() updateBackupConfigDto: UpdateBackupConfigDto,
   ) {
     return this.backupsService.updateConfig(id, updateBackupConfigDto);
+  }
+  @Delete('config/:id')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'The uuid of the backup config',
+  })
+  delete(@Param('id') id: string) {
+    return this.backupsService.delete(id);
   }
 }

@@ -196,4 +196,8 @@ export class BackupsService {
     }
     return i18n;
   }
+
+  delete(id: string) {
+    return this.backupConfigRepository.delete(id);
+  }
 }
