@@ -98,6 +98,51 @@ export class BackupsConfigSettingsComponent implements OnInit {
         },
       });
   }
+
+  deleteSource(source: BackupConfigSource) {
+    this.modalService
+      .confirm(
+        this.translate.instant(
+          'dashboard.backups-settings.modal.source.delete.title',
+        ),
+        this.translate.instant(
+          'dashboard.backups-settings.modal.source.delete.message',
+        ),
+      )
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            this.backupsService.deleteSource(source.id).subscribe(() => {
+              this.refreshConfig();
+            });
+          }
+        },
+      });
+  }
+
+  deleteDestination(destination: BackupConfigDestination) {
+    this.modalService
+      .confirm(
+        this.translate.instant(
+          'dashboard.backups-settings.modal.destination.delete.title',
+        ),
+        this.translate.instant(
+          'dashboard.backups-settings.modal.destination.delete.message',
+        ),
+      )
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            this.backupsService
+              .deleteDestination(destination.id)
+              .subscribe(() => {
+                this.refreshConfig();
+              });
+          }
+        },
+      });
+  }
+
   addDestination() {
     this.modalService
       .open(EndpointFormComponent, {

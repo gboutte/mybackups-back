@@ -1,10 +1,10 @@
 import { ExecutionContext, Inject, Injectable } from '@nestjs/common';
-import { UsersService } from '../../users/users.service';
 import { Reflector } from '@nestjs/core';
-import { IS_INSTALL_KEY } from '../decorators/install.decorator';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
+import { UsersService } from '../../users/users.service';
+import { IS_INSTALL_KEY } from '../decorators/install.decorator';
+import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 @Injectable()
 export class InstalledJwtGuard extends AuthGuard('jwt') {

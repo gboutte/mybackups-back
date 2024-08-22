@@ -1,6 +1,6 @@
-import * as path from 'path';
 import { Logger } from '@nestjs/common';
 import * as glob from 'glob';
+import * as path from 'path';
 import { AbstractType } from '../abstract-type';
 
 // glob(typesPath + '/**/*.ts', (err, files) => {

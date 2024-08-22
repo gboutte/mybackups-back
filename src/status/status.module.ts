@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { StatusService } from './status.service';
-import { StatusController } from './status.controller';
 import { UsersModule } from '../users/users.module';
+import { StatusController } from './status.controller';
+import { StatusService } from './status.service';
 
 @Module({
   providers: [StatusService],

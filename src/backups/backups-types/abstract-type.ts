@@ -1,7 +1,7 @@
-import { BackupTypeConfigInterface } from './interfaces/backup-type-config.interface';
 import * as os from 'os';
-import { instanceOfBackupSource } from './interfaces/backup-source.interface';
 import { instanceOfBackupDestination } from './interfaces/backup-destination.interface';
+import { instanceOfBackupSource } from './interfaces/backup-source.interface';
+import { BackupTypeConfigInterface } from './interfaces/backup-type-config.interface';
 import { BackupTypeI18nInterface } from './interfaces/backup-type-i18n.interface';
 import { BackupTypeLangType } from './interfaces/backup-type-lang.type';
 

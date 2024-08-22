@@ -12,11 +12,11 @@ import {
   Request,
   UseInterceptors,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
-import { User } from './entities/user.entity';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { UsersService } from './users.service';
 
 @Controller('users')
 @ApiTags('users')

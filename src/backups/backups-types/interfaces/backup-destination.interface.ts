@@ -1,6 +1,6 @@
+import { BackupDestinationResultInterface } from './backup-destination-result.interface';
 import { BackupParameterErrorInterface } from './backup-parameter-error.interface';
 import { BackupParameterInterface } from './backup-parameter.interface';
-import { BackupDestinationResultInterface } from './backup-destination-result.interface';
 
 export interface BackupDestinationInterface {
   getDestinationParameters(): BackupParameterInterface[];

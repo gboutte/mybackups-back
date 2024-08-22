@@ -1,5 +1,5 @@
-import { BackupParameterInterface } from './backup-parameter.interface';
 import { BackupParameterErrorInterface } from './backup-parameter-error.interface';
+import { BackupParameterInterface } from './backup-parameter.interface';
 import { BackupSourceResultInterface } from './backup-source-result.interface';
 
 export interface BackupSourceInterface {

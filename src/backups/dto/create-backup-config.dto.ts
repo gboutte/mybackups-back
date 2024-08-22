@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsInt,
@@ -6,9 +7,8 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { CreateBackupConfigSourceDto } from './create-backup-config-source.dto';
-import { Type } from 'class-transformer';
 import { CreateBackupConfigDestinationDto } from './create-backup-config-destination.dto';
+import { CreateBackupConfigSourceDto } from './create-backup-config-source.dto';
 
 export class CreateBackupConfigDto {
   @ApiProperty({

@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
-import { InstallModule } from './install/install.module';
-import * as Joi from 'joi';
 import { APP_GUARD } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as Joi from 'joi';
+import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { BackupsModule } from './backups/backups.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-import { StatusModule } from './status/status.module';
 import { InstalledJwtGuard } from './global/guards/installed-jwt.guard';
+import { InstallModule } from './install/install.module';
+import { StatusModule } from './status/status.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [

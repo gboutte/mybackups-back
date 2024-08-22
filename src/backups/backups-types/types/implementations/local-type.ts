@@ -1,16 +1,15 @@
-import { AbstractType } from '../../abstract-type';
-import { BackupTypeConfigInterface } from '../../interfaces/backup-type-config.interface';
-import { BackupSourceInterface } from '../../interfaces/backup-source.interface';
-import { BackupParameterInterface } from '../../interfaces/backup-parameter.interface';
-import { BackupParameterTypeEnum } from '../../enums/backup-parameter-type.enum';
 import * as fs from 'fs';
-import { BackupParameterErrorInterface } from '../../interfaces/backup-parameter-error.interface';
-import { BackupDestinationInterface } from '../../interfaces/backup-destination.interface';
 import * as moment from 'moment';
 import * as path from 'path';
-import { BackupSourceResultInterface } from '../../interfaces/backup-source-result.interface';
+import { AbstractType } from '../../abstract-type';
+import { BackupParameterTypeEnum } from '../../enums/backup-parameter-type.enum';
 import { BackupDestinationResultInterface } from '../../interfaces/backup-destination-result.interface';
-import { Logger } from '@nestjs/common';
+import { BackupDestinationInterface } from '../../interfaces/backup-destination.interface';
+import { BackupParameterErrorInterface } from '../../interfaces/backup-parameter-error.interface';
+import { BackupParameterInterface } from '../../interfaces/backup-parameter.interface';
+import { BackupSourceResultInterface } from '../../interfaces/backup-source-result.interface';
+import { BackupSourceInterface } from '../../interfaces/backup-source.interface';
+import { BackupTypeConfigInterface } from '../../interfaces/backup-type-config.interface';
 import { BackupTypeI18nInterface } from '../../interfaces/backup-type-i18n.interface';
 import { BackupTypeLangType } from '../../interfaces/backup-type-lang.type';
 

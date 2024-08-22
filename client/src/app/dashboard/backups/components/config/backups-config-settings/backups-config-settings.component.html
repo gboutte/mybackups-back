@@ -26,9 +26,14 @@
                 </div>
               </div>
             </div>
+            <div class="endpoint-actions">
             <gl-button [round]="true" (click)="editSource(source)">
               <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
             </gl-button>
+            <gl-button [round]="true" (click)="deleteSource(source)">
+              <i class="ph-thin ph-trash-simple" style="font-size:20px"></i>
+            </gl-button>
+            </div>
           </div>
         </gl-card>
       </div>
@@ -54,6 +59,9 @@
           <div class="endpoint-actions">
             <gl-button [round]="true" (click)="editDestination(destination)">
               <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
+            </gl-button>
+            <gl-button [round]="true" (click)="deleteDestination(destination)">
+              <i class="ph-thin ph-trash-simple" style="font-size:20px"></i>
             </gl-button>
           </div>
         </div>

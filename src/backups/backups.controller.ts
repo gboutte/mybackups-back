@@ -9,15 +9,15 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
-import { BackupsService } from './backups.service';
-import { BackupConfig } from './entities/backup-config.entity';
-import { CreateBackupConfigDto } from './dto/create-backup-config.dto';
-import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
+import { Public } from '../global/decorators/public.decorator';
+import { BackupTypeLangType } from './backups-types/interfaces/backup-type-lang.type';
 import types from './backups-types/types';
+import { BackupsService } from './backups.service';
 import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-destination.dto';
 import { CreateBackupConfigSourceDto } from './dto/create-backup-config-source.dto';
-import { BackupTypeLangType } from './backups-types/interfaces/backup-type-lang.type';
-import { Public } from '../global/decorators/public.decorator';
+import { CreateBackupConfigDto } from './dto/create-backup-config.dto';
+import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
+import { BackupConfig } from './entities/backup-config.entity';
 
 @Controller('backups')
 @ApiTags('backups')
@@ -123,5 +123,26 @@ export class BackupsController {
   })
   delete(@Param('id') id: string) {
     return this.backupsService.delete(id);
+  }
+  @Delete('config/source/:id')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'The uuid of the backup source',
+  })
+  deleteSource(@Param('id') id: string) {
+    return this.backupsService.deleteSource(id);
+  }
+
+  @Delete('config/destination/:id')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'The uuid of the backup destination',
+  })
+  deleteDestination(@Param('id') id: string) {
+    return this.backupsService.deleteDestination(id);
   }
 }

@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { BackupSave } from './backup-save.entity';
-import { BackupConfigSource } from './backup-config-source.entity';
 import { BackupConfigDestination } from './backup-config-destination.entity';
+import { BackupConfigSource } from './backup-config-source.entity';
+import { BackupSave } from './backup-save.entity';
 
 @Entity()
 export class BackupConfig {

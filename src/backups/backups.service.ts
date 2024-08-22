@@ -5,22 +5,21 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BackupConfig } from './entities/backup-config.entity';
+import { AbstractType } from './backups-types/abstract-type';
+import { instanceOfBackupDestination } from './backups-types/interfaces/backup-destination.interface';
+import { BackupParameterErrorInterface } from './backups-types/interfaces/backup-parameter-error.interface';
+import { BackupSourceResultInterface } from './backups-types/interfaces/backup-source-result.interface';
+import { instanceOfBackupSource } from './backups-types/interfaces/backup-source.interface';
+import { BackupTypeLangType } from './backups-types/interfaces/backup-type-lang.type';
+import types from './backups-types/types';
+import { LocalType } from './backups-types/types/implementations/local-type';
+import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-destination.dto';
+import { CreateBackupConfigSourceDto } from './dto/create-backup-config-source.dto';
 import { CreateBackupConfigDto } from './dto/create-backup-config.dto';
 import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
-import { LocalType } from './backups-types/types/implementations/local-type';
-import { AbstractType } from './backups-types/abstract-type';
-import { instanceOfBackupSource } from './backups-types/interfaces/backup-source.interface';
-import { instanceOfBackupDestination } from './backups-types/interfaces/backup-destination.interface';
-import { CreateBackupConfigSourceDto } from './dto/create-backup-config-source.dto';
-import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-destination.dto';
-import { BackupSourceResultInterface } from './backups-types/interfaces/backup-source-result.interface';
-import { BackupConfigSource } from './entities/backup-config-source.entity';
 import { BackupConfigDestination } from './entities/backup-config-destination.entity';
-import { BackupParameterErrorInterface } from './backups-types/interfaces/backup-parameter-error.interface';
-import { BackupTypeI18nInterface } from './backups-types/interfaces/backup-type-i18n.interface';
-import types from './backups-types/types';
-import { BackupTypeLangType } from './backups-types/interfaces/backup-type-lang.type';
+import { BackupConfigSource } from './entities/backup-config-source.entity';
+import { BackupConfig } from './entities/backup-config.entity';
 
 @Injectable()
 export class BackupsService {
@@ -199,5 +198,13 @@ export class BackupsService {
 
   delete(id: string) {
     return this.backupConfigRepository.delete(id);
+  }
+
+  deleteSource(id: string) {
+    return this.backupConfigSourceRepository.delete(id);
+  }
+
+  deleteDestination(id: string) {
+    return this.backupConfigDestinationRepository.delete(id);
   }
 }

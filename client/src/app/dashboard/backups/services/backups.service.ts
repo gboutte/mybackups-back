@@ -169,4 +169,26 @@ export class BackupsService extends AbstractService {
       },
     );
   }
+
+  deleteSource(id: string): Observable<void> {
+    return this.httpClient.delete<void>(
+      this.getUrl() + `/backups/config/source/${id}`,
+      {
+        headers: new HttpHeaders({
+          'Access-Control-Allow-Origin': '*',
+        }),
+      },
+    );
+  }
+
+  deleteDestination(id: string): Observable<void> {
+    return this.httpClient.delete<void>(
+      this.getUrl() + `/backups/config/destination/${id}`,
+      {
+        headers: new HttpHeaders({
+          'Access-Control-Allow-Origin': '*',
+        }),
+      },
+    );
+  }
 }
