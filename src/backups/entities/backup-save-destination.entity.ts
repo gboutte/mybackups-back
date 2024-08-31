@@ -14,4 +14,7 @@ export class BackupSaveDestination {
 
   @ManyToOne(() => BackupSave, (save) => save.destinations)
   save: BackupSave;
+
+  @Column()
+  type: string;
 }

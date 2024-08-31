@@ -85,4 +85,25 @@ export class BackupsComponent implements OnInit {
         }
       });
   }
+
+  runBackup(config: BackupConfig) {
+    this.modalService
+      .confirm(
+        this.translate.instant('dashboard.backups.modal.run.title'),
+        this.translate.instant('dashboard.backups.modal.run.description', {
+          name: config.name,
+        }),
+        {
+          yesLabel: this.translate.instant('dashboard.backups.modal.run.yes'),
+          noLabel: this.translate.instant('dashboard.backups.modal.run.no'),
+        },
+      )
+      .subscribe((result) => {
+        if (result && config.id) {
+          this.backupsService.runBackup(config.id).subscribe(() => {
+            this.refresh();
+          });
+        }
+      });
+  }
 }

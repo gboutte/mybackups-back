@@ -1,9 +1,15 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as archiver from 'archiver';
+import * as moment from 'moment';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import * as os from 'os';
 import { Repository } from 'typeorm';
 import { AbstractType } from './backups-types/abstract-type';
 import { instanceOfBackupDestination } from './backups-types/interfaces/backup-destination.interface';
@@ -20,6 +26,8 @@ import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
 import { BackupConfigDestination } from './entities/backup-config-destination.entity';
 import { BackupConfigSource } from './entities/backup-config-source.entity';
 import { BackupConfig } from './entities/backup-config.entity';
+import { BackupSaveDestination } from './entities/backup-save-destination.entity';
+import { BackupSave } from './entities/backup-save.entity';
 
 @Injectable()
 export class BackupsService {
@@ -30,6 +38,8 @@ export class BackupsService {
     private backupConfigSourceRepository: Repository<BackupConfigSource>,
     @InjectRepository(BackupConfigDestination)
     private backupConfigDestinationRepository: Repository<BackupConfigDestination>,
+    @InjectRepository(BackupSave)
+    private backupSaveRepository: Repository<BackupSave>,
   ) {}
 
   createConfig(createBackupConfigDto: CreateBackupConfigDto) {
@@ -63,39 +73,103 @@ export class BackupsService {
     await this.backupConfigRepository.delete(id);
   }
 
-  async runBackup(createBackupConfigDto: CreateBackupConfigDto) {
-    if (this.validate(createBackupConfigDto)) {
-      const sources = createBackupConfigDto.sources;
+  async runBackup(backupConfig: BackupConfig) {
+    const temporaryFiles: string[] = [];
+    if (this.validate(backupConfig)) {
+      const sources = backupConfig.sources;
       const results: BackupSourceResultInterface[] = [];
       for (const source of sources) {
+        source.config = backupConfig;
         results.push(await this.runBackupSource(source));
       }
 
-      const destinations = createBackupConfigDto.destinations;
+      temporaryFiles.push(...results.map((result) => result.absolutePath));
+
+      let filePath: string;
+      if (results.length > 1) {
+        filePath = await this.createBackupArchive(results);
+        temporaryFiles.push(filePath);
+      } else {
+        filePath = results[0].absolutePath;
+      }
+      const backupSave = new BackupSave();
+      backupSave.destinations = [];
+      backupSave.config = backupConfig;
+
+      const destinations = backupConfig.destinations;
       for (const destination of destinations) {
-        for (const result of results) {
-          await this.runBackupDestination(destination, result);
-        }
+        destination.config = backupConfig;
+        const result = await this.runBackupDestination(destination, filePath);
+
+        const backupSaveDestination = new BackupSaveDestination();
+        backupSaveDestination.parameters = result.data;
+        backupSaveDestination.type = destination.type;
+        backupSaveDestination.save = backupSave;
+        backupSave.destinations.push(backupSaveDestination);
+      }
+
+      this.backupSaveRepository.save(backupSave);
+
+      await this.cleanBackupConfig(backupConfig, temporaryFiles);
+    }
+  }
+
+  createBackupArchive(results: BackupSourceResultInterface[]): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const tmpDir = os.tmpdir();
+      const archiveName =
+        'backup-' + moment().format('DDMMYYYYHHmmss') + '.zip';
+      const archivePath = path.join(tmpDir, archiveName);
+
+      const outputStream = fs.createWriteStream(archivePath);
+      const archive = archiver('zip', {
+        zlib: { level: 9 },
+      });
+      outputStream.on('close', function () {
+        resolve(archivePath);
+      });
+      archive.on('error', function (err) {
+        Logger.error(err);
+        reject(err);
+      });
+
+      archive.pipe(outputStream);
+
+      for (const result of results) {
+        archive.file(result.absolutePath, { name: result.temporaryFile });
+      }
+      archive.finalize();
+    });
+  }
+
+  async cleanBackupConfig(
+    backupConfig: BackupConfig,
+    temporaryFiles: string[] = [],
+  ) {
+    //@todo remove all the temporary files
+    //@todo if there is more than number of backup to keep, remove the oldest
+
+    // We delete all the temporary files
+    for (const temporaryFile of temporaryFiles) {
+      if (fs.existsSync(temporaryFile)) {
+        fs.unlinkSync(temporaryFile);
       }
     }
   }
 
-  validate(
-    createBackupConfigDto: CreateBackupConfigDto | UpdateBackupConfigDto,
-  ) {
+  validate(backupConfig: BackupConfig) {
     const errors = [];
-    //@todo corriger la validation pour se faire sur l'entité
 
     // Verification of the sources
-    const sources = createBackupConfigDto.sources;
+    const sources = backupConfig.sources;
     for (const source of sources) {
-      // errors.push(...this.validateSourceConfig(source));
+      errors.push(...this.validateSourceConfig(source));
     }
 
     // Verification of the destinations
-    const destinations = createBackupConfigDto.destinations;
+    const destinations = backupConfig.destinations;
     for (const destination of destinations) {
-      // errors.push(...this.validateDestinationConfig(destination));
+      errors.push(...this.validateDestinationConfig(destination));
     }
 
     if (errors.length > 0) {
@@ -105,7 +179,7 @@ export class BackupsService {
   }
 
   validateSourceConfig(
-    source: CreateBackupConfigSourceDto,
+    source: CreateBackupConfigSourceDto | BackupConfigSource,
   ): BackupParameterErrorInterface[] {
     const errors: BackupParameterErrorInterface[] = [];
     const backupType = this.getBackupType(source.type);
@@ -134,7 +208,7 @@ export class BackupsService {
   }
 
   validateDestinationConfig(
-    destination: CreateBackupConfigDestinationDto,
+    destination: CreateBackupConfigDestinationDto | BackupConfigDestination,
   ): BackupParameterErrorInterface[] {
     const errors: BackupParameterErrorInterface[] = [];
     const backupType = this.getBackupType(destination.type);
@@ -167,23 +241,25 @@ export class BackupsService {
   }
 
   private runBackupSource(
-    source: CreateBackupConfigSourceDto,
+    source: BackupConfigSource,
   ): Promise<BackupSourceResultInterface> {
     const backupType = this.getBackupType(source.type);
     if (instanceOfBackupSource(backupType)) {
       backupType.setParameters(source.parameters);
+      backupType.setConfigName(source.config.name);
       return backupType.doSource();
     }
   }
 
   private runBackupDestination(
-    destination: CreateBackupConfigDestinationDto,
-    result: BackupSourceResultInterface,
+    destination: BackupConfigDestination,
+    fileAbsolutePath: string,
   ) {
     const backupType = this.getBackupType(destination.type);
     if (instanceOfBackupDestination(backupType)) {
       backupType.setParameters(destination.parameters);
-      return backupType.doDestination(result.temporaryFile);
+      backupType.setConfigName(destination.config.name);
+      return backupType.doDestination(fileAbsolutePath);
     }
   }
 

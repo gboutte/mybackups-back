@@ -6,10 +6,15 @@ export interface BackupDestinationInterface {
   getDestinationParameters(): BackupParameterInterface[];
 
   doDestination(
-    pathToTemporaryBackup: string,
+    absolutePathToTemporaryBackup: string,
   ): Promise<BackupDestinationResultInterface>;
 
   validateDestinationParameters(): true | BackupParameterErrorInterface[];
+
+  //@todo: implement this method
+  // deleteBackup(backupSave:BackupSaveDestination): Promise<boolean>;
+
+  // getBackup(backupSave:BackupSaveDestination): Promise<boolean>;
 }
 
 export function instanceOfBackupDestination(

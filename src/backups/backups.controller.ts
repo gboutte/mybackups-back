@@ -70,10 +70,6 @@ export class BackupsController {
   validateSource(
     @Body() createBackupConfigSource: CreateBackupConfigSourceDto,
   ) {
-    // if (validation === true) {
-    //   this.backupsService.runBackup(createBackupConfigDto);
-    // }
-
     const errors = this.backupsService.validateSourceConfig(
       createBackupConfigSource,
     );
@@ -88,10 +84,6 @@ export class BackupsController {
   validateDestination(
     @Body() createBackupConfigDestination: CreateBackupConfigDestinationDto,
   ) {
-    // if (validation === true) {
-    //   this.backupsService.runBackup(createBackupConfigDto);
-    // }
-
     const errors = this.backupsService.validateDestinationConfig(
       createBackupConfigDestination,
     );
@@ -144,5 +136,21 @@ export class BackupsController {
   })
   deleteDestination(@Param('id') id: string) {
     return this.backupsService.deleteDestination(id);
+  }
+
+  @Post('config/:id/run')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'The uuid of the backup config',
+  })
+  async runBackup(@Param('id') id: string) {
+    const backupConfig = await this.backupsService.findOneConfig(id);
+    if (backupConfig !== null) {
+      return this.backupsService.runBackup(backupConfig);
+    } else {
+      throw new NotFoundException();
+    }
   }
 }

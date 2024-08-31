@@ -22,5 +22,5 @@ export class BackupConfig {
   @serializable(list(object(BackupConfigDestination)))
   destinations: BackupConfigDestination[] = [];
   @serializable(list(object(BackupSave)))
-  saves: BackupSave[] | null = null;
+  saves: BackupSave[] = [];
 }

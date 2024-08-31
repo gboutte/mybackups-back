@@ -268,6 +268,14 @@ export class LocalType extends AbstractType implements BackupSourceInterface {
 }
 ```
 
+#### BackupDestinationInterface
+
+##### getDestinationParameters
+
+##### validateDestinationParameters
+
+##### doDestination
+
 ## Todo
 
 - [ ] I18n for error messages

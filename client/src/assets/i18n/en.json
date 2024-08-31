@@ -7,7 +7,8 @@
 			},
 			"config": {
 				"sources": "{{sourcesCount}} source(s)",
-				"destinations": "{{sourcesCount}} destinsation(s)"
+				"destinations": "{{destinationsCount}} destinsation(s)",
+				"saves": "{{savesCount}} saves(s)"
 			},
 			"modal": {
 				"add": {
@@ -30,6 +31,12 @@
 					"title": "Delete backup config",
 					"description": "Are you sure you want to delete the backup config \"{{name}}\"? This action is irreversible.",
 					"yes": "Yes, delete",
+					"no": "No, cancel"
+				},
+				"run": {
+					"title": "Run backup",
+					"description": "Are you sure you want to run the backup ?",
+					"yes": "Yes, run",
 					"no": "No, cancel"
 				}
 			}
@@ -65,9 +72,17 @@
 					},
 					"edit": {
 						"title": "Edit source"
+					},
+					"delete": {
+						"title": "dashboard.backups-settings.modal.source.delete.title",
+						"message": "dashboard.backups-settings.modal.source.delete.message"
 					}
 				},
 				"destination": {
+					"delete": {
+						"title": "dashboard.backups-settings.modal.destination.delete.title",
+						"message": "dashboard.backups-settings.modal.destination.delete.message"
+					},
 					"add": {
 						"title": "Add destination"
 					},

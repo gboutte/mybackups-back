@@ -1,4 +1,5 @@
 import * as os from 'os';
+import slugify from 'slugify';
 import { instanceOfBackupDestination } from './interfaces/backup-destination.interface';
 import { instanceOfBackupSource } from './interfaces/backup-source.interface';
 import { BackupTypeConfigInterface } from './interfaces/backup-type-config.interface';
@@ -7,6 +8,7 @@ import { BackupTypeLangType } from './interfaces/backup-type-lang.type';
 
 export abstract class AbstractType {
   protected parameters: any;
+  private configName: string;
 
   constructor() {}
 
@@ -108,5 +110,28 @@ export abstract class AbstractType {
         isDestination: false,
       };
     }
+  }
+
+  /**
+   * This method return the name of the config that is beeing run
+   */
+  public getConfigName(): string {
+    return this.configName;
+  }
+  public getSlugConfigName(): string {
+    return slugify(this.configName, {
+      lower: true,
+      strict: true,
+      replacement: '-',
+      trim: true,
+    });
+  }
+
+  /**
+   * This method set the name of the config that is beeing run
+   * @param configName
+   */
+  public setConfigName(configName: string): void {
+    this.configName = configName;
   }
 }

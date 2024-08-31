@@ -191,4 +191,12 @@ export class BackupsService extends AbstractService {
       },
     );
   }
+
+  runBackup(id: string): Observable<void> {
+    return this.httpClient.post<void>(
+      this.getUrl() + `/backups/config/${id}/run`,
+      {},
+      this.httpOptions,
+    );
+  }
 }

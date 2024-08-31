@@ -17,10 +17,16 @@
           {{'dashboard.backups.config.sources'| translate: {sourcesCount: config.sources.length} }}
         </div>
         <div class="destinations">
-          {{'dashboard.backups.config.destinations'| translate: {sourcesCount: config.destinations.length} }}
+          {{'dashboard.backups.config.destinations'| translate: {destinationsCount: config.destinations.length} }}
+        </div>
+        <div class="saves">
+          {{'dashboard.backups.config.saves'| translate: {savesCount: config.saves.length} }}
         </div>
       </div>
       <div class="right-part">
+        <gl-button color="green" [round]="true" (click)="runBackup(config)">
+          <i class="ph-thin ph-play" style="font-size:20px"></i>
+        </gl-button>
         <gl-button [round]="true" (click)="edit(config)">
           <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
         </gl-button>

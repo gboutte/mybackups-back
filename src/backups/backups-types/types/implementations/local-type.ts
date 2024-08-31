@@ -31,24 +31,38 @@ export class LocalType
 
     return errors.length > 0 ? errors : true;
   }
+  makeid(length) {
+    let result = '';
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+  }
 
   async doDestination(
-    pathToTemporaryBackup: string,
+    absolutePathToTemporaryBackup: string,
   ): Promise<BackupDestinationResultInterface> {
-    const backupConfigName = 'test';
+    const backupConfigName = this.getSlugConfigName();
     return new Promise((resolve, reject) => {
       const newName =
         backupConfigName +
         '-' +
         moment().format('DDMMYYYYHHmmss') +
-        path.extname(pathToTemporaryBackup);
+        '-' +
+        this.makeid(10) +
+        path.extname(absolutePathToTemporaryBackup);
 
       const destinationPath = this.createAbsolutePath(
         this.getParameter('path'),
       );
 
       fs.copyFile(
-        path.join(this.getTemporaryDirectory(), pathToTemporaryBackup),
+        absolutePathToTemporaryBackup,
         path.join(destinationPath, newName),
         (err) => {
           if (err) {
@@ -56,7 +70,7 @@ export class LocalType
           } else {
             resolve({
               data: {
-                path: destinationPath + newName,
+                absolutePath: path.join(destinationPath, newName),
               },
             });
           }
@@ -148,7 +162,7 @@ export class LocalType
   }
 
   doSource(): Promise<BackupSourceResultInterface> {
-    const backupConfigName = 'test';
+    const backupConfigName = this.getSlugConfigName();
     const tmpDir = this.getTemporaryDirectory();
     const absolutePath = this.createAbsolutePath(this.getParameter('path'));
 
@@ -157,6 +171,8 @@ export class LocalType
         backupConfigName +
         '-' +
         moment().format('DDMMYYYYHHmmss') +
+        '-' +
+        this.makeid(10) +
         path.extname(absolutePath);
 
       fs.copyFile(absolutePath, path.join(tmpDir, newName), (err) => {
@@ -165,6 +181,7 @@ export class LocalType
         } else {
           resolve({
             temporaryFile: newName,
+            absolutePath: path.join(tmpDir, newName),
           });
         }
       });

@@ -7,7 +7,8 @@
 			},
 			"config": {
 				"sources": "{{sourcesCount}} source(s)",
-				"destinations": "{{sourcesCount}} destination(s)"
+				"destinations": "{{destinationsCount}} destination(s)",
+				"saves": "{{savesCount}} sauvegardes(s)"
 			},
 			"modal": {
 				"add": {
@@ -30,6 +31,12 @@
 					"title": "Supprimer la configuration",
 					"description": "Etes vous sur de vouloir supprimer la configuration \"{{name}}\" ? Cette action est irréversible.",
 					"yes": "Oui, supprimer",
+					"no": "Non, annuler"
+				},
+				"run": {
+					"title": "Lancer la sauvegarde",
+					"description": "Etes vous sur de vouloir lancer la sauvegarde ?",
+					"yes": "Oui, lancer",
 					"no": "Non, annuler"
 				}
 			}
@@ -65,9 +72,17 @@
 					},
 					"edit": {
 						"title": "Modifier la source"
+					},
+					"delete": {
+						"title": "Supprimer la source",
+						"message": "Etes vous sur de vouloir supprimer la source ? Cette action est irréversible."
 					}
 				},
 				"destination": {
+					"delete": {
+						"title": "Supprimer la destination",
+						"message": "Etes vous sur de vouloir supprimer la destination ? Cette action est irréversible."
+					},
 					"add": {
 						"title": "Ajouter une destination"
 					},

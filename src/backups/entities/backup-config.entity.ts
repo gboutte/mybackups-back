@@ -25,6 +25,7 @@ export class BackupConfig {
 
   @OneToMany(() => BackupSave, (save) => save.config, {
     cascade: true,
+    eager: true,
   })
   saves: BackupSave[];
 
