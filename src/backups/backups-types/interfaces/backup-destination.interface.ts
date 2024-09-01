@@ -13,8 +13,7 @@ export interface BackupDestinationInterface {
 
   validateDestinationParameters(): true | BackupParameterErrorInterface[];
 
-  //@todo: implement this method
-  // deleteBackup(backupSave:BackupSaveDestination): Promise<boolean>;
+  deleteBackup(backupSave: BackupSaveDestination): Promise<boolean>;
 
   getBackup(backupSave: BackupSaveDestination): Promise<ReadStream>;
 }
@@ -23,6 +22,8 @@ export function instanceOfBackupDestination(
   object: any,
 ): object is BackupDestinationInterface {
   return (
+    'deleteBackup' in object &&
+    'getBackup' in object &&
     'getDestinationParameters' in object &&
     'doDestination' in object &&
     'validateDestinationParameters' in object

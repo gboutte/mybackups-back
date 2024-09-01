@@ -188,4 +188,20 @@ export class BackupsController {
       throw new NotFoundException();
     }
   }
+
+  @Delete('config-save/:id')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'The uuid of the backup config save destination',
+  })
+  async deleteSave(@Param('id') id: string) {
+    const backupSave = await this.backupsService.findOneBackupSave(id);
+    if (backupSave !== null) {
+      await this.backupsService.deleteBackupSave(backupSave);
+    } else {
+      throw new NotFoundException();
+    }
+  }
 }

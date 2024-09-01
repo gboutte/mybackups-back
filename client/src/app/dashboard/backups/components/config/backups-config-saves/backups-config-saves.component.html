@@ -15,6 +15,10 @@
         <gl-button [round]="true" (click)="downloadBackup(save.id)">
           <i class="ph-thin ph-download-simple" style="font-size:20px"></i>
         </gl-button>
+
+        <gl-button [round]="true" (click)="deleteBackupSave(save)">
+          <i class="ph-thin ph-trash-simple" style="font-size:20px"></i>
+        </gl-button>
       </div>
     </div>
   </gl-card>

@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import { ReadStream } from 'fs';
 import * as moment from 'moment';
 import * as path from 'path';
+import { fileExistsSync } from 'tsconfig-paths/lib/filesystem';
 import { BackupSaveDestination } from '../../../entities/backup-save-destination.entity';
 import { AbstractType } from '../../abstract-type';
 import { BackupParameterTypeEnum } from '../../enums/backup-parameter-type.enum';
@@ -210,6 +211,23 @@ export class LocalType
       const readStream = fs.createReadStream(absolutePath);
 
       resolve(readStream);
+    });
+  }
+
+  deleteBackup(backupSave: BackupSaveDestination): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const absolutePath = backupSave.parameters['absolutePath'];
+      if (fileExistsSync(absolutePath)) {
+        fs.unlink(absolutePath, (err) => {
+          if (err) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
+      } else {
+        resolve(false);
+      }
     });
   }
 }

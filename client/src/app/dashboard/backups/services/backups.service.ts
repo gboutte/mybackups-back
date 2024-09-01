@@ -201,7 +201,7 @@ export class BackupsService extends AbstractService {
     );
   }
 
-  downloadBackup(id: string) {
+  downloadBackupSave(id: string) {
     this.httpClient
       .get(this.getUrl() + `/backups/config-save/download/${id}`, {
         observe: 'response',
@@ -213,6 +213,17 @@ export class BackupsService extends AbstractService {
           saveAs(res.body, filename);
         }
       });
+  }
+
+  deleteBackupSave(id: string): Observable<any> {
+    return this.httpClient.delete<boolean>(
+      this.getUrl() + `/backups/config-save/${id}`,
+      {
+        headers: new HttpHeaders({
+          'Access-Control-Allow-Origin': '*',
+        }),
+      },
+    );
   }
 
   getFileNameFromRequest(

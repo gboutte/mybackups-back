@@ -4,6 +4,7 @@ import { ModalConfig, ModalRef, ModalService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
 import { BackupConfig } from '../../../models/config/backup-config.model';
+import { BackupSave } from '../../../models/save/backup-save.model';
 import { BackupType } from '../../../models/type/backup-type.model';
 import { BackupsService } from '../../../services/backups.service';
 import { BackupsStore } from '../../../store/backups.store';
@@ -58,12 +59,40 @@ export class BackupsConfigSavesComponent {
       .getBackupConfig(this.modalConfig.data?.config.id)
       .subscribe((config: BackupConfig) => {
         this.backupConfig = config;
-        console.log('config', config);
       });
   }
 
   downloadBackup(id: string) {
-    this.backupsService.downloadBackup(id);
+    this.backupsService.downloadBackupSave(id);
+  }
+  deleteBackupSave(save: BackupSave) {
+    this.modalService
+      .confirm(
+        this.translate.instant(
+          'dashboard.backups.modal.saves.modal.delete.title',
+        ),
+        this.translate.instant(
+          'dashboard.backups.modal.saves.modal.delete.description',
+          {
+            date: moment(save.date_created).format('DD/MM/YYYY HH:mm'),
+          },
+        ),
+        {
+          yesLabel: this.translate.instant(
+            'dashboard.backups.modal.saves.modal.delete.yes',
+          ),
+          noLabel: this.translate.instant(
+            'dashboard.backups.modal.saves.modal.delete.no',
+          ),
+        },
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.backupsService.deleteBackupSave(save.id).subscribe(() => {
+            this.refreshConfig();
+          });
+        }
+      });
   }
   protected readonly moment = moment;
 }

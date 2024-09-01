@@ -12,7 +12,9 @@ export class BackupSaveDestination {
   @Column('simple-json')
   parameters: any;
 
-  @ManyToOne(() => BackupSave, (save) => save.destinations)
+  @ManyToOne(() => BackupSave, (save) => save.destinations, {
+    onDelete: 'CASCADE',
+  })
   save: BackupSave;
 
   @Column()

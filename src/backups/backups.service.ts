@@ -129,6 +129,25 @@ export class BackupsService {
     }
   }
 
+  async deleteBackupFile(backupSave: BackupSaveDestination): Promise<boolean> {
+    const backupType = this.getBackupType(backupSave.type);
+    if (instanceOfBackupDestination(backupType)) {
+      return backupType.deleteBackup(backupSave);
+    } else {
+      throw new NotFoundException();
+    }
+  }
+
+  deleteBackupSaveEntity(id: string) {
+    return this.backupSaveRepository.delete(id);
+  }
+  async deleteBackupSave(backupSave: BackupSave) {
+    for (const destination of backupSave.destinations) {
+      await this.deleteBackupFile(destination);
+    }
+    await this.deleteBackupSaveEntity(backupSave.id);
+  }
+
   findOneBackupSave(id: string): Promise<BackupSave> {
     return this.backupSaveRepository.findOne({ where: { id: id } });
   }
@@ -165,13 +184,24 @@ export class BackupsService {
     backupConfig: BackupConfig,
     temporaryFiles: string[] = [],
   ) {
-    //@todo remove all the temporary files
-    //@todo if there is more than number of backup to keep, remove the oldest
-
     // We delete all the temporary files
     for (const temporaryFile of temporaryFiles) {
       if (fs.existsSync(temporaryFile)) {
         fs.unlinkSync(temporaryFile);
+      }
+    }
+
+    // We delete all the saves over the limit
+    const maxSaves = backupConfig.to_keep;
+    if (backupConfig.saves.length + 1 > maxSaves) {
+      let savesToDelete = backupConfig.saves;
+      savesToDelete = savesToDelete
+        .sort((a, b) => {
+          return a.date_created.getTime() - b.date_created.getTime();
+        })
+        .slice(0, savesToDelete.length - (maxSaves - 1));
+      for (const save of savesToDelete) {
+        await this.deleteBackupSave(save);
       }
     }
   }
@@ -256,6 +286,7 @@ export class BackupsService {
   }
 
   getBackupType(code: string): AbstractType {
+    // @todo implement this method
     return new LocalType();
   }
 
