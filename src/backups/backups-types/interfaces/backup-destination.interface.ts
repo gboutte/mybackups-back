@@ -1,3 +1,5 @@
+import { ReadStream } from 'fs';
+import { BackupSaveDestination } from '../../entities/backup-save-destination.entity';
 import { BackupDestinationResultInterface } from './backup-destination-result.interface';
 import { BackupParameterErrorInterface } from './backup-parameter-error.interface';
 import { BackupParameterInterface } from './backup-parameter.interface';
@@ -14,7 +16,7 @@ export interface BackupDestinationInterface {
   //@todo: implement this method
   // deleteBackup(backupSave:BackupSaveDestination): Promise<boolean>;
 
-  // getBackup(backupSave:BackupSaveDestination): Promise<boolean>;
+  getBackup(backupSave: BackupSaveDestination): Promise<ReadStream>;
 }
 
 export function instanceOfBackupDestination(

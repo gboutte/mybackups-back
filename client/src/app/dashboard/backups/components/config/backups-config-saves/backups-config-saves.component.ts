@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ModalConfig, ModalRef, ModalService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
-import { config } from 'rxjs';
 import { BackupConfig } from '../../../models/config/backup-config.model';
 import { BackupType } from '../../../models/type/backup-type.model';
 import { BackupsService } from '../../../services/backups.service';
@@ -63,6 +62,8 @@ export class BackupsConfigSavesComponent {
       });
   }
 
-  protected readonly config = config;
+  downloadBackup(id: string) {
+    this.backupsService.downloadBackup(id);
+  }
   protected readonly moment = moment;
 }

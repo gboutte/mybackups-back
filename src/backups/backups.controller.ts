@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  StreamableFile,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Public } from '../global/decorators/public.decorator';
@@ -149,6 +150,40 @@ export class BackupsController {
     const backupConfig = await this.backupsService.findOneConfig(id);
     if (backupConfig !== null) {
       return this.backupsService.runBackup(backupConfig);
+    } else {
+      throw new NotFoundException();
+    }
+  }
+
+  @Get('config-save/download/:id')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'The uuid of the backup config save destination',
+  })
+  async download(@Param('id') id: string): Promise<StreamableFile> {
+    const backupSave = await this.backupsService.findOneBackupSave(id);
+    if (backupSave !== null) {
+      let file = null;
+      const destinations = backupSave.destinations;
+      const index = 0;
+      while (file === null && index < destinations.length) {
+        try {
+          file = await this.backupsService.getBackupFile(destinations[index]);
+        } catch (e) {
+          console.error(e);
+          file = null;
+        }
+      }
+      if (file !== null) {
+        return new StreamableFile(file, {
+          type: backupSave.mimetype,
+          disposition: `attachment; filename="${backupSave.filename}"`,
+        });
+      } else {
+        throw new NotFoundException();
+      }
     } else {
       throw new NotFoundException();
     }

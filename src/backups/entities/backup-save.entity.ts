@@ -21,6 +21,13 @@ export class BackupSave {
 
   @OneToMany(() => BackupSaveDestination, (destination) => destination.save, {
     cascade: true,
+    eager: true,
   })
   destinations: BackupSaveDestination[];
+
+  @Column({ nullable: false })
+  filename: string;
+
+  @Column({ nullable: false })
+  mimetype: string;
 }

@@ -1,6 +1,8 @@
 import * as fs from 'fs';
+import { ReadStream } from 'fs';
 import * as moment from 'moment';
 import * as path from 'path';
+import { BackupSaveDestination } from '../../../entities/backup-save-destination.entity';
 import { AbstractType } from '../../abstract-type';
 import { BackupParameterTypeEnum } from '../../enums/backup-parameter-type.enum';
 import { BackupDestinationResultInterface } from '../../interfaces/backup-destination-result.interface';
@@ -200,5 +202,14 @@ export class LocalType
 
   private createAbsolutePath(paramPath: string): string {
     return path.resolve(paramPath);
+  }
+
+  getBackup(backupSave: BackupSaveDestination): Promise<ReadStream> {
+    return new Promise((resolve, reject) => {
+      const absolutePath = backupSave.parameters['absolutePath'];
+      const readStream = fs.createReadStream(absolutePath);
+
+      resolve(readStream);
+    });
   }
 }

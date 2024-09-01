@@ -7,7 +7,16 @@
 
   <div class="saves">
   <gl-card *ngFor="let save of backupConfig.saves">
-    {{ 'dashboard.backups.modal.saves.save_card.title' | translate: {dateCreated: moment(save.date_created).format('DD/MM/YYYY HH:mm')} }}
+    <div class="card">
+      <div class="left-part">
+        {{ 'dashboard.backups.modal.saves.save_card.title' | translate: {dateCreated: moment(save.date_created).format('DD/MM/YYYY HH:mm')} }}
+      </div>
+      <div class="right-part">
+        <gl-button [round]="true" (click)="downloadBackup(save.id)">
+          <i class="ph-thin ph-download-simple" style="font-size:20px"></i>
+        </gl-button>
+      </div>
+    </div>
   </gl-card>
   </div>
 </ng-template>

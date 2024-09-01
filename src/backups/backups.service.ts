@@ -6,6 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as archiver from 'archiver';
+import { ReadStream } from 'fs';
+import * as mime from 'mime-types';
 import * as moment from 'moment';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -40,6 +42,8 @@ export class BackupsService {
     private backupConfigDestinationRepository: Repository<BackupConfigDestination>,
     @InjectRepository(BackupSave)
     private backupSaveRepository: Repository<BackupSave>,
+    @InjectRepository(BackupSaveDestination)
+    private backupSaveDestinationRepository: Repository<BackupSaveDestination>,
   ) {}
 
   createConfig(createBackupConfigDto: CreateBackupConfigDto) {
@@ -95,6 +99,8 @@ export class BackupsService {
       const backupSave = new BackupSave();
       backupSave.destinations = [];
       backupSave.config = backupConfig;
+      backupSave.filename = path.basename(filePath);
+      backupSave.mimetype = mime.lookup(filePath);
 
       const destinations = backupConfig.destinations;
       for (const destination of destinations) {
@@ -112,6 +118,19 @@ export class BackupsService {
 
       await this.cleanBackupConfig(backupConfig, temporaryFiles);
     }
+  }
+
+  async getBackupFile(backupSave: BackupSaveDestination): Promise<ReadStream> {
+    const backupType = this.getBackupType(backupSave.type);
+    if (instanceOfBackupDestination(backupType)) {
+      return backupType.getBackup(backupSave);
+    } else {
+      throw new NotFoundException();
+    }
+  }
+
+  findOneBackupSave(id: string): Promise<BackupSave> {
+    return this.backupSaveRepository.findOne({ where: { id: id } });
   }
 
   createBackupArchive(results: BackupSourceResultInterface[]): Promise<string> {

@@ -1,5 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { saveAs } from 'file-saver';
 import { Observable, map } from 'rxjs';
 import { deserialize, serialize } from 'serializr';
 import { AbstractService } from '../../../global/abstract.service';
@@ -198,5 +199,39 @@ export class BackupsService extends AbstractService {
       {},
       this.httpOptions,
     );
+  }
+
+  downloadBackup(id: string) {
+    this.httpClient
+      .get(this.getUrl() + `/backups/config-save/download/${id}`, {
+        observe: 'response',
+        responseType: 'blob',
+      })
+      .subscribe((res) => {
+        const filename = this.getFileNameFromRequest(res);
+        if (res.body !== null) {
+          saveAs(res.body, filename);
+        }
+      });
+  }
+
+  getFileNameFromRequest(
+    res: HttpResponse<Blob>,
+    defaultFilename: string = 'unknown',
+  ) {
+    if (res.headers.get('content-disposition') !== null) {
+      let disposition = res.headers.get('content-disposition');
+      let filename = defaultFilename;
+
+      if (disposition && disposition.indexOf('attachment') !== -1) {
+        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        var matches = filenameRegex.exec(disposition);
+        if (matches !== null && matches[1]) {
+          filename = matches[1].replace(/['"]/g, '');
+        }
+      }
+      return filename;
+    }
+    return defaultFilename;
   }
 }

@@ -9,4 +9,8 @@ export class BackupSave {
   date_created: Date = new Date();
   @serializable(list(object(BackupSaveDestination)))
   destinations: BackupSaveDestination[] = [];
+  @serializable
+  mimetype: string = '';
+  @serializable
+  filename: string = '';
 }
