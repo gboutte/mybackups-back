@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BackupConfig } from '../../models/config/backup-config.model';
 import { BackupsService } from '../../services/backups.service';
 import { BackupConfigFormComponent } from '../config/backup-config-form/backup-config-form.component';
+import { BackupsConfigSavesComponent } from '../config/backups-config-saves/backups-config-saves.component';
 
 @Component({
   selector: 'mb-backups',
@@ -52,6 +53,21 @@ export class BackupsComponent implements OnInit {
     this.modalService
       .open(BackupConfigFormComponent, {
         title: this.translate.instant('dashboard.backups.modal.edit.title'),
+        data: {
+          config,
+        },
+      })
+      .subscribe({
+        next: () => {
+          this.refresh();
+        },
+      });
+  }
+
+  saves(config: BackupConfig) {
+    this.modalService
+      .open(BackupsConfigSavesComponent, {
+        title: this.translate.instant('dashboard.backups.modal.saves.title'),
         data: {
           config,
         },

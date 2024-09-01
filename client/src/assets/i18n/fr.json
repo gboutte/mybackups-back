@@ -27,6 +27,12 @@
 					},
 					"title": "Modifier la configuration"
 				},
+				"saves": {
+					"save_card": {
+						"title": "Sauvegarde du {{dateCreated}}"
+					},
+					"title": "Liste des sauvegardes"
+				},
 				"delete": {
 					"title": "Supprimer la configuration",
 					"description": "Etes vous sur de vouloir supprimer la configuration \"{{name}}\" ? Cette action est irréversible.",

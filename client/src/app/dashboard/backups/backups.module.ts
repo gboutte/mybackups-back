@@ -12,6 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BackupsRoutingModule } from './backups-routing.module';
 import { BackupsComponent } from './components/backups/backups.component';
 import { BackupConfigFormComponent } from './components/config/backup-config-form/backup-config-form.component';
+import { BackupsConfigSavesComponent } from './components/config/backups-config-saves/backups-config-saves.component';
 import { BackupsConfigSettingsComponent } from './components/config/backups-config-settings/backups-config-settings.component';
 import { EndpointFormComponent } from './components/config/backups-config-settings/endpoint-form/endpoint-form.component';
 import { BackupTranslatePipe } from './pipes/backup-translate.pipe';
@@ -25,6 +26,7 @@ import { BackupsService } from './services/backups.service';
     BackupsConfigSettingsComponent,
     EndpointFormComponent,
     BackupTranslatePipe,
+    BackupsConfigSavesComponent,
   ],
   imports: [
     CommonModule,

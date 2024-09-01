@@ -1,0 +1,8 @@
+.saves{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: min(600px,70vh);
+  overflow-y: auto;
+  margin: 10px 0;
+}

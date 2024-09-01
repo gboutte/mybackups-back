@@ -33,6 +33,9 @@
         <gl-button [round]="true" [routerLink]="'/dashboard/backups/'+config.id+'/settings'">
           <i class="ph-thin ph-gear-six" style="font-size:20px"></i>
         </gl-button>
+        <gl-button [round]="true" (click)="saves(config)">
+          <i class="ph-thin ph-hard-drives" style="font-size:20px"></i>
+        </gl-button>
         <gl-button [round]="true" (click)="delete(config)">
           <i class="ph-thin ph-trash-simple" style="font-size:20px"></i>
         </gl-button>

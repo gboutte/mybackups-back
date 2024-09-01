@@ -1,0 +1,13 @@
+<ng-template [ngIf]="backupConfig === undefined" [ngIfElse]="loaded">
+  <gl-loader></gl-loader>
+</ng-template>
+
+<ng-template #loaded>
+ {{backupConfig.name}}
+
+  <div class="saves">
+  <gl-card *ngFor="let save of backupConfig.saves">
+    {{ 'dashboard.backups.modal.saves.save_card.title' | translate: {dateCreated: moment(save.date_created).format('DD/MM/YYYY HH:mm')} }}
+  </gl-card>
+  </div>
+</ng-template>
