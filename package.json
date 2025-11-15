@@ -21,7 +21,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "format": "prettier --write \"**/*.{js,ts,d.ts}\"",
-    "format:check": "prettier --check \"**/*.{js,ts,d.ts}\""
+    "format:check": "prettier --check \"**/*.{js,ts,d.ts}\"",
+    "install:back": "npm install",
+    "install:front": "cd client && npm install",
+    "install:all": "npm run install:back && npm run install:front"
   },
   "dependencies": {
     "@fastify/static": "^6.10.2",
