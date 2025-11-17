@@ -211,6 +211,7 @@ export class EndpointFormComponent implements OnInit {
                 backupConfig.destinations.push(endpoint);
               }
             }
+            //@tood change type
             this.updateBackupConfig(backupConfig);
           } else {
             this.endpointForm.enable();

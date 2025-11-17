@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalConfig, ModalRef } from '@gboutte/glassui';
 import { BackupConfig } from '../../../models/config/backup-config.model';
 import { BackupsService } from '../../../services/backups.service';
+import {BackupConfigCreateDto} from "../../../dto/backup-config-create.dto";
+import {BackupConfigUpdateDto} from "../../../dto/backup-config-update.dto";
 
 @Component({
   selector: 'mb-backup-config-form',
@@ -38,13 +40,13 @@ export class BackupConfigFormComponent {
     if (this.configForm.valid) {
       if (this.modalConfig.data?.config) {
         this.backupsService
-          .updateBackupConfig(this.getBackupConfig())
+          .updateBackupConfig(this.getBackupConfigUpdateDto())
           .subscribe((config: BackupConfig) => {
             this.modalRef.close(true);
           });
       } else {
         this.backupsService
-          .createBackupConfig(this.getBackupConfig())
+          .createBackupConfig(this.getBackupConfigCreateDto())
           .subscribe((config: BackupConfig) => {
             this.modalRef.close(true);
           });
@@ -54,14 +56,24 @@ export class BackupConfigFormComponent {
     }
   }
 
-  getBackupConfig() {
-    const backupConfig =
-      (this.modalConfig.data?.config as BackupConfig) || new BackupConfig();
-    backupConfig.name = this.name.value;
-    backupConfig.frequency = this.frequency.value;
-    backupConfig.enabled = this.enabled.value;
-    backupConfig.to_keep = this.to_keep.value;
-    return backupConfig;
+  protected getBackupConfigCreateDto():BackupConfigCreateDto {
+
+    let backupConfigDto:BackupConfigCreateDto = new BackupConfigCreateDto();
+    backupConfigDto.name = this.name.value;
+    backupConfigDto.frequency = this.frequency.value;
+    backupConfigDto.enabled = this.enabled.value;
+    backupConfigDto.to_keep = this.to_keep.value;
+
+    return backupConfigDto;
+  }
+  protected getBackupConfigUpdateDto():BackupConfigUpdateDto {
+    let backupConfigDto:BackupConfigUpdateDto = new BackupConfigUpdateDto();
+    backupConfigDto.id = this.modalConfig.data.config.id;
+    backupConfigDto.name = this.name.value;
+    backupConfigDto.frequency = this.frequency.value;
+    backupConfigDto.enabled = this.enabled.value;
+    backupConfigDto.to_keep = this.to_keep.value;
+    return backupConfigDto;
   }
 
   get name(): FormControl {

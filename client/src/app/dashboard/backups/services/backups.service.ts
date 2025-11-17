@@ -11,6 +11,8 @@ import { BackupConfig } from '../models/config/backup-config.model';
 import { BackupType } from '../models/type/backup-type.model';
 import { BackupConfigTypeValidation } from '../models/validation/backup-config-type-validation.model';
 import { BackupsStore } from '../store/backups.store';
+import {BackupConfigUpdateDto} from "../dto/backup-config-update.dto";
+import {BackupConfigCreateDto} from "../dto/backup-config-create.dto";
 
 @Injectable()
 export class BackupsService extends AbstractService {
@@ -66,7 +68,7 @@ export class BackupsService extends AbstractService {
       );
   }
 
-  createBackupConfig(config: BackupConfig): Observable<BackupConfig> {
+  createBackupConfig(config: BackupConfigCreateDto): Observable<BackupConfig> {
     let data = serialize(config);
 
     //remove null properties
@@ -85,18 +87,9 @@ export class BackupsService extends AbstractService {
       );
   }
 
-  updateBackupConfig(config: BackupConfig): Observable<BackupConfig> {
+  updateBackupConfig(config: BackupConfigUpdateDto): Observable<BackupConfig> {
     const id = config.id;
     config.id = null;
-    config.date_created = null;
-
-    //remove date to source and destination
-    config.sources.forEach((source) => {
-      source.date_created = null;
-    });
-    config.destinations.forEach((destination) => {
-      destination.date_created = null;
-    });
 
     let data = serialize(config);
     //remove null properties
