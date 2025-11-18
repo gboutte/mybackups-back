@@ -29,7 +29,7 @@
 				},
 				"saves": {
 					"save_card": {
-						"title": "Save of {{date}}"
+						"title": "Save of {{dateCreated}}"
 					},
 					"title": "List of saves"
 				},

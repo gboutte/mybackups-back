@@ -148,7 +148,12 @@ export class BackupsService {
       backupSave.destinations = [];
       backupSave.config = backupConfig;
       backupSave.filename = path.basename(filePath);
-      backupSave.mimetype = mime.lookup(filePath);
+      let mimeType = mime.lookup(filePath);
+
+      if(!mimeType){
+        mimeType = 'application/octet-stream';
+      }
+      backupSave.mimetype = mimeType
 
       const destinations = backupConfig.destinations;
       for (const destination of destinations) {
@@ -222,7 +227,12 @@ export class BackupsService {
       archive.pipe(outputStream);
 
       for (const result of results) {
-        archive.file(result.absolutePath, { name: result.temporaryFile });
+        const isDirectory:boolean = fs.statSync(result.absolutePath).isDirectory();
+        if(isDirectory){
+          archive.directory(result.absolutePath, result.temporaryFile);
+        }else {
+          archive.file(result.absolutePath, {name: result.temporaryFile});
+        }
       }
       archive.finalize();
     });
@@ -235,7 +245,12 @@ export class BackupsService {
     // We delete all the temporary files
     for (const temporaryFile of temporaryFiles) {
       if (fs.existsSync(temporaryFile)) {
-        fs.unlinkSync(temporaryFile);
+        const isDirectory:boolean = fs.statSync(temporaryFile).isDirectory();
+        if(isDirectory){
+          fs.rmSync(temporaryFile,{recursive:true});
+        }else{
+          fs.unlinkSync(temporaryFile);
+        }
       }
     }
 

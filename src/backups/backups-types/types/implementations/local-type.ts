@@ -232,17 +232,35 @@ export class LocalType
         '-' +
         this.makeid(10) +
         path.extname(absolutePath);
+      const isDirectory = fs.statSync(absolutePath).isDirectory();
 
-      fs.copyFile(absolutePath, path.join(tmpDir, newName), (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({
-            temporaryFile: newName,
-            absolutePath: path.join(tmpDir, newName),
-          });
-        }
-      });
+      const newAbsolutePath:string = path.join(tmpDir, newName);
+
+      if(isDirectory){
+        fs.cp(absolutePath,newAbsolutePath,{recursive:true},(err) => {
+          if (err) {
+            Logger.debug('error copy')
+            reject(err);
+          } else {
+            resolve({
+              temporaryFile: newName,
+              absolutePath: newAbsolutePath,
+            });
+          }
+        });
+      }else {
+
+        fs.copyFile(absolutePath,newAbsolutePath , (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve({
+              temporaryFile: newName,
+              absolutePath: newAbsolutePath,
+            });
+          }
+        });
+      }
     });
   }
 
