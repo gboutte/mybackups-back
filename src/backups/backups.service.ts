@@ -24,6 +24,8 @@ import { LocalType } from './backups-types/types/implementations/local-type';
 import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-destination.dto';
 import { CreateBackupConfigSourceDto } from './dto/create-backup-config-source.dto';
 import { CreateBackupConfigDto } from './dto/create-backup-config.dto';
+import { UpdateBackupConfigDestinationDto } from './dto/update-backup-config-destination.dto';
+import { UpdateBackupConfigSourceDto } from './dto/update-backup-config-source.dto';
 import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
 import { BackupConfigDestination } from './entities/backup-config-destination.entity';
 import { BackupConfigSource } from './entities/backup-config-source.entity';
@@ -63,6 +65,52 @@ export class BackupsService {
       throw new NotFoundException();
     }
     return this.backupConfigRepository.save(config);
+  }
+
+  async createBackupDestination(
+    idBackupConfig: string,
+    createBackupDestination: CreateBackupConfigDestinationDto,
+  ) {
+    const backupDest = await this.backupConfigDestinationRepository.create({
+      config: { id: idBackupConfig },
+      ...createBackupDestination,
+    });
+
+    return this.backupConfigDestinationRepository.save(backupDest);
+  }
+
+  async createBackupSource(
+    idBackupConfig: string,
+    createBackupSource: CreateBackupConfigSourceDto,
+  ) {
+    const backupSource = await this.backupConfigSourceRepository.create({
+      config: { id: idBackupConfig },
+      ...createBackupSource,
+    });
+
+    return this.backupConfigSourceRepository.save(backupSource);
+  }
+  async updateBackupConfigSource(
+    idSource: string,
+    updateBackupConfigSource: UpdateBackupConfigSourceDto,
+  ) {
+    const backupSource = await this.backupConfigSourceRepository.preload({
+      id: idSource,
+      ...updateBackupConfigSource,
+    });
+
+    return this.backupConfigSourceRepository.save(backupSource);
+  }
+  async updateBackupConfigDestination(
+    idDest: string,
+    updateBackupConfigDestinationDto: UpdateBackupConfigDestinationDto,
+  ) {
+    const backupSource = await this.backupConfigDestinationRepository.preload({
+      id: idDest,
+      ...updateBackupConfigDestinationDto,
+    });
+
+    return this.backupConfigDestinationRepository.save(backupSource);
   }
 
   findAllConfig(): Promise<BackupConfig[]> {

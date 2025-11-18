@@ -17,6 +17,8 @@ import { BackupsService } from './backups.service';
 import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-destination.dto';
 import { CreateBackupConfigSourceDto } from './dto/create-backup-config-source.dto';
 import { CreateBackupConfigDto } from './dto/create-backup-config.dto';
+import { UpdateBackupConfigDestinationDto } from './dto/update-backup-config-destination.dto';
+import { UpdateBackupConfigSourceDto } from './dto/update-backup-config-source.dto';
 import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
 import { BackupConfig } from './entities/backup-config.entity';
 
@@ -64,6 +66,72 @@ export class BackupsController {
   @ApiBearerAuth()
   createConfig(@Body() createBackupConfigDto: CreateBackupConfigDto) {
     return this.backupsService.createConfig(createBackupConfigDto);
+  }
+
+  @Post('config/:id/source')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'The uuid of the backup config',
+  })
+  createConfigSource(
+    @Param('id') idBackupConfig: string,
+    @Body() createBackupConfigSource: CreateBackupConfigSourceDto,
+  ) {
+    return this.backupsService.createBackupSource(
+      idBackupConfig,
+      createBackupConfigSource,
+    );
+  }
+  @Patch('config/source/:id')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'The uuid of the backup source',
+  })
+  updateConfigSource(
+    @Param('id') idSource: string,
+    @Body() createBackupConfigSource: UpdateBackupConfigSourceDto,
+  ) {
+    return this.backupsService.updateBackupConfigSource(
+      idSource,
+      createBackupConfigSource,
+    );
+  }
+
+  @Post('config/:id/destination')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'The uuid of the backup config',
+  })
+  createConfigDestination(
+    @Param('id') idBackupConfig: string,
+    @Body() createBackupConfigDestination: CreateBackupConfigDestinationDto,
+  ) {
+    return this.backupsService.createBackupDestination(
+      idBackupConfig,
+      createBackupConfigDestination,
+    );
+  }
+  @Patch('config/destination/:id')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'The uuid of the backup destination',
+  })
+  updateConfigDestination(
+    @Param('id') idDest: string,
+    @Body() updateBackupConfigDestinationDto: UpdateBackupConfigDestinationDto,
+  ) {
+    return this.backupsService.updateBackupConfigDestination(
+      idDest,
+      updateBackupConfigDestinationDto,
+    );
   }
 
   @Post('config/validate/source')

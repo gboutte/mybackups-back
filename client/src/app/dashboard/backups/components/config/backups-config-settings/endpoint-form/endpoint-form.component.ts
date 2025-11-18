@@ -12,6 +12,9 @@ import { BackupConfigTypeValidation } from '../../../../models/validation/backup
 import { BackupTranslateService } from '../../../../services/backup-translate.service';
 import { BackupsService } from '../../../../services/backups.service';
 import { BackupsStore } from '../../../../store/backups.store';
+import {BackupConfigSourceDto} from "../../../../dto/backup-config-source.dto";
+import {BackupConfigDestinationDto} from "../../../../dto/backup-config-destination.dto";
+import {BackupConfigUpdateDto} from "../../../../dto/backup-config-update.dto";
 
 @Component({
   selector: 'mb-endpoint-form',
@@ -104,6 +107,7 @@ export class EndpointFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.endpointType = this.modalConfig.data.type;
+    console.log(this.endpointType)
 
     this.refreshTypes();
 
@@ -159,11 +163,11 @@ export class EndpointFormComponent implements OnInit {
   /**
    * Convert the form control to a backup source
    */
-  formControlToBackupEndpoint() {
-    const endpoint =
+  formControlToBackupEndpoint():BackupConfigDestinationDto|BackupConfigSourceDto {
+    const endpoint:BackupConfigDestinationDto|BackupConfigSourceDto =
       this.endpointType === 'source'
-        ? new BackupConfigSource()
-        : new BackupConfigDestination();
+        ? new BackupConfigSourceDto()
+        : new BackupConfigDestinationDto();
 
     endpoint.type = this.type.value;
     endpoint.parameters = {};
@@ -178,41 +182,53 @@ export class EndpointFormComponent implements OnInit {
   submit() {
     if (!this.endpointForm.disabled) {
       if (this.endpointForm.valid) {
-        const endpoint = this.formControlToBackupEndpoint();
+        const endpoint:BackupConfigDestinationDto|BackupConfigSourceDto = this.formControlToBackupEndpoint();
 
         this.endpointForm.disable();
 
         this.validating = true;
         // We call the backend to validate the parameters.
         this.validate(endpoint).subscribe((res: BackupConfigTypeValidation) => {
-          if (res.valid) {
-            const backupConfig = this.backupConfig;
+          if (res.valid &&  this.backupConfig.id) {
 
             if (this.endpointType === 'source') {
               // Handling the source
               if (this.modalConfig.data.source) {
-                const index = backupConfig.sources.findIndex(
-                  (source) => source.id === this.modalConfig.data.source.id,
-                );
-                backupConfig.sources[index] = endpoint;
+
+                this.backupsService.updateSource(this.modalConfig.data.source.id,endpoint).subscribe({
+                  next:()=>{
+                    this.successAlert();
+                    this.modalRef.close(true);
+                  }
+                })
               } else {
-                backupConfig.sources.push(endpoint);
+                this.backupsService.createSource(this.backupConfig.id,endpoint).subscribe({
+                  next:()=>{
+                    this.successAlert();
+                    this.modalRef.close(true);
+                  }
+                })
               }
             }
             if (this.endpointType === 'destination') {
-              // Handling the destination
+              // Handling the source
               if (this.modalConfig.data.destination) {
-                const index = backupConfig.destinations.findIndex(
-                  (destination) =>
-                    destination.id === this.modalConfig.data.destination.id,
-                );
-                backupConfig.destinations[index] = endpoint;
+
+                this.backupsService.updateDestination(this.modalConfig.data.destination.id,endpoint).subscribe({
+                  next:()=>{
+                    this.successAlert();
+                    this.modalRef.close(true);
+                  }
+                })
               } else {
-                backupConfig.destinations.push(endpoint);
+                this.backupsService.createDestination(this.backupConfig.id,endpoint).subscribe({
+                  next:()=>{
+                    this.successAlert();
+                    this.modalRef.close(true);
+                  }
+                })
               }
             }
-            //@tood change type
-            this.updateBackupConfig(backupConfig);
           } else {
             this.endpointForm.enable();
             this.validating = false;
@@ -234,23 +250,8 @@ export class EndpointFormComponent implements OnInit {
     }
   }
 
-  updateBackupConfig(backupConfig: BackupConfig) {
-    this.backupsService.updateBackupConfig(backupConfig).subscribe(() => {
-      this.toastService.alert({
-        description: this.translateService.instant(
-          'dashboard.backups-settings.modal.endpoint.form.success.description',
-        ),
-        title: this.translateService.instant(
-          'dashboard.backups-settings.modal.endpoint.form.success.title',
-        ),
-        icon: 'success',
-      });
-      this.modalRef.close(true);
-    });
-  }
-
   validate(
-    source: BackupConfigSource | BackupConfigDestination,
+    source: BackupConfigDestinationDto|BackupConfigSourceDto,
   ): Observable<BackupConfigTypeValidation> {
     return this.backupsService.validateConfigEndpoint(source);
   }
@@ -273,5 +274,17 @@ export class EndpointFormComponent implements OnInit {
 
   getParameterControl(key: string): FormControl {
     return this.parameters.get(key) as FormControl;
+  }
+
+  private successAlert(){
+    this.toastService.alert({
+      description: this.translateService.instant(
+        'dashboard.backups-settings.modal.endpoint.form.success.description',
+      ),
+      title: this.translateService.instant(
+        'dashboard.backups-settings.modal.endpoint.form.success.title',
+      ),
+      icon: 'success',
+    });
   }
 }

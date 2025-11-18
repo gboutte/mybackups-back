@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import * as fs from 'fs';
 import { ReadStream } from 'fs';
 import * as moment from 'moment';
@@ -22,17 +23,66 @@ export class LocalType
 {
   validateDestinationParameters(): true | BackupParameterErrorInterface[] {
     const errors: BackupParameterErrorInterface[] = [];
-    const path = this.createAbsolutePath(this.getParameter('path'));
-    try {
-      fs.accessSync(path, fs.constants.W_OK);
-    } catch (err) {
+    const dirPath = this.createAbsolutePath(this.getParameter('path'));
+
+    const writableCheck = this.checkDirectoryWritable(dirPath);
+    if (writableCheck !== true) {
       errors.push({
         parameter: 'path',
-        message: `The path "${path}" isn't writable.`,
+        message: writableCheck,
       });
     }
 
     return errors.length > 0 ? errors : true;
+  }
+
+  /**
+   * Checks if a directory is writable or can be created.
+   * If the directory doesn't exist, it checks the first existing ancestor directory.
+   * @param dirPath - The directory path to check
+   * @returns true if writable/creatable, or an error message string
+   */
+  private checkDirectoryWritable(dirPath: string): true | string {
+    try {
+      // Check if the path exists
+      if (fs.existsSync(dirPath)) {
+        // Path exists, check if it's a directory
+        const stats = fs.statSync(dirPath);
+        if (!stats.isDirectory()) {
+          return `The path "${dirPath}" exists but is not a directory.`;
+        }
+        // Check if it's writable
+        fs.accessSync(dirPath, fs.constants.W_OK);
+        return true;
+      } else {
+        // Path doesn't exist, find the first existing ancestor directory
+        let currentPath = dirPath;
+        let parentPath = path.dirname(currentPath);
+
+        // Keep going up until we find an existing directory or reach the root
+        while (!fs.existsSync(parentPath) && parentPath !== currentPath) {
+          currentPath = parentPath;
+          parentPath = path.dirname(currentPath);
+        }
+
+        // Check if we found an existing ancestor
+        if (fs.existsSync(parentPath)) {
+          // Check if the existing ancestor is a directory
+          const stats = fs.statSync(parentPath);
+          if (!stats.isDirectory()) {
+            return `The ancestor path "${parentPath}" exists but is not a directory.`;
+          }
+          // Check if the existing ancestor is writable
+          fs.accessSync(parentPath, fs.constants.W_OK);
+          return true;
+        } else {
+          return `No existing ancestor directory found for "${dirPath}".`;
+        }
+      }
+    } catch (err) {
+      Logger.error(err);
+      return `The path "${dirPath}" isn't writable or cannot be created.`;
+    }
   }
   makeid(length) {
     let result = '';
@@ -63,6 +113,11 @@ export class LocalType
       const destinationPath = this.createAbsolutePath(
         this.getParameter('path'),
       );
+
+      // Create directory if it doesn't exist
+      if (!fs.existsSync(destinationPath)) {
+        fs.mkdirSync(destinationPath, { recursive: true });
+      }
 
       fs.copyFile(
         absolutePathToTemporaryBackup,

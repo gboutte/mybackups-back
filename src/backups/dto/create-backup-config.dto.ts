@@ -1,14 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import {
-  IsBoolean,
-  IsInt,
-  IsObject,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
-import { CreateBackupConfigDestinationDto } from './create-backup-config-destination.dto';
-import { CreateBackupConfigSourceDto } from './create-backup-config-source.dto';
+import { IsBoolean, IsInt, IsString } from 'class-validator';
 
 export class CreateBackupConfigDto {
   @ApiProperty({
@@ -37,20 +28,4 @@ export class CreateBackupConfigDto {
   })
   @IsBoolean()
   readonly enabled: boolean;
-
-  @ApiProperty({
-    description: 'The sources config.',
-  })
-  @IsObject({ each: true })
-  @ValidateNested()
-  @Type(() => CreateBackupConfigSourceDto)
-  readonly sources: CreateBackupConfigSourceDto[];
-
-  @ApiProperty({
-    description: 'The destinations config.',
-  })
-  @IsObject({ each: true })
-  @ValidateNested()
-  @Type(() => CreateBackupConfigDestinationDto)
-  readonly destinations: CreateBackupConfigDestinationDto[];
 }
