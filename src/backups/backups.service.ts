@@ -32,6 +32,8 @@ import { BackupConfigSource } from './entities/backup-config-source.entity';
 import { BackupConfig } from './entities/backup-config.entity';
 import { BackupSaveDestination } from './entities/backup-save-destination.entity';
 import { BackupSave } from './entities/backup-save.entity';
+import {SchedulerRegistry} from "@nestjs/schedule";
+import {CronJob} from "cron";
 
 @Injectable()
 export class BackupsService {
@@ -46,6 +48,7 @@ export class BackupsService {
     private backupSaveRepository: Repository<BackupSave>,
     @InjectRepository(BackupSaveDestination)
     private backupSaveDestinationRepository: Repository<BackupSaveDestination>,
+    private schedulerRegistry: SchedulerRegistry
   ) {}
 
   createConfig(createBackupConfigDto: CreateBackupConfigDto) {
@@ -395,5 +398,39 @@ export class BackupsService {
 
   deleteDestination(id: string) {
     return this.backupConfigDestinationRepository.delete(id);
+  }
+
+
+
+  async refreshCron() {
+    Logger.log('Refreshing cron','CRON')
+    const currentCrons:Map<string,CronJob> = this.schedulerRegistry.getCronJobs();
+
+    const configs:BackupConfig[] = await this.findAllConfig();
+
+    //Delete all cron
+    const cronKeys:string[] = Array.from(currentCrons.keys());
+
+    for (const cronKey of cronKeys) {
+      const cron = currentCrons.get(cronKey);
+      if(cron){
+        this.schedulerRegistry.deleteCronJob(cronKey);
+      }
+    }
+
+    //Create all cron
+    for (const config of configs) {
+      if(config.enabled) {
+        const cron = new CronJob(config.frequency, () => {
+          Logger.log(`Running config ${config.name} - ${config.id}`, 'CRON')
+          this.runBackup(config);
+        });
+        this.schedulerRegistry.addCronJob(config.id, cron);
+        cron.start();
+      }
+    }
+
+
+
   }
 }

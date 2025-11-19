@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {Module, OnModuleInit} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -11,6 +11,8 @@ import { InstalledJwtGuard } from './global/guards/installed-jwt.guard';
 import { InstallModule } from './install/install.module';
 import { StatusModule } from './status/status.module';
 import { UsersModule } from './users/users.module';
+import {ScheduleModule} from "@nestjs/schedule";
+import {BackupsService} from "./backups/backups.service";
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     BackupsModule,
     StatusModule,
+    ScheduleModule.forRoot()
   ],
   controllers: [],
   providers: [
@@ -52,4 +55,11 @@ import { UsersModule } from './users/users.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit{
+  constructor(private backupService:BackupsService) {
+
+  }
+  onModuleInit() {
+    this.backupService.refreshCron();
+  }
+}

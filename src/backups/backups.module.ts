@@ -11,6 +11,7 @@ import { BackupSave } from './entities/backup-save.entity';
 @Module({
   controllers: [BackupsController],
   providers: [BackupsService],
+  exports: [BackupsService],
   imports: [
     TypeOrmModule.forFeature([
       BackupConfig,

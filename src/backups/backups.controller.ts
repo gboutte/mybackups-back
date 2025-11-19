@@ -63,9 +63,10 @@ export class BackupsController {
   }
 
   @Post('config')
-  @ApiBearerAuth()
-  createConfig(@Body() createBackupConfigDto: CreateBackupConfigDto) {
-    return this.backupsService.createConfig(createBackupConfigDto);
+  @ApiBearerAuth() async createConfig(@Body() createBackupConfigDto: CreateBackupConfigDto) {
+    const config = await this.backupsService.createConfig(createBackupConfigDto);
+    await this.backupsService.refreshCron();
+    return config;
   }
 
   @Post('config/:id/source')
@@ -75,14 +76,16 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config',
   })
-  createConfigSource(
+  async createConfigSource(
     @Param('id') idBackupConfig: string,
     @Body() createBackupConfigSource: CreateBackupConfigSourceDto,
   ) {
-    return this.backupsService.createBackupSource(
+    const source = await this.backupsService.createBackupSource(
       idBackupConfig,
       createBackupConfigSource,
     );
+    await this.backupsService.refreshCron();
+    return source;
   }
   @Patch('config/source/:id')
   @ApiBearerAuth()
@@ -91,14 +94,16 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup source',
   })
-  updateConfigSource(
+  async updateConfigSource(
     @Param('id') idSource: string,
     @Body() createBackupConfigSource: UpdateBackupConfigSourceDto,
   ) {
-    return this.backupsService.updateBackupConfigSource(
+    const source = await this.backupsService.updateBackupConfigSource(
       idSource,
       createBackupConfigSource,
     );
+    await this.backupsService.refreshCron();
+    return source;
   }
 
   @Post('config/:id/destination')
@@ -108,14 +113,16 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config',
   })
-  createConfigDestination(
+  async createConfigDestination(
     @Param('id') idBackupConfig: string,
     @Body() createBackupConfigDestination: CreateBackupConfigDestinationDto,
   ) {
-    return this.backupsService.createBackupDestination(
+    const destination = await this.backupsService.createBackupDestination(
       idBackupConfig,
       createBackupConfigDestination,
     );
+    await this.backupsService.refreshCron();
+    return destination;
   }
   @Patch('config/destination/:id')
   @ApiBearerAuth()
@@ -124,14 +131,16 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup destination',
   })
-  updateConfigDestination(
+  async updateConfigDestination(
     @Param('id') idDest: string,
     @Body() updateBackupConfigDestinationDto: UpdateBackupConfigDestinationDto,
   ) {
-    return this.backupsService.updateBackupConfigDestination(
+    const destination = await this.backupsService.updateBackupConfigDestination(
       idDest,
       updateBackupConfigDestinationDto,
     );
+    await this.backupsService.refreshCron();
+    return destination;
   }
 
   @Post('config/validate/source')
@@ -169,11 +178,13 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config',
   })
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateBackupConfigDto: UpdateBackupConfigDto,
   ) {
-    return this.backupsService.updateConfig(id, updateBackupConfigDto);
+    const config = await this.backupsService.updateConfig(id, updateBackupConfigDto);
+    await this.backupsService.refreshCron();
+    return config;
   }
   @Delete('config/:id')
   @ApiBearerAuth()
@@ -182,8 +193,10 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config',
   })
-  delete(@Param('id') id: string) {
-    return this.backupsService.delete(id);
+  async delete(@Param('id') id: string) {
+    const result = await this.backupsService.delete(id);
+    await this.backupsService.refreshCron();
+    return result;
   }
   @Delete('config/source/:id')
   @ApiBearerAuth()
@@ -192,8 +205,10 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup source',
   })
-  deleteSource(@Param('id') id: string) {
-    return this.backupsService.deleteSource(id);
+  async deleteSource(@Param('id') id: string) {
+    const result = await this.backupsService.deleteSource(id);
+    await this.backupsService.refreshCron();
+    return result;
   }
 
   @Delete('config/destination/:id')
@@ -203,8 +218,10 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup destination',
   })
-  deleteDestination(@Param('id') id: string) {
-    return this.backupsService.deleteDestination(id);
+  async deleteDestination(@Param('id') id: string) {
+    const result = await this.backupsService.deleteDestination(id);
+    await this.backupsService.refreshCron();
+    return result;
   }
 
   @Post('config/:id/run')
