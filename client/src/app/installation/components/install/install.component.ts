@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../auth/auth.service';
-import { SessionService } from '../../../auth/session.service';
 import { ConfigService } from '../../../config/config.service';
 
 @Component({
@@ -13,46 +12,26 @@ import { ConfigService } from '../../../config/config.service';
   styleUrls: ['./install.component.scss'],
 })
 export class InstallComponent {
-  registerForm = new FormGroup({
+  protected registerForm: FormGroup = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', Validators.required),
   });
 
-  private authService: AuthService;
-  private sessionService: SessionService;
-  private router: Router;
-  private route: ActivatedRoute;
-  private toastService: ToastService;
-  private configService: ConfigService;
-  private translate: TranslateService;
+  private authService: AuthService = inject(AuthService);
+  private router: Router = inject(Router);
+  private toastService: ToastService = inject(ToastService);
+  private configService: ConfigService = inject(ConfigService);
+  private translate: TranslateService = inject(TranslateService);
 
-  constructor(
-    authService: AuthService,
-    router: Router,
-    sessionService: SessionService,
-    route: ActivatedRoute,
-    toastService: ToastService,
-    configService: ConfigService,
-    translate: TranslateService,
-  ) {
-    this.authService = authService;
-    this.router = router;
-    this.sessionService = sessionService;
-    this.route = route;
-    this.toastService = toastService;
-    this.configService = configService;
-    this.translate = translate;
-  }
-
-  get username(): FormControl {
+  protected get username(): FormControl {
     return this.registerForm.get('username') as FormControl;
   }
 
-  get password(): FormControl {
+  protected get password(): FormControl {
     return this.registerForm.get('password') as FormControl;
   }
 
-  register() {
+  protected register(): void {
     if (this.registerForm.valid && !this.registerForm.disabled) {
       this.registerForm.disable();
       this.authService

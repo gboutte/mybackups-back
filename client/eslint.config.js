@@ -81,6 +81,7 @@ module.exports = tseslint.config(
         "error",
         { "allowExplicitAny": true }
       ],
+      '@smarttools/rxjs/no-nested-subscribe': 'off',
       '@typescript-eslint/no-inferrable-types': 'off',
       '@typescript-eslint/typedef': [
         'error',
