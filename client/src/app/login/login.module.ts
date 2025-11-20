@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, OnDestroy } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -9,7 +9,6 @@ import {
   ToastModule,
 } from '@gboutte/glassui';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigStore } from '../config/config.store';
 import { LoginComponent } from './components/login/login.component';
@@ -29,20 +28,12 @@ import { LoginRoutingModule } from './login-routing.module';
     TranslateModule,
   ],
 })
-export class LoginModule implements OnDestroy {
-  private installSubscription!: Subscription;
-
+export class LoginModule {
   constructor(configStore: ConfigStore, router: Router) {
-    this.installSubscription = configStore.isInstalled$.subscribe(
-      (isInstalled) => {
-        if (isInstalled !== null && !isInstalled) {
-          router.navigate(['/installation']);
-        }
-      },
-    );
-  }
-
-  ngOnDestroy() {
-    this.installSubscription.unsubscribe();
+    configStore.isInstalled$.subscribe((isInstalled: boolean | null) => {
+      if (isInstalled !== null && !isInstalled) {
+        router.navigate(['/installation']);
+      }
+    });
   }
 }

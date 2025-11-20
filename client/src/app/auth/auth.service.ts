@@ -5,6 +5,10 @@ import { deserialize } from 'serializr';
 import { User } from '../dashboard/users/models/user.model';
 import { AbstractService } from '../global/abstract.service';
 
+export interface LoginTokens {
+  access_token: string;
+}
+
 @Injectable()
 export class AuthService extends AbstractService {
   constructor(httpClient: HttpClient) {
@@ -17,11 +21,8 @@ export class AuthService extends AbstractService {
       .pipe(map((response: any) => deserialize(User, response)));
   }
 
-  login(
-    username: string,
-    password: string,
-  ): Observable<{ access_token: string }> {
-    return this.httpClient.post<{ access_token: string }>(
+  login(username: string, password: string): Observable<LoginTokens> {
+    return this.httpClient.post<LoginTokens>(
       this.getUrl() + '/auth/login',
       {
         username: username,

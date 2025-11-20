@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from '../../../auth/auth.service';
+import { AuthService, LoginTokens } from '../../../auth/auth.service';
 import { SessionService } from '../../../auth/session.service';
 
 @Component({
@@ -12,42 +12,26 @@ import { SessionService } from '../../../auth/session.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  loginForm = new FormGroup({
+  protected loginForm: FormGroup = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', Validators.required),
   });
-  private authService: AuthService;
-  private sessionService: SessionService;
-  private router: Router;
-  private route: ActivatedRoute;
-  private toastService: ToastService;
-  private translate: TranslateService;
+  private authService: AuthService = inject(AuthService);
+  private sessionService: SessionService = inject(SessionService);
+  private router: Router = inject(Router);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private toastService: ToastService = inject(ToastService);
+  private translate: TranslateService = inject(TranslateService);
 
-  constructor(
-    authService: AuthService,
-    router: Router,
-    sessionService: SessionService,
-    route: ActivatedRoute,
-    toastService: ToastService,
-    translate: TranslateService,
-  ) {
-    this.authService = authService;
-    this.router = router;
-    this.sessionService = sessionService;
-    this.route = route;
-    this.toastService = toastService;
-    this.translate = translate;
-  }
-
-  get username(): FormControl {
+  protected get username(): FormControl {
     return this.loginForm.get('username') as FormControl;
   }
 
-  get password(): FormControl {
+  protected get password(): FormControl {
     return this.loginForm.get('password') as FormControl;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     //If has logout query param, logout
     if (this.route.snapshot.queryParamMap.get('logout') !== null) {
       this.sessionService.logout();
@@ -67,13 +51,13 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  login() {
+  protected login(): void {
     if (this.loginForm.valid && !this.loginForm.disabled) {
       this.loginForm.disable();
       this.authService
         .login(this.username.value, this.password.value)
         .subscribe({
-          next: (response) => {
+          next: (response: LoginTokens) => {
             this.sessionService.setTokens(response.access_token);
             this.router.navigate(['/dashboard']);
           },
