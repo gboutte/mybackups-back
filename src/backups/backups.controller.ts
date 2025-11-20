@@ -144,12 +144,11 @@ export class BackupsController {
   }
 
   @Post('config/validate/source')
-  @ApiBearerAuth()
-  validateSource(
-    @Body() createBackupConfigSource: CreateBackupConfigSourceDto,
+  @ApiBearerAuth() async validateSource(
+      @Body() createBackupConfigSource: CreateBackupConfigSourceDto,
   ) {
-    const errors = this.backupsService.validateSourceConfig(
-      createBackupConfigSource,
+    const errors = await this.backupsService.validateSourceConfig(
+        createBackupConfigSource,
     );
     return {
       valid: errors.length === 0,
@@ -158,12 +157,11 @@ export class BackupsController {
   }
 
   @Post('config/validate/destination')
-  @ApiBearerAuth()
-  validateDestination(
-    @Body() createBackupConfigDestination: CreateBackupConfigDestinationDto,
+  @ApiBearerAuth() async validateDestination(
+      @Body() createBackupConfigDestination: CreateBackupConfigDestinationDto,
   ) {
-    const errors = this.backupsService.validateDestinationConfig(
-      createBackupConfigDestination,
+    const errors = await this.backupsService.validateDestinationConfig(
+        createBackupConfigDestination,
     );
     return {
       valid: errors.length === 0,
