@@ -1,47 +1,58 @@
+<h1>{{ 'dashboard.backups.title' | translate }}</h1>
 
-<h1>{{'dashboard.backups.title'|translate}}</h1>
-
-<div style="margin: 10px 0;">
-  <gl-button (click)="add()"><i class="ph ph-plus"></i> {{'dashboard.backups.actions.add'|translate}}</gl-button>
+<div style="margin: 10px 0">
+  <gl-button (click)="add()"
+    ><i class="ph ph-plus"></i>
+    {{ 'dashboard.backups.actions.add' | translate }}</gl-button
+  >
 </div>
 
 <div class="backups-list">
   <gl-card *ngFor="let config of backupConfigs">
     <div class="card">
-
       <div class="left-part">
         <div class="name">
-          {{config.name}}
+          {{ config.name }}
         </div>
         <div class="sources">
-          {{'dashboard.backups.config.sources'| translate: {sourcesCount: config.sources.length} }}
+          {{
+            'dashboard.backups.config.sources'
+              | translate: { sourcesCount: config.sources.length }
+          }}
         </div>
         <div class="destinations">
-          {{'dashboard.backups.config.destinations'| translate: {destinationsCount: config.destinations.length} }}
+          {{
+            'dashboard.backups.config.destinations'
+              | translate: { destinationsCount: config.destinations.length }
+          }}
         </div>
         <div class="saves">
-          {{'dashboard.backups.config.saves'| translate: {savesCount: config.saves.length} }}
+          {{
+            'dashboard.backups.config.saves'
+              | translate: { savesCount: config.saves.length }
+          }}
         </div>
       </div>
       <div class="right-part">
         <gl-button color="green" [round]="true" (click)="runBackup(config)">
-          <i class="ph-thin ph-play" style="font-size:20px"></i>
+          <i class="ph-thin ph-play" style="font-size: 20px"></i>
         </gl-button>
         <gl-button [round]="true" (click)="edit(config)">
-          <i class="ph-thin ph-pencil-simple" style="font-size:20px"></i>
+          <i class="ph-thin ph-pencil-simple" style="font-size: 20px"></i>
         </gl-button>
-        <gl-button [round]="true" [routerLink]="'/dashboard/backups/'+config.id+'/settings'">
-          <i class="ph-thin ph-gear-six" style="font-size:20px"></i>
+        <gl-button
+          [round]="true"
+          [routerLink]="'/dashboard/backups/' + config.id + '/settings'"
+        >
+          <i class="ph-thin ph-gear-six" style="font-size: 20px"></i>
         </gl-button>
         <gl-button [round]="true" (click)="saves(config)">
-          <i class="ph-thin ph-hard-drives" style="font-size:20px"></i>
+          <i class="ph-thin ph-hard-drives" style="font-size: 20px"></i>
         </gl-button>
         <gl-button [round]="true" (click)="delete(config)">
-          <i class="ph-thin ph-trash-simple" style="font-size:20px"></i>
+          <i class="ph-thin ph-trash-simple" style="font-size: 20px"></i>
         </gl-button>
       </div>
-
-
     </div>
   </gl-card>
 </div>

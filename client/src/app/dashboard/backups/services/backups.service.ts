@@ -5,16 +5,16 @@ import { Observable, map } from 'rxjs';
 import { deserialize, serialize } from 'serializr';
 import { AbstractService } from '../../../global/abstract.service';
 import { cleanDataOfNull } from '../../../global/clean-data-of-null';
+import { BackupConfigCreateDto } from '../dto/backup-config-create.dto';
+import { BackupConfigDestinationDto } from '../dto/backup-config-destination.dto';
+import { BackupConfigSourceDto } from '../dto/backup-config-source.dto';
+import { BackupConfigUpdateDto } from '../dto/backup-config-update.dto';
 import { BackupConfigDestination } from '../models/config/backup-config-destination.model';
 import { BackupConfigSource } from '../models/config/backup-config-source.model';
 import { BackupConfig } from '../models/config/backup-config.model';
 import { BackupType } from '../models/type/backup-type.model';
 import { BackupConfigTypeValidation } from '../models/validation/backup-config-type-validation.model';
 import { BackupsStore } from '../store/backups.store';
-import {BackupConfigUpdateDto} from "../dto/backup-config-update.dto";
-import {BackupConfigCreateDto} from "../dto/backup-config-create.dto";
-import {BackupConfigDestinationDto} from "../dto/backup-config-destination.dto";
-import {BackupConfigSourceDto} from "../dto/backup-config-source.dto";
 
 @Injectable()
 export class BackupsService extends AbstractService {
@@ -111,9 +111,9 @@ export class BackupsService extends AbstractService {
   }
 
   validateConfigEndpoint(
-    config: BackupConfigDestinationDto|BackupConfigSourceDto,
+    config: BackupConfigDestinationDto | BackupConfigSourceDto,
   ): Observable<BackupConfigTypeValidation> {
-    let data = serialize(config);
+    const data = serialize(config);
 
     //remove null properties
     Object.keys(data).forEach((key) => data[key] == null && delete data[key]);
@@ -137,7 +137,7 @@ export class BackupsService extends AbstractService {
     id: string,
     config: BackupConfig,
   ): Observable<BackupConfig> {
-    let data = serialize(config);
+    const data = serialize(config);
 
     //remove null properties
     Object.keys(data).forEach((key) => data[key] == null && delete data[key]);
@@ -176,8 +176,7 @@ export class BackupsService extends AbstractService {
       },
     );
   }
-  createSource(idConfig:string,createBackupSourceDto:BackupConfigSourceDto){
-
+  createSource(idConfig: string, createBackupSourceDto: BackupConfigSourceDto) {
     const data = serialize(createBackupSourceDto);
     return this.httpClient
       .post<BackupConfigSource>(
@@ -192,7 +191,7 @@ export class BackupsService extends AbstractService {
       );
   }
 
-  updateSource(idSource:string,backupSource:BackupConfigSourceDto){
+  updateSource(idSource: string, backupSource: BackupConfigSourceDto) {
     const data = serialize(backupSource);
     return this.httpClient
       .patch<BackupConfigSource>(
@@ -206,8 +205,10 @@ export class BackupsService extends AbstractService {
         }),
       );
   }
-  createDestination(idConfig:string,createBackupDestinationDto:BackupConfigDestinationDto){
-
+  createDestination(
+    idConfig: string,
+    createBackupDestinationDto: BackupConfigDestinationDto,
+  ) {
     const data = serialize(createBackupDestinationDto);
     return this.httpClient
       .post<BackupConfigDestination>(
@@ -222,7 +223,10 @@ export class BackupsService extends AbstractService {
       );
   }
 
-  updateDestination(idDestination:string,backupDestination:BackupConfigDestinationDto){
+  updateDestination(
+    idDestination: string,
+    backupDestination: BackupConfigDestinationDto,
+  ) {
     const data = serialize(backupDestination);
     return this.httpClient
       .patch<BackupConfigDestination>(
@@ -236,8 +240,6 @@ export class BackupsService extends AbstractService {
         }),
       );
   }
-
-
 
   deleteDestination(id: string): Observable<void> {
     return this.httpClient.delete<void>(
@@ -288,12 +290,12 @@ export class BackupsService extends AbstractService {
     defaultFilename: string = 'unknown',
   ) {
     if (res.headers.get('content-disposition') !== null) {
-      let disposition = res.headers.get('content-disposition');
+      const disposition = res.headers.get('content-disposition');
       let filename = defaultFilename;
 
       if (disposition && disposition.indexOf('attachment') !== -1) {
-        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-        var matches = filenameRegex.exec(disposition);
+        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        const matches = filenameRegex.exec(disposition);
         if (matches !== null && matches[1]) {
           filename = matches[1].replace(/['"]/g, '');
         }

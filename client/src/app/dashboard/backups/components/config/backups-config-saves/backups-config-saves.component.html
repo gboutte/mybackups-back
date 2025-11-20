@@ -3,24 +3,32 @@
 </ng-template>
 
 <ng-template #loaded>
- {{backupConfig.name}}
+  {{ backupConfig.name }}
 
   <div class="saves">
-  <gl-card *ngFor="let save of backupConfig.saves">
-    <div class="card">
-      <div class="left-part">
-        {{ 'dashboard.backups.modal.saves.save_card.title' | translate: {dateCreated: moment(save.date_created).format('DD/MM/YYYY HH:mm')} }}
-      </div>
-      <div class="right-part">
-        <gl-button [round]="true" (click)="downloadBackup(save.id)">
-          <i class="ph-thin ph-download-simple" style="font-size:20px"></i>
-        </gl-button>
+    <gl-card *ngFor="let save of backupConfig.saves">
+      <div class="card">
+        <div class="left-part">
+          {{
+            'dashboard.backups.modal.saves.save_card.title'
+              | translate
+                : {
+                    dateCreated: moment(save.date_created).format(
+                      'DD/MM/YYYY HH:mm'
+                    )
+                  }
+          }}
+        </div>
+        <div class="right-part">
+          <gl-button [round]="true" (click)="downloadBackup(save.id)">
+            <i class="ph-thin ph-download-simple" style="font-size: 20px"></i>
+          </gl-button>
 
-        <gl-button [round]="true" (click)="deleteBackupSave(save)">
-          <i class="ph-thin ph-trash-simple" style="font-size:20px"></i>
-        </gl-button>
+          <gl-button [round]="true" (click)="deleteBackupSave(save)">
+            <i class="ph-thin ph-trash-simple" style="font-size: 20px"></i>
+          </gl-button>
+        </div>
       </div>
-    </div>
-  </gl-card>
+    </gl-card>
   </div>
 </ng-template>

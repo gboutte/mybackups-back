@@ -26,13 +26,13 @@ export class AuthInterceptor implements HttpInterceptor {
     if (this.sessionService.isSessionValid()) {
       const request = this.addAuthHeader(req);
       return next.handle(request).pipe(
-        catchError((error) => {
+        catchError((error: unknown) => {
           return this.handleResponseError(error, req, next);
         }),
       );
     } else {
       return next.handle(req).pipe(
-        catchError((error) => {
+        catchError((error: unknown) => {
           return this.handleResponseError(error, req, next);
         }),
       );

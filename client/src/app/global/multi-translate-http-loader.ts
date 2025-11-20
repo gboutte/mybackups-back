@@ -8,7 +8,7 @@ export class MultiTranslateHttpLoader implements TranslateLoader {
   /**
    * Gets the translations from the server
    */
-  public getTranslation(lang: string): Observable<Object> {
+  public getTranslation(lang: string): Observable<object> {
     // We load two files, one for the common translations and one for the specific translations
     const observables: Observable<any>[] = [];
     observables.push(this.http.get(`/assets/i18n/${lang}.json`));

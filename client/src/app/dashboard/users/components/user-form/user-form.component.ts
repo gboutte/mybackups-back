@@ -43,7 +43,7 @@ export class UserFormComponent {
             next: () => {
               this.modalRef.close();
             },
-            error: (error) => {
+            error: (error: unknown) => {
               this.toastService.alert({
                 title: 'Error',
                 description:
@@ -61,7 +61,7 @@ export class UserFormComponent {
             next: () => {
               this.modalRef.close();
             },
-            error: (error) => {
+            error: (error: unknown) => {
               this.toastService.alert({
                 title: 'Error',
                 description:

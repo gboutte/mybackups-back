@@ -55,7 +55,7 @@ export class SessionService {
   public setTokens(access_token: string) {
     localStorage.setItem('access_token', access_token);
 
-    const payload = <JWTPayload>jwtDecode(access_token);
+    const payload = jwtDecode(access_token) as JWTPayload;
     const expiresAt = moment.unix(payload.exp);
     localStorage.setItem(
       'access_expires_at',

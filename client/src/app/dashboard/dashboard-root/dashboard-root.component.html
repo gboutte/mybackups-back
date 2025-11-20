@@ -1,10 +1,10 @@
 <ng-template [ngIfElse]="loaded" [ngIf]="loading">
-  <gl-loader/>
+  <gl-loader />
 </ng-template>
 <ng-template #loaded>
   <gl-navbar key="navbar-mybackups">
     <div class="logo">
-      <img src="/assets/logos/logo_orange.svg"/>
+      <img src="/assets/logos/logo_orange.svg" />
     </div>
   </gl-navbar>
   <gl-sidebar [menu]="menu" key="navbar-mybackups"></gl-sidebar>
@@ -14,4 +14,3 @@
     </gl-card>
   </gl-page>
 </ng-template>
-

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalConfig, ModalRef } from '@gboutte/glassui';
+import { BackupConfigCreateDto } from '../../../dto/backup-config-create.dto';
+import { BackupConfigUpdateDto } from '../../../dto/backup-config-update.dto';
 import { BackupConfig } from '../../../models/config/backup-config.model';
 import { BackupsService } from '../../../services/backups.service';
-import {BackupConfigCreateDto} from "../../../dto/backup-config-create.dto";
-import {BackupConfigUpdateDto} from "../../../dto/backup-config-update.dto";
 
 @Component({
   selector: 'mb-backup-config-form',
@@ -56,9 +56,8 @@ export class BackupConfigFormComponent {
     }
   }
 
-  protected getBackupConfigCreateDto():BackupConfigCreateDto {
-
-    let backupConfigDto:BackupConfigCreateDto = new BackupConfigCreateDto();
+  protected getBackupConfigCreateDto(): BackupConfigCreateDto {
+    const backupConfigDto: BackupConfigCreateDto = new BackupConfigCreateDto();
     backupConfigDto.name = this.name.value;
     backupConfigDto.frequency = this.frequency.value;
     backupConfigDto.enabled = this.enabled.value;
@@ -66,8 +65,8 @@ export class BackupConfigFormComponent {
 
     return backupConfigDto;
   }
-  protected getBackupConfigUpdateDto():BackupConfigUpdateDto {
-    let backupConfigDto:BackupConfigUpdateDto = new BackupConfigUpdateDto();
+  protected getBackupConfigUpdateDto(): BackupConfigUpdateDto {
+    const backupConfigDto: BackupConfigUpdateDto = new BackupConfigUpdateDto();
     backupConfigDto.id = this.modalConfig.data.config.id;
     backupConfigDto.name = this.name.value;
     backupConfigDto.frequency = this.frequency.value;

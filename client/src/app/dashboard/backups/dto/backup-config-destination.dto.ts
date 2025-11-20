@@ -1,5 +1,5 @@
 import { serializable } from 'serializr';
-import {anyType} from "../../../global/any-type-serializable";
+import { anyType } from '../../../global/any-type-serializable';
 export class BackupConfigDestinationDto {
   @serializable
   id!: string;

@@ -1,5 +1,4 @@
-import {serializable} from "serializr";
-
+import { serializable } from 'serializr';
 
 export class BackupConfigCreateDto {
   @serializable
