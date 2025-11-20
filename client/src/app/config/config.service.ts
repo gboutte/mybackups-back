@@ -1,16 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, take } from 'rxjs';
 import { AbstractService } from '../global/abstract.service';
 import { ConfigStore } from './config.store';
 
 @Injectable()
 export class ConfigService extends AbstractService {
-  private configStore: ConfigStore;
-  constructor(httpClient: HttpClient, configStore: ConfigStore) {
-    super(httpClient);
-    this.configStore = configStore;
-  }
+  private configStore: ConfigStore = inject(ConfigStore);
 
   getConfig(): Observable<{ isInstalled: boolean }> {
     return this.httpClient.get<{ isInstalled: boolean }>(

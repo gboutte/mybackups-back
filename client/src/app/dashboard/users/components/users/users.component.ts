@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ModalService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from '../../models/user.model';
@@ -11,30 +11,21 @@ import { UserFormComponent } from '../user-form/user-form.component';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-  users!: User[];
-  private usersService: UsersService;
-  private modalService: ModalService;
-  private translate: TranslateService;
-  constructor(
-    usersService: UsersService,
-    modalService: ModalService,
-    translate: TranslateService,
-  ) {
-    this.usersService = usersService;
-    this.modalService = modalService;
-    this.translate = translate;
-  }
+  protected users!: User[];
+  private usersService: UsersService = inject(UsersService);
+  private modalService: ModalService = inject(ModalService);
+  private translate: TranslateService = inject(TranslateService);
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.refresh();
   }
 
-  refresh() {
-    this.usersService.getAll().subscribe((users) => {
+  private refresh(): void {
+    this.usersService.getAll().subscribe((users: User[]) => {
       this.users = users;
     });
   }
-  add() {
+  protected add(): void {
     this.modalService
       .open(UserFormComponent, {
         title: this.translate.instant('dashboard.users.modal.add.title'),
@@ -45,7 +36,7 @@ export class UsersComponent implements OnInit {
         },
       });
   }
-  edit(user: User) {
+  protected edit(user: User): void {
     this.modalService
       .open(UserFormComponent, {
         title: this.translate.instant('dashboard.users.modal.edit.title', {

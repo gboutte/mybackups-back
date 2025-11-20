@@ -3,9 +3,9 @@ import { date } from '../../../global/date-serializable';
 
 export class User {
   @serializable
-  id: string = '';
+  public id: string = '';
   @serializable
-  username: string = '';
+  public username: string = '';
   @serializable(date)
-  date_created: Date = new Date();
+  public date_created: Date = new Date();
 }

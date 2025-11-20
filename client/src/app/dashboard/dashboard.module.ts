@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, OnDestroy } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContentModule, NavigationModule } from '@gboutte/glassui';
-import { Subscription } from 'rxjs';
 import { ConfigStore } from '../config/config.store';
 import { DashboardRootComponent } from './dashboard-root/dashboard-root.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
@@ -16,20 +15,12 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
     ContentModule,
   ],
 })
-export class DashboardModule implements OnDestroy {
-  private installSubscription!: Subscription;
-
+export class DashboardModule {
   constructor(configStore: ConfigStore, router: Router) {
-    this.installSubscription = configStore.isInstalled$.subscribe(
-      (isInstalled) => {
-        if (isInstalled !== null && !isInstalled) {
-          router.navigate(['/installation']);
-        }
-      },
-    );
-  }
-
-  ngOnDestroy() {
-    this.installSubscription.unsubscribe();
+    configStore.isInstalled$.subscribe((isInstalled: boolean | null) => {
+      if (isInstalled !== null && !isInstalled) {
+        router.navigate(['/installation']);
+      }
+    });
   }
 }

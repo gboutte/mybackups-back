@@ -1,10 +1,12 @@
-import { custom } from 'serializr';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-export const anyType = custom(
-  function (sourcePropertyValue) {
+import { custom, PropSchema } from 'serializr';
+
+export const anyType: PropSchema = custom(
+  function (sourcePropertyValue: any) {
     return sourcePropertyValue;
   },
-  function (value) {
+  function (value: any): any {
     return value;
   },
 );

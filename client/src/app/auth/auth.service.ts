@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { deserialize } from 'serializr';
@@ -11,10 +10,6 @@ export interface LoginTokens {
 
 @Injectable()
 export class AuthService extends AbstractService {
-  constructor(httpClient: HttpClient) {
-    super(httpClient);
-  }
-
   getUserInfo(): Observable<User> {
     return this.httpClient
       .get(this.getUrl() + '/users/me', this.httpOptions)

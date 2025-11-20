@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   HttpEvent,
   HttpHandler,
@@ -9,7 +10,6 @@ import {
   Observable,
   concatMap,
   delay,
-  finalize,
   of,
   retryWhen,
   tap,
@@ -18,18 +18,18 @@ import {
 
 @Injectable()
 export class RetryInterceptor implements HttpInterceptor {
-  private retryCount = 5;
-  private retryWaitMilliSeconds = 2000;
+  private retryCount: number = 5;
+  private retryWaitMilliSeconds: number = 2000;
 
-  intercept(
+  public intercept(
     request: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     let numberOfTry: number = 0;
     return next.handle(request).pipe(
-      retryWhen((error) =>
+      retryWhen((error: Observable<any>) =>
         error.pipe(
-          concatMap((error, count) => {
+          concatMap((error: any, count: number) => {
             numberOfTry = count;
             if (count <= this.retryCount && error.status === 504) {
               return of(error);
@@ -37,14 +37,13 @@ export class RetryInterceptor implements HttpInterceptor {
             return throwError(error);
           }),
           delay(this.retryWaitMilliSeconds),
-          tap((err) =>
+          tap(() =>
             console.log(
               `${request.url}: Retrying request (${numberOfTry + 1})...`,
             ),
           ),
         ),
       ),
-      finalize(() => {}),
     );
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalConfig, ModalRef, ToastService } from '@gboutte/glassui';
 import { UsersService } from '../../services/users.service';
@@ -9,31 +9,22 @@ import { UsersService } from '../../services/users.service';
   styleUrls: ['./user-form.component.scss'],
 })
 export class UserFormComponent {
-  userForm = new FormGroup({
+  protected userForm: FormGroup = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', Validators.required),
   });
-  usersService: UsersService;
-  modalRef: ModalRef;
-  toastService: ToastService;
-  modalConfig: ModalConfig;
+  private usersService: UsersService = inject(UsersService);
+  private modalRef: ModalRef = inject(ModalRef);
+  private toastService: ToastService = inject(ToastService);
+  protected modalConfig: ModalConfig = inject(ModalConfig);
 
-  constructor(
-    usersService: UsersService,
-    modalRef: ModalRef,
-    modalConfig: ModalConfig,
-    toastService: ToastService,
-  ) {
-    this.usersService = usersService;
-    this.modalRef = modalRef;
-    this.toastService = toastService;
-    this.modalConfig = modalConfig;
+  constructor() {
     if (this.modalConfig.data?.user) {
       this.username.setValue(this.modalConfig.data.user.username);
       this.username.disable();
     }
   }
-  save() {
+  protected save(): void {
     if (this.userForm.valid && !this.userForm.disabled) {
       this.userForm.disable();
       if (this.modalConfig.data?.user) {
@@ -43,7 +34,7 @@ export class UserFormComponent {
             next: () => {
               this.modalRef.close();
             },
-            error: (error: unknown) => {
+            error: () => {
               this.toastService.alert({
                 title: 'Error',
                 description:
@@ -61,7 +52,7 @@ export class UserFormComponent {
             next: () => {
               this.modalRef.close();
             },
-            error: (error: unknown) => {
+            error: () => {
               this.toastService.alert({
                 title: 'Error',
                 description:
@@ -75,11 +66,11 @@ export class UserFormComponent {
       }
     }
   }
-  get username(): FormControl {
+  protected get username(): FormControl {
     return this.userForm.get('username') as FormControl;
   }
 
-  get password(): FormControl {
+  protected get password(): FormControl {
     return this.userForm.get('password') as FormControl;
   }
 }

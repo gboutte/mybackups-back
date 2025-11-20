@@ -1,5 +1,5 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { Observable, map } from 'rxjs';
 import { deserialize, serialize } from 'serializr';
@@ -18,11 +18,7 @@ import { BackupsStore } from '../store/backups.store';
 
 @Injectable()
 export class BackupsService extends AbstractService {
-  private backupsStore: BackupsStore;
-  constructor(httpClient: HttpClient, backupStore: BackupsStore) {
-    super(httpClient);
-    this.backupsStore = backupStore;
-  }
+  private backupsStore: BackupsStore = inject(BackupsStore);
 
   getTypes(): Observable<BackupType[]> {
     return this.httpClient
