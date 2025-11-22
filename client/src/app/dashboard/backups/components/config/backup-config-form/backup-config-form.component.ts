@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalConfig, ModalRef } from '@gboutte/glassui';
 import { BackupConfigCreateDto } from '../../../dto/backup-config-create.dto';
 import { BackupConfigUpdateDto } from '../../../dto/backup-config-update.dto';
-import { BackupConfig } from '../../../models/config/backup-config.model';
 import { BackupsService } from '../../../services/backups.service';
 
 @Component({
@@ -12,42 +11,35 @@ import { BackupsService } from '../../../services/backups.service';
   styleUrls: ['./backup-config-form.component.scss'],
 })
 export class BackupConfigFormComponent {
-  backupsService: BackupsService;
-  modalRef!: ModalRef;
-  modalConfig!: ModalConfig;
+  private backupsService: BackupsService = inject(BackupsService);
+  private modalRef!: ModalRef = inject(ModalRef);
+  protected modalConfig!: ModalConfig = inject(ModalConfig);
 
-  configForm: FormGroup = new FormGroup({
+  protected configForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     frequency: new FormControl('* * * * *', [Validators.required]),
     enabled: new FormControl(true, [Validators.required]),
     to_keep: new FormControl(5, [Validators.required]),
   });
 
-  constructor(
-    backupsService: BackupsService,
-    modalRef: ModalRef,
-    modalConfig: ModalConfig,
-  ) {
-    this.backupsService = backupsService;
-    this.modalRef = modalRef;
-    this.modalConfig = modalConfig;
+  constructor() {
     if (this.modalConfig.data?.config) {
       this.configForm.patchValue(this.modalConfig.data.config);
     }
   }
 
-  save() {
+  protected save(): void {
     if (this.configForm.valid) {
       if (this.modalConfig.data?.config) {
         this.backupsService
           .updateBackupConfig(this.getBackupConfigUpdateDto())
-          .subscribe((config: BackupConfig) => {
+          .subscribe(() => {
             this.modalRef.close(true);
           });
       } else {
         this.backupsService
           .createBackupConfig(this.getBackupConfigCreateDto())
-          .subscribe((config: BackupConfig) => {
+          .subscribe(() => {
             this.modalRef.close(true);
           });
       }
@@ -75,19 +67,19 @@ export class BackupConfigFormComponent {
     return backupConfigDto;
   }
 
-  get name(): FormControl {
+  protected get name(): FormControl {
     return this.configForm.get('name') as FormControl;
   }
 
-  get frequency(): FormControl {
+  protected get frequency(): FormControl {
     return this.configForm.get('frequency') as FormControl;
   }
 
-  get enabled(): FormControl {
+  protected get enabled(): FormControl {
     return this.configForm.get('enabled') as FormControl;
   }
 
-  get to_keep(): FormControl {
+  protected get to_keep(): FormControl {
     return this.configForm.get('to_keep') as FormControl;
   }
 }

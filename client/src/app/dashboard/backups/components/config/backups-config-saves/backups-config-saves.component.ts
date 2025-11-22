@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalConfig, ModalRef, ModalService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,36 +15,18 @@ import { BackupsStore } from '../../../store/backups.store';
   styleUrls: ['./backups-config-saves.component.scss'],
 })
 export class BackupsConfigSavesComponent {
-  private backupsService: BackupsService;
-  private modalService: ModalService;
-  private translate: TranslateService;
-  private route: ActivatedRoute;
-  private router: Router;
-  private backupsStore: BackupsStore;
-  modalRef!: ModalRef;
-  modalConfig!: ModalConfig;
+  private backupsService: BackupsService = inject(BackupsService);
+  private modalService: ModalService = inject(ModalService);
+  private translate: TranslateService = inject(TranslateService);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private router: Router = inject(Router);
+  private backupsStore: BackupsStore = inject(BackupsStore);
+  private modalRef!: ModalRef = inject(ModalRef);
+  private modalConfig!: ModalConfig = inject(ModalConfig);
 
-  types?: BackupType[];
-  backupConfig!: BackupConfig;
-  constructor(
-    route: ActivatedRoute,
-    backupsService: BackupsService,
-    modalService: ModalService,
-    translate: TranslateService,
-    router: Router,
-    backupsStore: BackupsStore,
-    modalRef: ModalRef,
-    modalConfig: ModalConfig,
-  ) {
-    this.backupsService = backupsService;
-    this.modalService = modalService;
-    this.translate = translate;
-    this.route = route;
-    this.router = router;
-    this.backupsStore = backupsStore;
-    this.modalRef = modalRef;
-    this.modalConfig = modalConfig;
-
+  private types?: BackupType[];
+  protected backupConfig!: BackupConfig;
+  constructor() {
     if (this.modalConfig.data?.config) {
       this.refreshConfig();
     } else {
@@ -54,7 +36,7 @@ export class BackupsConfigSavesComponent {
     this.types = this.backupsStore.types();
   }
 
-  refreshConfig() {
+  private refreshConfig(): void {
     this.backupsService
       .getBackupConfig(this.modalConfig.data?.config.id)
       .subscribe((config: BackupConfig) => {
@@ -62,10 +44,10 @@ export class BackupsConfigSavesComponent {
       });
   }
 
-  downloadBackup(id: string) {
+  protected downloadBackup(id: string): void {
     this.backupsService.downloadBackupSave(id);
   }
-  deleteBackupSave(save: BackupSave) {
+  protected deleteBackupSave(save: BackupSave): void {
     this.modalService
       .confirm(
         this.translate.instant(
@@ -86,7 +68,7 @@ export class BackupsConfigSavesComponent {
           ),
         },
       )
-      .subscribe((result) => {
+      .subscribe((result: boolean) => {
         if (result) {
           this.backupsService.deleteBackupSave(save.id).subscribe(() => {
             this.refreshConfig();
@@ -94,5 +76,5 @@ export class BackupsConfigSavesComponent {
         }
       });
   }
-  protected readonly moment = moment;
+  protected readonly moment: moment.Moment = moment;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,32 +16,17 @@ import { EndpointFormComponent } from './endpoint-form/endpoint-form.component';
   styleUrls: ['./backups-config-settings.component.scss'],
 })
 export class BackupsConfigSettingsComponent implements OnInit {
-  private backupsService: BackupsService;
-  private modalService: ModalService;
-  private translate: TranslateService;
-  private route: ActivatedRoute;
-  private router: Router;
-  private backupsStore: BackupsStore;
-  types?: BackupType[];
+  private backupsService: BackupsService = inject(BackupsService);
+  private modalService: ModalService = inject(ModalService);
+  private translate: TranslateService = inject(TranslateService);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private router: Router = inject(Router);
+  private backupsStore: BackupsStore = inject(BackupsStore);
+  protected types?: BackupType[];
 
-  backupConfig!: BackupConfig;
-  constructor(
-    route: ActivatedRoute,
-    backupsService: BackupsService,
-    modalService: ModalService,
-    translate: TranslateService,
-    router: Router,
-    backupsStore: BackupsStore,
-  ) {
-    this.backupsService = backupsService;
-    this.modalService = modalService;
-    this.translate = translate;
-    this.route = route;
-    this.router = router;
-    this.backupsStore = backupsStore;
-  }
+  protected backupConfig!: BackupConfig;
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     if (this.route.snapshot.params['id'] !== undefined) {
       this.refreshConfig();
     } else {
@@ -51,15 +36,15 @@ export class BackupsConfigSettingsComponent implements OnInit {
     this.types = this.backupsStore.types();
   }
 
-  refreshConfig() {
+  protected refreshConfig(): void {
     this.backupsService
       .getBackupConfig(this.route.snapshot.params['id'])
-      .subscribe((config: BackupConfig) => {
+      .subscribe((config: BackupConfig): void => {
         this.backupConfig = config;
       });
   }
 
-  addSource() {
+  protected addSource(): void {
     this.modalService
       .open(EndpointFormComponent, {
         data: {
@@ -71,14 +56,14 @@ export class BackupsConfigSettingsComponent implements OnInit {
         ),
       })
       .subscribe({
-        next: (res) => {
+        next: (res: boolean) => {
           if (res) {
             this.refreshConfig();
           }
         },
       });
   }
-  editSource(source: BackupConfigSource) {
+  protected editSource(source: BackupConfigSource): void {
     this.modalService
       .open(EndpointFormComponent, {
         data: {
@@ -91,7 +76,7 @@ export class BackupsConfigSettingsComponent implements OnInit {
         ),
       })
       .subscribe({
-        next: (res) => {
+        next: (res: boolean) => {
           if (res) {
             this.refreshConfig();
           }
@@ -99,7 +84,7 @@ export class BackupsConfigSettingsComponent implements OnInit {
       });
   }
 
-  deleteSource(source: BackupConfigSource) {
+  protected deleteSource(source: BackupConfigSource): void {
     this.modalService
       .confirm(
         this.translate.instant(
@@ -110,7 +95,7 @@ export class BackupsConfigSettingsComponent implements OnInit {
         ),
       )
       .subscribe({
-        next: (res) => {
+        next: (res: void) => {
           if (res) {
             this.backupsService.deleteSource(source.id).subscribe(() => {
               this.refreshConfig();
@@ -120,7 +105,7 @@ export class BackupsConfigSettingsComponent implements OnInit {
       });
   }
 
-  deleteDestination(destination: BackupConfigDestination) {
+  protected deleteDestination(destination: BackupConfigDestination): void {
     this.modalService
       .confirm(
         this.translate.instant(
@@ -131,7 +116,7 @@ export class BackupsConfigSettingsComponent implements OnInit {
         ),
       )
       .subscribe({
-        next: (res) => {
+        next: (res: boolean) => {
           if (res) {
             this.backupsService
               .deleteDestination(destination.id)
@@ -143,7 +128,7 @@ export class BackupsConfigSettingsComponent implements OnInit {
       });
   }
 
-  addDestination() {
+  protected addDestination(): void {
     this.modalService
       .open(EndpointFormComponent, {
         title: this.translate.instant(
@@ -155,14 +140,14 @@ export class BackupsConfigSettingsComponent implements OnInit {
         },
       })
       .subscribe({
-        next: (res) => {
+        next: (res: boolean) => {
           if (res) {
             this.refreshConfig();
           }
         },
       });
   }
-  editDestination(destination: BackupConfigDestination) {
+  protected editDestination(destination: BackupConfigDestination): void {
     this.modalService
       .open(EndpointFormComponent, {
         title: this.translate.instant(
@@ -175,7 +160,7 @@ export class BackupsConfigSettingsComponent implements OnInit {
         },
       })
       .subscribe({
-        next: (res) => {
+        next: (res: boolean) => {
           if (res) {
             this.refreshConfig();
           }
