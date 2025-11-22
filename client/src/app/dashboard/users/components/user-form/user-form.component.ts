@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
   FormControl,
@@ -21,13 +20,7 @@ import { UsersService } from '../../services/users.service';
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    InputsModule,
-    NgIf,
-    ButtonsModule,
-    TranslateModule,
-  ],
+  imports: [ReactiveFormsModule, InputsModule, ButtonsModule, TranslateModule],
 })
 export class UserFormComponent {
   protected userForm: FormGroup = new FormGroup({

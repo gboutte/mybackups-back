@@ -1,4 +1,3 @@
-import { NgFor } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonsModule, ContentModule, ModalService } from '@gboutte/glassui';
@@ -13,7 +12,7 @@ import { BackupsConfigSavesComponent } from '../config/backups-config-saves/back
   templateUrl: './backups.component.html',
   styleUrls: ['./backups.component.scss'],
   standalone: true,
-  imports: [ButtonsModule, NgFor, ContentModule, RouterLink, TranslateModule],
+  imports: [ButtonsModule, ContentModule, RouterLink, TranslateModule],
 })
 export class BackupsComponent implements OnInit {
   private backupsService: BackupsService = inject(BackupsService);

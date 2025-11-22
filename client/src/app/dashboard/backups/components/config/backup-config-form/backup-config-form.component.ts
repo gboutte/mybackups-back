@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
   FormControl,
@@ -27,7 +26,6 @@ import { BackupsService } from '../../../services/backups.service';
     ReactiveFormsModule,
     InputsModule,
     CheckboxModule,
-    NgIf,
     ButtonsModule,
     TranslateModule,
   ],

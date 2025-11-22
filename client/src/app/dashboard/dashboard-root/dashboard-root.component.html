@@ -1,7 +1,6 @@
-<ng-template [ngIfElse]="loaded" [ngIf]="loading">
+@if (loading) {
   <gl-loader />
-</ng-template>
-<ng-template #loaded>
+} @else {
   <gl-navbar key="navbar-mybackups">
     <div class="logo">
       <img src="/assets/logos/logo_orange.svg" />
@@ -13,4 +12,4 @@
       <router-outlet></router-outlet>
     </gl-card>
   </gl-page>
-</ng-template>
+}

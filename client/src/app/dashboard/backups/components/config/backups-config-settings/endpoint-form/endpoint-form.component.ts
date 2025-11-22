@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -42,9 +41,7 @@ import { BackupsStore } from '../../../../store/backups.store';
   imports: [
     ReactiveFormsModule,
     SelectsModule,
-    NgIf,
     ContentModule,
-    NgFor,
     InputsModule,
     CheckboxModule,
     ButtonsModule,

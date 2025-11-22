@@ -10,12 +10,16 @@
       type="password"
     />
     <div class="submit">
-      <gl-button *ngIf="modalConfig.data?.user === undefined">{{
-        'dashboard.users.modal.add.form.submit' | translate
-      }}</gl-button>
-      <gl-button *ngIf="modalConfig.data?.user !== undefined">{{
-        'dashboard.users.modal.edit.form.submit' | translate
-      }}</gl-button>
+      @if (modalConfig.data?.user === undefined) {
+        <gl-button>{{
+          'dashboard.users.modal.add.form.submit' | translate
+        }}</gl-button>
+      }
+      @if (modalConfig.data?.user !== undefined) {
+        <gl-button>{{
+          'dashboard.users.modal.edit.form.submit' | translate
+        }}</gl-button>
+      }
     </div>
   </form>
 </div>

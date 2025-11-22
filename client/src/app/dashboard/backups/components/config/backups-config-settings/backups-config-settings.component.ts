@@ -1,4 +1,4 @@
-import { KeyValuePipe, NgFor, NgIf } from '@angular/common';
+import { KeyValuePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ButtonsModule, ContentModule, ModalService } from '@gboutte/glassui';
@@ -18,11 +18,9 @@ import { EndpointFormComponent } from './endpoint-form/endpoint-form.component';
   styleUrls: ['./backups-config-settings.component.scss'],
   standalone: true,
   imports: [
-    NgIf,
     ContentModule,
     ButtonsModule,
     RouterLink,
-    NgFor,
     KeyValuePipe,
     TranslateModule,
     BackupTranslatePipe,

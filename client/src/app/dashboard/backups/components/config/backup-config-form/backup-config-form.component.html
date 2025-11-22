@@ -18,12 +18,16 @@
     />
 
     <div class="submit">
-      <gl-button *ngIf="modalConfig.data?.config === undefined">{{
-        'dashboard.backups.modal.add.form.submit' | translate
-      }}</gl-button>
-      <gl-button *ngIf="modalConfig.data?.config !== undefined">{{
-        'dashboard.backups.modal.edit.form.submit' | translate
-      }}</gl-button>
+      @if (modalConfig.data?.config === undefined) {
+        <gl-button>{{
+          'dashboard.backups.modal.add.form.submit' | translate
+        }}</gl-button>
+      }
+      @if (modalConfig.data?.config !== undefined) {
+        <gl-button>{{
+          'dashboard.backups.modal.edit.form.submit' | translate
+        }}</gl-button>
+      }
     </div>
   </form>
 </div>

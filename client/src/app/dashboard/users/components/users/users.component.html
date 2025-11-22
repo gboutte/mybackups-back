@@ -1,7 +1,6 @@
-<ng-template [ngIfElse]="loaded" [ngIf]="users === undefined">
+@if (users === undefined) {
   <gl-loader />
-</ng-template>
-<ng-template #loaded>
+} @else {
   <h1>{{ 'dashboard.users.title' | translate }}</h1>
   <div style="margin: 10px 0">
     <gl-button (click)="add()"
@@ -18,14 +17,16 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.username }}</td>
-        <td>{{ user.date_created | date: 'dd/mm/YYYY' }}</td>
-        <td class="actions">
-          <gl-button [round]="true" (click)="edit(user)">
-            <i class="ph-thin ph-gear-six" style="font-size: 20px"></i>
-          </gl-button>
-        </td>
-      </tr></tbody
+      @for (user of users; track user) {
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.date_created | date: 'dd/mm/YYYY' }}</td>
+          <td class="actions">
+            <gl-button [round]="true" (click)="edit(user)">
+              <i class="ph-thin ph-gear-six" style="font-size: 20px"></i>
+            </gl-button>
+          </td>
+        </tr>
+      }</tbody
   ></gl-table>
-</ng-template>
+}

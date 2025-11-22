@@ -1,4 +1,4 @@
-import { DOCUMENT, NgIf } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { ContentModule, NavigationModule } from '@gboutte/glassui';
@@ -11,7 +11,7 @@ import { SessionService } from '../../auth/session.service';
   templateUrl: './dashboard-root.component.html',
   styleUrls: ['./dashboard-root.component.scss'],
   standalone: true,
-  imports: [NgIf, ContentModule, NavigationModule, RouterOutlet],
+  imports: [ContentModule, NavigationModule, RouterOutlet],
 })
 export class DashboardRootComponent implements OnInit {
   protected loading: boolean = true;

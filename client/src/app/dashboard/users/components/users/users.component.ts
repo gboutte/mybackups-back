@@ -1,4 +1,4 @@
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ButtonsModule, ContentModule, ModalService } from '@gboutte/glassui';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -11,14 +11,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   standalone: true,
-  imports: [
-    NgIf,
-    ContentModule,
-    ButtonsModule,
-    NgFor,
-    DatePipe,
-    TranslateModule,
-  ],
+  imports: [ContentModule, ButtonsModule, DatePipe, TranslateModule],
 })
 export class UsersComponent implements OnInit {
   protected users!: User[];

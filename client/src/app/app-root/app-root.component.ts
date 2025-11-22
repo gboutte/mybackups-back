@@ -1,20 +1,19 @@
 import { Component, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { RouterOutlet } from '@angular/router';
-import {ConfigService} from "../config/config.service";
+import { TranslateService } from '@ngx-translate/core';
+import { ConfigService } from '../config/config.service';
 
 @Component({
-    selector: 'mb-app-root',
-    templateUrl: './app-root.component.html',
-    styleUrls: ['./app-root.component.scss'],
-    standalone: true,
-    imports: [RouterOutlet],
+  selector: 'mb-app-root',
+  templateUrl: './app-root.component.html',
+  styleUrls: ['./app-root.component.scss'],
+  standalone: true,
+  imports: [RouterOutlet],
 })
 export class AppRootComponent {
   public translate: TranslateService = inject(TranslateService);
-  public configService: ConfigService = inject(ConfigService)
+  public configService: ConfigService = inject(ConfigService);
   constructor() {
-
     this.configService.refreshConfigStore();
     // Register translation languages
     this.translate.addLangs(['en', 'fr']);

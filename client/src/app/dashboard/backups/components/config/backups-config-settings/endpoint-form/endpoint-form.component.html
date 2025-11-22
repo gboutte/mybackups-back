@@ -7,14 +7,13 @@
     />
   </div>
 
-  <ng-template [ngIf]="type.value !== null">
+  @if (type.value !== null) {
     <gl-card>
       {{ 'description' | backupTranslate: selectedType }}
     </gl-card>
-
-    <ng-template ngFor let-parameter [ngForOf]="selectedType.source.parameters">
+    @for (parameter of selectedType.source.parameters; track parameter) {
       <div class="input">
-        <ng-template [ngIf]="parameter.type === 'string'">
+        @if (parameter.type === 'string') {
           <gl-input
             [label]="
               'parameters.source.' + parameter.code + '.name'
@@ -23,8 +22,8 @@
             [formControl]="getParameterControl(parameter.code)"
             [showErrors]="true"
           />
-        </ng-template>
-        <ng-template [ngIf]="parameter.type === 'number'">
+        }
+        @if (parameter.type === 'number') {
           <gl-input
             [label]="
               'parameters.source.' + parameter.code + '.name'
@@ -33,8 +32,8 @@
             [formControl]="getParameterControl(parameter.code)"
             [showErrors]="true"
           />
-        </ng-template>
-        <ng-template [ngIf]="parameter.type === 'boolean'">
+        }
+        @if (parameter.type === 'boolean') {
           <gl-checkbox
             [label]="
               'parameters.source.' + parameter.code + '.name'
@@ -43,7 +42,7 @@
             [formControl]="getParameterControl(parameter.code)"
             [showErrors]="true"
           />
-        </ng-template>
+        }
         <div class="input-description">
           {{
             'parameters.source.' + parameter.code + '.description'
@@ -51,30 +50,25 @@
           }}
         </div>
       </div>
-    </ng-template>
-
+    }
     <gl-button>
-      <ng-template [ngIf]="validating">
+      @if (validating) {
         {{
           'dashboard.backups-settings.modal.endpoint.submit.validating'
             | translate
         }}
-      </ng-template>
-      <ng-template [ngIf]="!validating">
-        <ng-template
-          [ngIf]="this.modalConfig.data.source"
-          [ngIfElse]="addlibelle"
-        >
+      }
+      @if (!validating) {
+        @if (this.modalConfig.data.source) {
           {{
             'dashboard.backups-settings.modal.endpoint.submit.edit' | translate
           }}
-        </ng-template>
-        <ng-template #addlibelle>
+        } @else {
           {{
             'dashboard.backups-settings.modal.endpoint.submit.add' | translate
           }}
-        </ng-template>
-      </ng-template>
+        }
+      }
     </gl-button>
-  </ng-template>
+  }
 </form>

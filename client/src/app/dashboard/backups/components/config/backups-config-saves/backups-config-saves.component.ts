@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
   ButtonsModule,
@@ -20,7 +19,7 @@ import { BackupsStore } from '../../../store/backups.store';
   templateUrl: './backups-config-saves.component.html',
   styleUrls: ['./backups-config-saves.component.scss'],
   standalone: true,
-  imports: [NgIf, ContentModule, NgFor, ButtonsModule, TranslateModule],
+  imports: [ContentModule, ButtonsModule, TranslateModule],
 })
 export class BackupsConfigSavesComponent {
   private backupsService: BackupsService = inject(BackupsService);

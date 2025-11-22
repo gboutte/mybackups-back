@@ -1,16 +1,6 @@
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterOutlet } from '@angular/router';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { AppRootComponent } from './app-root/app-root.component';
-import { AppRoutingModule } from './app-routing.module';
-import { AuthGuard } from './auth/auth.guard';
-import { AuthModule } from './auth/auth.module';
-import { AuthInterceptor } from './auth/interceptor/auth.interceptor';
-import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
-import { RetryInterceptor } from './global/interceptors/retry.interceptor';
 import { MultiTranslateHttpLoader } from './global/multi-translate-http-loader';
 export function HttpLoaderFactory(http: HttpClient): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(http);
