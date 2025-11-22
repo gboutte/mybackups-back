@@ -37,7 +37,7 @@ export class EndpointFormComponent implements OnInit {
   private backupsStore: BackupsStore = inject(BackupsStore);
   private destroyRef: DestroyRef = inject(DestroyRef);
 
-  private modalConfig: ModalConfig = inject(ModalConfig);
+  protected modalConfig: ModalConfig = inject(ModalConfig);
   private modalRef: ModalRef = inject(ModalRef);
 
   protected validating: boolean = false;
