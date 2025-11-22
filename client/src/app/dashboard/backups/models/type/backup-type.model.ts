@@ -5,9 +5,9 @@ import { BackupTypeConfig } from './backup-type-config.model';
 
 export class BackupType {
   @serializable(object(BackupTypeConfig))
-  config!: BackupTypeConfig;
+  public config!: BackupTypeConfig;
   @serializable(object(BackupTypeConfigSource))
-  source!: BackupTypeConfigSource;
+  public source!: BackupTypeConfigSource;
   @serializable(object(BackupTypeConfigDestination))
-  destination!: BackupTypeConfigDestination;
+  public destination!: BackupTypeConfigDestination;
 }

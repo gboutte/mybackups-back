@@ -4,13 +4,13 @@ import { BackupSaveDestination } from './backup-save-destination.model';
 
 export class BackupSave {
   @serializable
-  id: string = '';
+  public id: string = '';
   @serializable(date)
-  date_created: Date = new Date();
+  public date_created: Date = new Date();
   @serializable(list(object(BackupSaveDestination)))
-  destinations: BackupSaveDestination[] = [];
+  public destinations: BackupSaveDestination[] = [];
   @serializable
-  mimetype: string = '';
+  public mimetype: string = '';
   @serializable
-  filename: string = '';
+  public filename: string = '';
 }

@@ -2,9 +2,10 @@ import { serializable } from 'serializr';
 import { anyType } from '../../../global/any-type-serializable';
 export class BackupConfigDestinationDto {
   @serializable
-  id!: string;
+  public id!: string;
   @serializable
-  type: string = '';
+  public type: string = '';
   @serializable(anyType)
-  parameters: any = '';
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public parameters: any = '';
 }

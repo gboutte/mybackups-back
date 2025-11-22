@@ -3,7 +3,7 @@ import { BackupTypeParameter } from './backup-type-parameter.model';
 
 export class BackupTypeConfigDestination {
   @serializable
-  isDestination: boolean = false;
+  public isDestination: boolean = false;
   @serializable(list(object(BackupTypeParameter)))
-  parameters: BackupTypeParameter[] = [];
+  public parameters: BackupTypeParameter[] = [];
 }

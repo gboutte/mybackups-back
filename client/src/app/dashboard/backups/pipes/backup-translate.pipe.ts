@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 import { BackupType } from '../models/type/backup-type.model';
 import { BackupTranslateService } from '../services/backup-translate.service';
 
@@ -6,12 +6,11 @@ import { BackupTranslateService } from '../services/backup-translate.service';
   name: 'backupTranslate',
 })
 export class BackupTranslatePipe implements PipeTransform {
-  private backuptranslateService: BackupTranslateService;
-  constructor(backuptranslateService: BackupTranslateService) {
-    this.backuptranslateService = backuptranslateService;
-  }
+  private backuptranslateService: BackupTranslateService = inject(
+    BackupTranslateService,
+  );
 
-  transform(key: string, backuptype: string | BackupType): string {
+  public transform(key: string, backuptype: string | BackupType): string {
     return this.backuptranslateService.getTranslation(backuptype, key);
   }
 }

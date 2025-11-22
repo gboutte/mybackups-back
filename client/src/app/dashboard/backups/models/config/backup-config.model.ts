@@ -6,21 +6,21 @@ import { BackupConfigSource } from './backup-config-source.model';
 
 export class BackupConfig {
   @serializable
-  id: string | null = null;
+  public id: string | null = null;
   @serializable
-  name: string = '';
+  public name: string = '';
   @serializable
-  frequency: string = '';
+  public frequency: string = '';
   @serializable
-  enabled: boolean = true;
+  public enabled: boolean = true;
   @serializable
-  to_keep: number = 5;
+  public to_keep: number = 5;
   @serializable(date)
-  date_created: Date | null = null;
+  public date_created: Date | null = null;
   @serializable(list(object(BackupConfigSource)))
-  sources: BackupConfigSource[] = [];
+  public sources: BackupConfigSource[] = [];
   @serializable(list(object(BackupConfigDestination)))
-  destinations: BackupConfigDestination[] = [];
+  public destinations: BackupConfigDestination[] = [];
   @serializable(list(object(BackupSave)))
-  saves: BackupSave[] = [];
+  public saves: BackupSave[] = [];
 }

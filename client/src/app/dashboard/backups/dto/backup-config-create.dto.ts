@@ -2,11 +2,11 @@ import { serializable } from 'serializr';
 
 export class BackupConfigCreateDto {
   @serializable
-  name: string = '';
+  public name: string = '';
   @serializable
-  frequency: string = '';
+  public frequency: string = '';
   @serializable
-  enabled: boolean = true;
+  public enabled: boolean = true;
   @serializable
-  to_keep: number = 5;
+  public to_keep: number = 5;
 }

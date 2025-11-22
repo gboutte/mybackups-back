@@ -3,9 +3,9 @@ import { BackupParameterTypeEnum } from '../../../../../../../src/backups/backup
 
 export class BackupTypeParameter {
   @serializable
-  code: string = '';
+  public code: string = '';
   @serializable
-  type: BackupParameterTypeEnum = BackupParameterTypeEnum.STRING;
+  public type: BackupParameterTypeEnum = BackupParameterTypeEnum.STRING;
   @serializable
-  required: boolean = false;
+  public required: boolean = false;
 }

@@ -2,7 +2,7 @@ import { serializable } from 'serializr';
 
 export class BackupConfigTypeValidationError {
   @serializable
-  parameter!: string;
+  public parameter!: string;
   @serializable
-  message!: string;
+  public message!: string;
 }

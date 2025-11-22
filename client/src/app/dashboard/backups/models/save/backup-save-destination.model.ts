@@ -4,9 +4,10 @@ import { date } from '../../../../global/date-serializable';
 
 export class BackupSaveDestination {
   @serializable
-  id: string = '';
+  public id: string = '';
   @serializable(anyType)
-  parameters: any = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public parameters: any = {};
   @serializable(date)
-  date_created: Date = new Date();
+  public date_created: Date = new Date();
 }

@@ -3,7 +3,7 @@ import { BackupConfigTypeValidationError } from './backup-config-type-validation
 
 export class BackupConfigTypeValidation {
   @serializable
-  valid!: boolean;
+  public valid!: boolean;
   @serializable(list(object(BackupConfigTypeValidationError)))
-  errors!: BackupConfigTypeValidationError[];
+  public errors!: BackupConfigTypeValidationError[];
 }

@@ -4,11 +4,12 @@ import { date } from '../../../../global/date-serializable';
 
 export class BackupConfigSource {
   @serializable
-  id!: string;
+  public id!: string;
   @serializable
-  type: string = '';
+  public type: string = '';
   @serializable(anyType)
-  parameters: any = '';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public parameters: any = '';
   @serializable(date)
-  date_created: Date | null = null;
+  public date_created: Date | null = null;
 }
