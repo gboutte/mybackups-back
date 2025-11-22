@@ -15,7 +15,8 @@ import { MultiTranslateHttpLoader } from './global/multi-translate-http-loader';
 export function HttpLoaderFactory(http: HttpClient): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(http);
 }
-@NgModule({
+@NgModule(/* TODO(standalone-migration): clean up removed NgModule class manually. 
+{
   declarations: [AppRootComponent],
   imports: [
     BrowserModule,
@@ -46,7 +47,7 @@ export function HttpLoaderFactory(http: HttpClient): MultiTranslateHttpLoader {
     },
   ],
   bootstrap: [AppRootComponent],
-})
+} */)
 export class AppModule {
   constructor(configService: ConfigService) {
     configService.refreshConfigStore();

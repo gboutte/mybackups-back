@@ -8,7 +8,7 @@ describe('AppRootComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    declarations: [AppRootComponent],
+    imports: [AppRootComponent],
 });
     fixture = TestBed.createComponent(AppRootComponent);
     component = fixture.componentInstance;
