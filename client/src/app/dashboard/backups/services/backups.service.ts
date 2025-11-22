@@ -1,8 +1,9 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { saveAs } from 'file-saver';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { deserialize, serialize } from 'serializr';
+import { Serialized } from 'serializr/lib/core/serialize';
 import { AbstractService } from '../../../global/abstract.service';
 import { cleanDataOfNull } from '../../../global/clean-data-of-null';
 import { BackupConfigCreateDto } from '../dto/backup-config-create.dto';
@@ -20,7 +21,7 @@ import { BackupsStore } from '../store/backups.store';
 export class BackupsService extends AbstractService {
   private backupsStore: BackupsStore = inject(BackupsStore);
 
-  getTypes(): Observable<BackupType[]> {
+  public getTypes(): Observable<BackupType[]> {
     return this.httpClient
       .get<BackupType[]>(this.getUrl() + '/backups/types', this.httpOptions)
       .pipe(
@@ -32,42 +33,50 @@ export class BackupsService extends AbstractService {
       );
   }
 
-  loadBackupsStore(): Observable<BackupType[]> {
+  public loadBackupsStore(): Observable<BackupType[]> {
     return this.getTypes().pipe(
-      map((types) => {
+      tap((types: BackupType[]): void => {
         this.backupsStore.types.set(types);
-        return types;
       }),
     );
   }
 
-  getBackupConfigs(): Observable<BackupConfig[]> {
+  public getBackupConfigs(): Observable<BackupConfig[]> {
     return this.httpClient
-      .get<BackupConfig[]>(this.getUrl() + '/backups/config', this.httpOptions)
+      .get<
+        InstanceType<typeof BackupConfig>[]
+      >(this.getUrl() + '/backups/config', this.httpOptions)
       .pipe(
-        map((backupConfigs: BackupConfig[]) => {
-          return backupConfigs.map((config: BackupConfig) => {
-            return deserialize(BackupConfig, config);
-          });
-        }),
+        map(
+          (
+            backupConfigs: InstanceType<typeof BackupConfig>[],
+          ): BackupConfig[] => {
+            return backupConfigs.map(
+              (config: InstanceType<typeof BackupConfig>) => {
+                return deserialize(BackupConfig, config);
+              },
+            );
+          },
+        ),
       );
   }
 
-  getBackupConfig(id: string): Observable<BackupConfig> {
+  public getBackupConfig(id: string): Observable<BackupConfig> {
     return this.httpClient
-      .get<BackupConfig>(
-        this.getUrl() + `/backups/config/${id}`,
-        this.httpOptions,
-      )
+      .get<
+        InstanceType<typeof BackupConfig>
+      >(this.getUrl() + `/backups/config/${id}`, this.httpOptions)
       .pipe(
-        map((config: BackupConfig) => {
+        map((config: InstanceType<typeof BackupConfig>) => {
           return deserialize(BackupConfig, config);
         }),
       );
   }
 
-  createBackupConfig(config: BackupConfigCreateDto): Observable<BackupConfig> {
-    let data = serialize(config);
+  public createBackupConfig(
+    config: BackupConfigCreateDto,
+  ): Observable<BackupConfig> {
+    let data: Serialized<BackupConfigCreateDto> = serialize(config);
 
     //remove null properties
     data = cleanDataOfNull(data);
@@ -79,79 +88,58 @@ export class BackupsService extends AbstractService {
         this.httpOptions,
       )
       .pipe(
-        map((config: BackupConfig) => {
+        map((config: InstanceType<typeof BackupConfig>): BackupConfig => {
           return deserialize(BackupConfig, config);
         }),
       );
   }
 
-  updateBackupConfig(config: BackupConfigUpdateDto): Observable<BackupConfig> {
-    const id = config.id;
+  public updateBackupConfig(
+    config: BackupConfigUpdateDto,
+  ): Observable<BackupConfig> {
+    const id: string | null = config.id;
     config.id = null;
 
-    let data = serialize(config);
+    let data: Serialized<BackupConfigUpdateDto> = serialize(config);
     //remove null properties
     data = cleanDataOfNull(data);
 
     return this.httpClient
-      .patch<BackupConfig>(
-        this.getUrl() + '/backups/config/' + id,
-        data,
-        this.httpOptions,
-      )
+      .patch<
+        InstanceType<typeof BackupConfig>
+      >(this.getUrl() + '/backups/config/' + id, data, this.httpOptions)
       .pipe(
-        map((config: BackupConfig) => {
+        map((config: InstanceType<typeof BackupConfig>): BackupConfig => {
           return deserialize(BackupConfig, config);
         }),
       );
   }
 
-  validateConfigEndpoint(
+  public validateConfigEndpoint(
     config: BackupConfigDestinationDto | BackupConfigSourceDto,
   ): Observable<BackupConfigTypeValidation> {
-    const data = serialize(config);
+    let data: Serialized<BackupConfigDestinationDto | BackupConfigCreateDto> =
+      serialize(config);
 
     //remove null properties
-    Object.keys(data).forEach((key) => data[key] == null && delete data[key]);
+    data = cleanDataOfNull(data);
 
     return this.httpClient
-      .post<any>(
-        this.getUrl() +
-          '/backups/config/validate/' +
-          (config instanceof BackupConfigSourceDto ? 'source' : 'destination'),
-        data,
-        this.httpOptions,
-      )
+      .post<
+        InstanceType<typeof BackupConfigTypeValidation>
+      >(this.getUrl() + '/backups/config/validate/' + (config instanceof BackupConfigSourceDto ? 'source' : 'destination'), data, this.httpOptions)
       .pipe(
-        map((res: any) => {
-          return serialize(BackupConfigTypeValidation, res);
-        }),
+        map(
+          (
+            res: InstanceType<typeof BackupConfigTypeValidation>,
+          ): BackupConfigTypeValidation => {
+            return deserialize(BackupConfigTypeValidation, res);
+          },
+        ),
       );
   }
 
-  patchBackupConfig(
-    id: string,
-    config: BackupConfig,
-  ): Observable<BackupConfig> {
-    const data = serialize(config);
-
-    //remove null properties
-    Object.keys(data).forEach((key) => data[key] == null && delete data[key]);
-
-    return this.httpClient
-      .patch<BackupConfig>(
-        this.getUrl() + `/backups/config/${id}`,
-        data,
-        this.httpOptions,
-      )
-      .pipe(
-        map((config: BackupConfig) => {
-          return deserialize(BackupConfig, config);
-        }),
-      );
-  }
-
-  deleteBackupConfig(id: string): Observable<void> {
+  public deleteBackupConfig(id: string): Observable<void> {
     return this.httpClient.delete<void>(
       this.getUrl() + `/backups/config/${id}`,
       {
@@ -162,7 +150,7 @@ export class BackupsService extends AbstractService {
     );
   }
 
-  deleteSource(id: string): Observable<void> {
+  public deleteSource(id: string): Observable<void> {
     return this.httpClient.delete<void>(
       this.getUrl() + `/backups/config/source/${id}`,
       {
@@ -172,72 +160,91 @@ export class BackupsService extends AbstractService {
       },
     );
   }
-  createSource(idConfig: string, createBackupSourceDto: BackupConfigSourceDto) {
-    const data = serialize(createBackupSourceDto);
+  public createSource(
+    idConfig: string,
+    createBackupSourceDto: BackupConfigSourceDto,
+  ): Observable<BackupConfigSource> {
+    const data: Serialized<BackupConfigSourceDto> = serialize(
+      createBackupSourceDto,
+    );
     return this.httpClient
-      .post<BackupConfigSource>(
-        `${this.getUrl()}/backups/config/${idConfig}/source`,
-        data,
-        this.httpOptions,
-      )
+      .post<
+        InstanceType<typeof BackupConfigSource>
+      >(`${this.getUrl()}/backups/config/${idConfig}/source`, data, this.httpOptions)
       .pipe(
-        map((config: BackupConfigSource) => {
-          return deserialize(BackupConfigSource, config);
-        }),
+        map(
+          (
+            config: InstanceType<typeof BackupConfigSource>,
+          ): BackupConfigSource => {
+            return deserialize(BackupConfigSource, config);
+          },
+        ),
       );
   }
 
-  updateSource(idSource: string, backupSource: BackupConfigSourceDto) {
-    const data = serialize(backupSource);
+  public updateSource(
+    idSource: string,
+    backupSource: BackupConfigSourceDto,
+  ): Observable<BackupConfigSource> {
+    const data: Serialized<BackupConfigSourceDto> = serialize(backupSource);
     return this.httpClient
-      .patch<BackupConfigSource>(
-        `${this.getUrl()}/backups/config/source/${idSource}`,
-        data,
-        this.httpOptions,
-      )
+      .patch<
+        InstanceType<typeof BackupConfigSource>
+      >(`${this.getUrl()}/backups/config/source/${idSource}`, data, this.httpOptions)
       .pipe(
-        map((config: BackupConfigSource) => {
-          return deserialize(BackupConfigSource, config);
-        }),
+        map(
+          (
+            config: InstanceType<typeof BackupConfigSource>,
+          ): BackupConfigSource => {
+            return deserialize(BackupConfigSource, config);
+          },
+        ),
       );
   }
-  createDestination(
+  public createDestination(
     idConfig: string,
     createBackupDestinationDto: BackupConfigDestinationDto,
-  ) {
-    const data = serialize(createBackupDestinationDto);
+  ): Observable<BackupConfigDestination> {
+    const data: Serialized<BackupConfigDestinationDto> = serialize(
+      createBackupDestinationDto,
+    );
     return this.httpClient
-      .post<BackupConfigDestination>(
-        `${this.getUrl()}/backups/config/${idConfig}/destination`,
-        data,
-        this.httpOptions,
-      )
+      .post<
+        InstanceType<typeof BackupConfigDestination>
+      >(`${this.getUrl()}/backups/config/${idConfig}/destination`, data, this.httpOptions)
       .pipe(
-        map((config: BackupConfigDestination) => {
-          return deserialize(BackupConfigDestination, config);
-        }),
+        map(
+          (
+            config: InstanceType<typeof BackupConfigDestination>,
+          ): BackupConfigDestination => {
+            return deserialize(BackupConfigDestination, config);
+          },
+        ),
       );
   }
 
-  updateDestination(
+  public updateDestination(
     idDestination: string,
     backupDestination: BackupConfigDestinationDto,
-  ) {
-    const data = serialize(backupDestination);
+  ): Observable<BackupConfigDestination> {
+    const data: Serialized<BackupConfigDestinationDto> =
+      serialize(backupDestination);
     return this.httpClient
-      .patch<BackupConfigDestination>(
-        `${this.getUrl()}/backups/config/destination/${idDestination}`,
-        data,
-        this.httpOptions,
-      )
+      .patch<
+        InstanceType<typeof BackupConfigDestination>
+      >(`${this.getUrl()}/backups/config/destination/${idDestination}`, data, this.httpOptions)
       .pipe(
-        map((config: BackupConfigDestination) => {
-          return deserialize(BackupConfigDestination, config);
-        }),
+        map(
+          (
+            config: InstanceType<typeof BackupConfigDestination>,
+          ): BackupConfigDestination => {
+            return deserialize(BackupConfigDestination, config);
+          },
+        ),
       );
   }
 
-  deleteDestination(id: string): Observable<void> {
+  public deleteDestination(id: string): Observable<void> {
     return this.httpClient.delete<void>(
       this.getUrl() + `/backups/config/destination/${id}`,
       {
@@ -248,7 +255,7 @@ export class BackupsService extends AbstractService {
     );
   }
 
-  runBackup(id: string): Observable<void> {
+  public runBackup(id: string): Observable<void> {
     return this.httpClient.post<void>(
       this.getUrl() + `/backups/config/${id}/run`,
       {},
@@ -256,22 +263,22 @@ export class BackupsService extends AbstractService {
     );
   }
 
-  downloadBackupSave(id: string) {
+  public downloadBackupSave(id: string): void {
     this.httpClient
       .get(this.getUrl() + `/backups/config-save/download/${id}`, {
         observe: 'response',
         responseType: 'blob',
       })
-      .subscribe((res) => {
-        const filename = this.getFileNameFromRequest(res);
+      .subscribe((res: HttpResponse<Blob>): void => {
+        const filename: string = this.getFileNameFromRequest(res);
         if (res.body !== null) {
           saveAs(res.body, filename);
         }
       });
   }
 
-  deleteBackupSave(id: string): Observable<any> {
-    return this.httpClient.delete<boolean>(
+  public deleteBackupSave(id: string): Observable<void> {
+    return this.httpClient.delete<void>(
       this.getUrl() + `/backups/config-save/${id}`,
       {
         headers: new HttpHeaders({
@@ -281,17 +288,17 @@ export class BackupsService extends AbstractService {
     );
   }
 
-  getFileNameFromRequest(
+  private getFileNameFromRequest(
     res: HttpResponse<Blob>,
     defaultFilename: string = 'unknown',
-  ) {
+  ): string {
     if (res.headers.get('content-disposition') !== null) {
-      const disposition = res.headers.get('content-disposition');
-      let filename = defaultFilename;
+      const disposition: string | null = res.headers.get('content-disposition');
+      let filename: string = defaultFilename;
 
       if (disposition && disposition.indexOf('attachment') !== -1) {
-        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-        const matches = filenameRegex.exec(disposition);
+        const filenameRegex: RegExp = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        const matches: RegExpExecArray | null = filenameRegex.exec(disposition);
         if (matches !== null && matches[1]) {
           filename = matches[1].replace(/['"]/g, '');
         }

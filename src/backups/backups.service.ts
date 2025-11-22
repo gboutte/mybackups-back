@@ -260,9 +260,9 @@ export class BackupsService {
     // We delete all the saves over the limit
     const maxSaves = backupConfig.to_keep;
     if (backupConfig.saves.length + 1 > maxSaves) {
-      let savesToDelete = backupConfig.saves;
+      let savesToDelete:BackupSave[] = backupConfig.saves;
       savesToDelete = savesToDelete
-        .sort((a, b) => {
+        .sort((a:BackupSave, b:BackupSave):number => {
           return a.date_created.getTime() - b.date_created.getTime();
         })
         .slice(0, savesToDelete.length - (maxSaves - 1));

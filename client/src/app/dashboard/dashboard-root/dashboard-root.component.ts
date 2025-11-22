@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuModel } from '@gboutte/glassui/lib/navigation/sidebar/menu.model';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,31 +11,22 @@ import { SessionService } from '../../auth/session.service';
   styleUrls: ['./dashboard-root.component.scss'],
 })
 export class DashboardRootComponent implements OnInit {
-  loading: boolean = true;
-  menu: MenuModel[] = [];
-  private sessionService: SessionService;
-  private router: Router;
-  private translate: TranslateService;
+  protected loading: boolean = true;
+  protected menu: MenuModel[] = [];
+  private sessionService: SessionService = inject(SessionService);
+  private router: Router = inject(Router);
+  private translate: TranslateService = inject(TranslateService);
+  private window: Window | null = inject(DOCUMENT)?.defaultView;
 
-  constructor(
-    sessionService: SessionService,
-    router: Router,
-    translate: TranslateService,
-  ) {
-    this.sessionService = sessionService;
-    this.router = router;
-    this.translate = translate;
-  }
-
-  ngOnInit() {
-    this.translate.get('menu.links.home').subscribe((res: string) => {
+  public ngOnInit(): void {
+    this.translate.get('menu.links.home').subscribe((res: string): void => {
       this.menu.push({
         label: res,
         link: '/dashboard/home',
       });
     });
 
-    this.translate.get('menu.links.users').subscribe((res: string) => {
+    this.translate.get('menu.links.users').subscribe((res: string): void => {
       this.menu.push({
         label: res,
         link: '/dashboard/users',
@@ -55,7 +47,7 @@ export class DashboardRootComponent implements OnInit {
           this.loading = false;
         })
         .catch(() => {
-          if (window.location.pathname !== '/login') {
+          if (this.window?.location.pathname !== '/login') {
             this.router.navigate(['/logout']);
           }
         });

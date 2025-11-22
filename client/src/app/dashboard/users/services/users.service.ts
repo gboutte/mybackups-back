@@ -18,24 +18,36 @@ export class UsersService extends AbstractService {
       );
   }
 
-  public create(username: string, password: string): Observable<any> {
-    return this.httpClient.post<any>(
-      this.getUrl() + '/users',
-      {
-        username: username,
-        password: password,
-      },
-      this.httpOptions,
-    );
+  public create(username: string, password: string): Observable<User> {
+    return this.httpClient
+      .post<InstanceType<typeof User>>(
+        this.getUrl() + '/users',
+        {
+          username: username,
+          password: password,
+        },
+        this.httpOptions,
+      )
+      .pipe(
+        map((user: InstanceType<typeof User>): User => {
+          return deserialize(User, user);
+        }),
+      );
   }
 
-  public update(id: string, password: string): Observable<any> {
-    return this.httpClient.patch<any>(
-      this.getUrl() + '/users/' + id,
-      {
-        password: password,
-      },
-      this.httpOptions,
-    );
+  public update(id: string, password: string): Observable<User> {
+    return this.httpClient
+      .patch<InstanceType<typeof User>>(
+        this.getUrl() + '/users/' + id,
+        {
+          password: password,
+        },
+        this.httpOptions,
+      )
+      .pipe(
+        map((user: InstanceType<typeof User>): User => {
+          return deserialize(User, user);
+        }),
+      );
   }
 }

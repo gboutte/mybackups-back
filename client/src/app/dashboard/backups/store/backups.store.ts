@@ -5,5 +5,5 @@ import { BackupType } from '../models/type/backup-type.model';
   providedIn: 'root',
 })
 export class BackupsStore {
-  types: WritableSignal<BackupType[]> = signal([]);
+  public types: WritableSignal<BackupType[]> = signal([]);
 }
