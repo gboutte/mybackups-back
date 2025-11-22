@@ -1,6 +1,19 @@
+import { NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalConfig, ModalRef } from '@gboutte/glassui';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  ButtonsModule,
+  CheckboxModule,
+  InputsModule,
+  ModalConfig,
+  ModalRef,
+} from '@gboutte/glassui';
+import { TranslateModule } from '@ngx-translate/core';
 import { BackupConfigCreateDto } from '../../../dto/backup-config-create.dto';
 import { BackupConfigUpdateDto } from '../../../dto/backup-config-update.dto';
 import { BackupsService } from '../../../services/backups.service';
@@ -9,6 +22,15 @@ import { BackupsService } from '../../../services/backups.service';
   selector: 'mb-backup-config-form',
   templateUrl: './backup-config-form.component.html',
   styleUrls: ['./backup-config-form.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    InputsModule,
+    CheckboxModule,
+    NgIf,
+    ButtonsModule,
+    TranslateModule,
+  ],
 })
 export class BackupConfigFormComponent {
   private backupsService: BackupsService = inject(BackupsService);

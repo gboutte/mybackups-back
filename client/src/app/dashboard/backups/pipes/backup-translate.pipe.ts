@@ -4,6 +4,7 @@ import { BackupTranslateService } from '../services/backup-translate.service';
 
 @Pipe({
   name: 'backupTranslate',
+  standalone: true,
 })
 export class BackupTranslatePipe implements PipeTransform {
   private backuptranslateService: BackupTranslateService = inject(

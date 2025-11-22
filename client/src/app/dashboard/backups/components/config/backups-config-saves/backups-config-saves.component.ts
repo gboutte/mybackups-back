@@ -1,6 +1,13 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ModalConfig, ModalRef, ModalService } from '@gboutte/glassui';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  ButtonsModule,
+  ContentModule,
+  ModalConfig,
+  ModalRef,
+  ModalService,
+} from '@gboutte/glassui';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
 import { BackupConfig } from '../../../models/config/backup-config.model';
 import { BackupSave } from '../../../models/save/backup-save.model';
@@ -12,6 +19,8 @@ import { BackupsStore } from '../../../store/backups.store';
   selector: 'mb-backups-config-saves',
   templateUrl: './backups-config-saves.component.html',
   styleUrls: ['./backups-config-saves.component.scss'],
+  standalone: true,
+  imports: [NgIf, ContentModule, NgFor, ButtonsModule, TranslateModule],
 })
 export class BackupsConfigSavesComponent {
   private backupsService: BackupsService = inject(BackupsService);

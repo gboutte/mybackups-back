@@ -1,14 +1,25 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ModalConfig, ModalRef, ToastService } from '@gboutte/glassui';
+import {
+  ButtonsModule,
+  CheckboxModule,
+  ContentModule,
+  InputsModule,
+  ModalConfig,
+  ModalRef,
+  SelectsModule,
+  ToastService,
+} from '@gboutte/glassui';
 import { SelectOptionInterface } from '@gboutte/glassui/lib/forms/selects/select-option.interface';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { BackupConfigDestinationDto } from '../../../../dto/backup-config-destination.dto';
 import { BackupConfigSourceDto } from '../../../../dto/backup-config-source.dto';
@@ -18,6 +29,7 @@ import { BackupConfig } from '../../../../models/config/backup-config.model';
 import { BackupTypeParameter } from '../../../../models/type/backup-type-parameter.model';
 import { BackupType } from '../../../../models/type/backup-type.model';
 import { BackupConfigTypeValidation } from '../../../../models/validation/backup-config-type-validation.model';
+import { BackupTranslatePipe } from '../../../../pipes/backup-translate.pipe';
 import { BackupTranslateService } from '../../../../services/backup-translate.service';
 import { BackupsService } from '../../../../services/backups.service';
 import { BackupsStore } from '../../../../store/backups.store';
@@ -26,6 +38,19 @@ import { BackupsStore } from '../../../../store/backups.store';
   selector: 'mb-endpoint-form',
   templateUrl: './endpoint-form.component.html',
   styleUrls: ['./endpoint-form.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    SelectsModule,
+    NgIf,
+    ContentModule,
+    NgFor,
+    InputsModule,
+    CheckboxModule,
+    ButtonsModule,
+    TranslateModule,
+    BackupTranslatePipe,
+  ],
 })
 export class EndpointFormComponent implements OnInit {
   private backupsService: BackupsService = inject(BackupsService);

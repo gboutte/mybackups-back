@@ -8,8 +8,8 @@ describe('DashboardRootComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DashboardRootComponent],
-    });
+    imports: [DashboardRootComponent],
+});
     fixture = TestBed.createComponent(DashboardRootComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

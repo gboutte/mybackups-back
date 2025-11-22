@@ -1,6 +1,8 @@
+import { NgFor } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ModalService } from '@gboutte/glassui';
-import { TranslateService } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { ButtonsModule, ContentModule, ModalService } from '@gboutte/glassui';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BackupConfig } from '../../models/config/backup-config.model';
 import { BackupsService } from '../../services/backups.service';
 import { BackupConfigFormComponent } from '../config/backup-config-form/backup-config-form.component';
@@ -10,6 +12,8 @@ import { BackupsConfigSavesComponent } from '../config/backups-config-saves/back
   selector: 'mb-backups',
   templateUrl: './backups.component.html',
   styleUrls: ['./backups.component.scss'],
+  standalone: true,
+  imports: [ButtonsModule, NgFor, ContentModule, RouterLink, TranslateModule],
 })
 export class BackupsComponent implements OnInit {
   private backupsService: BackupsService = inject(BackupsService);

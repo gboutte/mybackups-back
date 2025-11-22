@@ -20,14 +20,6 @@ import { BackupTranslateService } from './services/backup-translate.service';
 import { BackupsService } from './services/backups.service';
 
 @NgModule({
-  declarations: [
-    BackupsComponent,
-    BackupConfigFormComponent,
-    BackupsConfigSettingsComponent,
-    EndpointFormComponent,
-    BackupTranslatePipe,
-    BackupsConfigSavesComponent,
-  ],
   imports: [
     CommonModule,
     BackupsRoutingModule,
@@ -38,6 +30,12 @@ import { BackupsService } from './services/backups.service';
     FormsModule,
     ContentModule,
     ToastModule,
+    BackupsComponent,
+    BackupConfigFormComponent,
+    BackupsConfigSettingsComponent,
+    EndpointFormComponent,
+    BackupTranslatePipe,
+    BackupsConfigSavesComponent,
   ],
   providers: [BackupsService, BackupTranslateService],
 })

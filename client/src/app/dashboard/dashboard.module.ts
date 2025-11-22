@@ -7,12 +7,12 @@ import { DashboardRootComponent } from './dashboard-root/dashboard-root.componen
 import { DashboardRoutingModule } from './dashboard-routing.module';
 
 @NgModule({
-  declarations: [DashboardRootComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
     NavigationModule,
     ContentModule,
+    DashboardRootComponent,
   ],
 })
 export class DashboardModule {

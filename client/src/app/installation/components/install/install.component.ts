@@ -1,8 +1,18 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastService } from '@gboutte/glassui';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  ButtonsModule,
+  ContentModule,
+  InputsModule,
+  ToastService,
+} from '@gboutte/glassui';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../auth/auth.service';
 import { ConfigService } from '../../../config/config.service';
 
@@ -10,6 +20,14 @@ import { ConfigService } from '../../../config/config.service';
   selector: 'mb-install',
   templateUrl: './install.component.html',
   styleUrls: ['./install.component.scss'],
+  standalone: true,
+  imports: [
+    ContentModule,
+    ReactiveFormsModule,
+    InputsModule,
+    ButtonsModule,
+    TranslateModule,
+  ],
 })
 export class InstallComponent {
   protected registerForm: FormGroup = new FormGroup({

@@ -8,8 +8,8 @@ describe('BackupsConfigSavesComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BackupsConfigSavesComponent],
-    });
+    imports: [BackupsConfigSavesComponent],
+});
     fixture = TestBed.createComponent(BackupsConfigSavesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

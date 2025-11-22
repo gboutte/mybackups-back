@@ -1,8 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastService } from '@gboutte/glassui';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  ButtonsModule,
+  ContentModule,
+  InputsModule,
+  ToastService,
+} from '@gboutte/glassui';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService, LoginTokens } from '../../../auth/auth.service';
 import { SessionService } from '../../../auth/session.service';
 
@@ -10,6 +20,14 @@ import { SessionService } from '../../../auth/session.service';
   selector: 'mb-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [
+    ContentModule,
+    ReactiveFormsModule,
+    InputsModule,
+    ButtonsModule,
+    TranslateModule,
+  ],
 })
 export class LoginComponent implements OnInit {
   protected loginForm: FormGroup = new FormGroup({

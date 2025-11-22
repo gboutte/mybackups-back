@@ -14,7 +14,6 @@ import { InstallComponent } from './components/install/install.component';
 import { InstallationRoutingModule } from './installation-routing.module';
 
 @NgModule({
-  declarations: [InstallComponent],
   imports: [
     CommonModule,
     InstallationRoutingModule,
@@ -24,6 +23,7 @@ import { InstallationRoutingModule } from './installation-routing.module';
     ReactiveFormsModule,
     ToastModule,
     TranslateModule,
+    InstallComponent,
   ],
 })
 export class InstallationModule {

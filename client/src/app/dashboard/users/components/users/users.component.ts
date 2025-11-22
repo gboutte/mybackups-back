@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ModalService } from '@gboutte/glassui';
-import { TranslateService } from '@ngx-translate/core';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { ButtonsModule, ContentModule, ModalService } from '@gboutte/glassui';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { User } from '../../models/user.model';
 import { UsersService } from '../../services/users.service';
 import { UserFormComponent } from '../user-form/user-form.component';
@@ -9,6 +10,15 @@ import { UserFormComponent } from '../user-form/user-form.component';
   selector: 'mb-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    ContentModule,
+    ButtonsModule,
+    NgFor,
+    DatePipe,
+    TranslateModule,
+  ],
 })
 export class UsersComponent implements OnInit {
   protected users!: User[];

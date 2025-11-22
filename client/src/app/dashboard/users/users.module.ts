@@ -15,7 +15,6 @@ import { UsersService } from './services/users.service';
 import { UsersRoutingModule } from './users-routing.module';
 
 @NgModule({
-  declarations: [UsersComponent, UserFormComponent],
   imports: [
     CommonModule,
     UsersRoutingModule,
@@ -26,6 +25,8 @@ import { UsersRoutingModule } from './users-routing.module';
     InputsModule,
     ReactiveFormsModule,
     ToastModule,
+    UsersComponent,
+    UserFormComponent,
   ],
   providers: [UsersService],
 })

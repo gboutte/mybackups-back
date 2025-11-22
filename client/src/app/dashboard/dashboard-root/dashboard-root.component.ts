@@ -1,6 +1,7 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { DOCUMENT, NgIf } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { ContentModule, NavigationModule } from '@gboutte/glassui';
 import { MenuModel } from '@gboutte/glassui/lib/navigation/sidebar/menu.model';
 import { TranslateService } from '@ngx-translate/core';
 import { SessionService } from '../../auth/session.service';
@@ -9,6 +10,8 @@ import { SessionService } from '../../auth/session.service';
   selector: 'mb-dashboard-root',
   templateUrl: './dashboard-root.component.html',
   styleUrls: ['./dashboard-root.component.scss'],
+  standalone: true,
+  imports: [NgIf, ContentModule, NavigationModule, RouterOutlet],
 })
 export class DashboardRootComponent implements OnInit {
   protected loading: boolean = true;

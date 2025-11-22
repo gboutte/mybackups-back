@@ -1,12 +1,33 @@
+import { NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalConfig, ModalRef, ToastService } from '@gboutte/glassui';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  ButtonsModule,
+  InputsModule,
+  ModalConfig,
+  ModalRef,
+  ToastService,
+} from '@gboutte/glassui';
+import { TranslateModule } from '@ngx-translate/core';
 import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'mb-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    InputsModule,
+    NgIf,
+    ButtonsModule,
+    TranslateModule,
+  ],
 })
 export class UserFormComponent {
   protected userForm: FormGroup = new FormGroup({

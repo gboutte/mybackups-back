@@ -8,8 +8,8 @@ describe('BackupConfigFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BackupConfigFormComponent],
-    });
+    imports: [BackupConfigFormComponent],
+});
     fixture = TestBed.createComponent(BackupConfigFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

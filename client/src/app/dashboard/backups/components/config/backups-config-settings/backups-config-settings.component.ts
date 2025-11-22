@@ -1,11 +1,13 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ModalService } from '@gboutte/glassui';
-import { TranslateService } from '@ngx-translate/core';
+import { KeyValuePipe, NgFor, NgIf } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ButtonsModule, ContentModule, ModalService } from '@gboutte/glassui';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BackupConfigDestination } from '../../../models/config/backup-config-destination.model';
 import { BackupConfigSource } from '../../../models/config/backup-config-source.model';
 import { BackupConfig } from '../../../models/config/backup-config.model';
 import { BackupType } from '../../../models/type/backup-type.model';
+import { BackupTranslatePipe } from '../../../pipes/backup-translate.pipe';
 import { BackupsService } from '../../../services/backups.service';
 import { BackupsStore } from '../../../store/backups.store';
 import { EndpointFormComponent } from './endpoint-form/endpoint-form.component';
@@ -14,6 +16,17 @@ import { EndpointFormComponent } from './endpoint-form/endpoint-form.component';
   selector: 'mb-backups-config-settings',
   templateUrl: './backups-config-settings.component.html',
   styleUrls: ['./backups-config-settings.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    ContentModule,
+    ButtonsModule,
+    RouterLink,
+    NgFor,
+    KeyValuePipe,
+    TranslateModule,
+    BackupTranslatePipe,
+  ],
 })
 export class BackupsConfigSettingsComponent implements OnInit {
   private backupsService: BackupsService = inject(BackupsService);
