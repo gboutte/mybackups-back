@@ -95,7 +95,7 @@ export class BackupsConfigSettingsComponent implements OnInit {
         ),
       )
       .subscribe({
-        next: (res: void) => {
+        next: (res: boolean) => {
           if (res) {
             this.backupsService.deleteSource(source.id).subscribe(() => {
               this.refreshConfig();

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ModalService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
 import { BackupConfig } from '../../models/config/backup-config.model';
@@ -12,33 +12,23 @@ import { BackupsConfigSavesComponent } from '../config/backups-config-saves/back
   styleUrls: ['./backups.component.scss'],
 })
 export class BackupsComponent implements OnInit {
-  private backupsService: BackupsService;
-  private modalService: ModalService;
-  private translate: TranslateService;
+  private backupsService: BackupsService = inject(BackupsService);
+  private modalService: ModalService = inject(ModalService);
+  private translate: TranslateService = inject(TranslateService);
+  protected backupConfigs: BackupConfig[] = [];
 
-  backupConfigs: BackupConfig[] = [];
-  constructor(
-    backupsService: BackupsService,
-    modalService: ModalService,
-    translate: TranslateService,
-  ) {
-    this.backupsService = backupsService;
-    this.modalService = modalService;
-    this.translate = translate;
-  }
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.refresh();
   }
 
-  refresh() {
+  private refresh(): void {
     this.backupsService
       .getBackupConfigs()
       .subscribe((configs: BackupConfig[]) => {
         this.backupConfigs = configs;
       });
   }
-  add() {
+  protected add(): void {
     this.modalService
       .open(BackupConfigFormComponent, {
         title: this.translate.instant('dashboard.backups.modal.add.title'),
@@ -49,7 +39,7 @@ export class BackupsComponent implements OnInit {
         },
       });
   }
-  edit(config: BackupConfig) {
+  protected edit(config: BackupConfig): void {
     this.modalService
       .open(BackupConfigFormComponent, {
         title: this.translate.instant('dashboard.backups.modal.edit.title'),
@@ -64,7 +54,7 @@ export class BackupsComponent implements OnInit {
       });
   }
 
-  saves(config: BackupConfig) {
+  protected saves(config: BackupConfig): void {
     this.modalService
       .open(BackupsConfigSavesComponent, {
         title: this.translate.instant('dashboard.backups.modal.saves.title'),
@@ -79,7 +69,7 @@ export class BackupsComponent implements OnInit {
       });
   }
 
-  delete(config: BackupConfig) {
+  protected delete(config: BackupConfig): void {
     this.modalService
       .confirm(
         this.translate.instant('dashboard.backups.modal.delete.title'),
@@ -93,7 +83,7 @@ export class BackupsComponent implements OnInit {
           noLabel: this.translate.instant('dashboard.backups.modal.delete.no'),
         },
       )
-      .subscribe((result) => {
+      .subscribe((result: boolean) => {
         if (result && config.id) {
           this.backupsService.deleteBackupConfig(config.id).subscribe(() => {
             this.refresh();
@@ -102,7 +92,7 @@ export class BackupsComponent implements OnInit {
       });
   }
 
-  runBackup(config: BackupConfig) {
+  protected runBackup(config: BackupConfig): void {
     this.modalService
       .confirm(
         this.translate.instant('dashboard.backups.modal.run.title'),
@@ -114,7 +104,7 @@ export class BackupsComponent implements OnInit {
           noLabel: this.translate.instant('dashboard.backups.modal.run.no'),
         },
       )
-      .subscribe((result) => {
+      .subscribe((result: boolean) => {
         if (result && config.id) {
           this.backupsService.runBackup(config.id).subscribe(() => {
             this.refresh();

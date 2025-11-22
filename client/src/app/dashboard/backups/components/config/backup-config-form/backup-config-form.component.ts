@@ -12,8 +12,8 @@ import { BackupsService } from '../../../services/backups.service';
 })
 export class BackupConfigFormComponent {
   private backupsService: BackupsService = inject(BackupsService);
-  private modalRef!: ModalRef = inject(ModalRef);
-  protected modalConfig!: ModalConfig = inject(ModalConfig);
+  private modalRef: ModalRef = inject(ModalRef);
+  protected modalConfig: ModalConfig = inject(ModalConfig);
 
   protected configForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),

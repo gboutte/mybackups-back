@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ModalConfig, ModalRef, ModalService } from '@gboutte/glassui';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
@@ -18,11 +17,9 @@ export class BackupsConfigSavesComponent {
   private backupsService: BackupsService = inject(BackupsService);
   private modalService: ModalService = inject(ModalService);
   private translate: TranslateService = inject(TranslateService);
-  private route: ActivatedRoute = inject(ActivatedRoute);
-  private router: Router = inject(Router);
   private backupsStore: BackupsStore = inject(BackupsStore);
-  private modalRef!: ModalRef = inject(ModalRef);
-  private modalConfig!: ModalConfig = inject(ModalConfig);
+  private modalRef: ModalRef = inject(ModalRef);
+  private modalConfig: ModalConfig = inject(ModalConfig);
 
   private types?: BackupType[];
   protected backupConfig!: BackupConfig;
@@ -76,5 +73,5 @@ export class BackupsConfigSavesComponent {
         }
       });
   }
-  protected readonly moment: moment.Moment = moment;
+  protected readonly moment: typeof moment = moment;
 }

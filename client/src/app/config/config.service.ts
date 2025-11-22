@@ -7,16 +7,16 @@ import { ConfigStore } from './config.store';
 export class ConfigService extends AbstractService {
   private configStore: ConfigStore = inject(ConfigStore);
 
-  getConfig(): Observable<{ isInstalled: boolean }> {
+  public getConfig(): Observable<{ isInstalled: boolean }> {
     return this.httpClient.get<{ isInstalled: boolean }>(
       this.getUrl() + '/status',
       this.httpOptions,
     );
   }
-  refreshConfigStore() {
-    const observable = new BehaviorSubject(null);
+  public refreshConfigStore(): Observable<null> {
+    const observable: BehaviorSubject<null> = new BehaviorSubject<null>(null);
     observable.pipe(take(1));
-    this.getConfig().subscribe((config) => {
+    this.getConfig().subscribe((config: { isInstalled: boolean }) => {
       this.configStore.isInstalled = config.isInstalled;
       observable.next(null);
     });

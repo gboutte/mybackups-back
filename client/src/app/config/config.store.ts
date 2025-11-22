@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,15 +9,15 @@ export class ConfigStore {
     boolean | null
   >(null);
 
-  get isInstalled(): boolean | null {
+  public get isInstalled(): boolean | null {
     return this._isInstalled.getValue();
   }
 
-  set isInstalled(val: boolean) {
+  public set isInstalled(val: boolean) {
     this._isInstalled.next(val);
   }
 
-  get isInstalled$() {
+  public get isInstalled$(): Observable<boolean | null> {
     return this._isInstalled.asObservable();
   }
 }

@@ -12,7 +12,7 @@ import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 import { RetryInterceptor } from './global/interceptors/retry.interceptor';
 import { MultiTranslateHttpLoader } from './global/multi-translate-http-loader';
-export function HttpLoaderFactory(http: HttpClient) {
+export function HttpLoaderFactory(http: HttpClient): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(http);
 }
 @NgModule({

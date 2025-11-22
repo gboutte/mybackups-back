@@ -10,13 +10,20 @@ export interface LoginTokens {
 
 @Injectable()
 export class AuthService extends AbstractService {
-  getUserInfo(): Observable<User> {
+  public getUserInfo(): Observable<User> {
     return this.httpClient
-      .get(this.getUrl() + '/users/me', this.httpOptions)
-      .pipe(map((response: any) => deserialize(User, response)));
+      .get<
+        InstanceType<typeof User>
+      >(this.getUrl() + '/users/me', this.httpOptions)
+      .pipe(
+        map(
+          (response: InstanceType<typeof User>): User =>
+            deserialize(User, response),
+        ),
+      );
   }
 
-  login(username: string, password: string): Observable<LoginTokens> {
+  public login(username: string, password: string): Observable<LoginTokens> {
     return this.httpClient.post<LoginTokens>(
       this.getUrl() + '/auth/login',
       {
@@ -26,8 +33,8 @@ export class AuthService extends AbstractService {
       this.httpOptions,
     );
   }
-  install(username: string, password: string): Observable<any> {
-    return this.httpClient.post<any>(
+  public install(username: string, password: string): Observable<void> {
+    return this.httpClient.post<void>(
       this.getUrl() + '/install/register',
       {
         username: username,
