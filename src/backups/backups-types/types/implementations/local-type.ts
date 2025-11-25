@@ -234,12 +234,12 @@ export class LocalType
         path.extname(absolutePath);
       const isDirectory = fs.statSync(absolutePath).isDirectory();
 
-      const newAbsolutePath:string = path.join(tmpDir, newName);
+      const newAbsolutePath: string = path.join(tmpDir, newName);
 
-      if(isDirectory){
-        fs.cp(absolutePath,newAbsolutePath,{recursive:true},(err) => {
+      if (isDirectory) {
+        fs.cp(absolutePath, newAbsolutePath, { recursive: true }, (err) => {
           if (err) {
-            Logger.debug('error copy')
+            Logger.debug('error copy');
             reject(err);
           } else {
             resolve({
@@ -248,9 +248,8 @@ export class LocalType
             });
           }
         });
-      }else {
-
-        fs.copyFile(absolutePath,newAbsolutePath , (err) => {
+      } else {
+        fs.copyFile(absolutePath, newAbsolutePath, (err) => {
           if (err) {
             reject(err);
           } else {

@@ -4,8 +4,10 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as archiver from 'archiver';
+import { CronJob } from 'cron';
 import { ReadStream } from 'fs';
 import * as mime from 'mime-types';
 import * as moment from 'moment';
@@ -20,7 +22,6 @@ import { BackupSourceResultInterface } from './backups-types/interfaces/backup-s
 import { instanceOfBackupSource } from './backups-types/interfaces/backup-source.interface';
 import { BackupTypeLangType } from './backups-types/interfaces/backup-type-lang.type';
 import types from './backups-types/types';
-import { LocalType } from './backups-types/types/implementations/local-type';
 import { CreateBackupConfigDestinationDto } from './dto/create-backup-config-destination.dto';
 import { CreateBackupConfigSourceDto } from './dto/create-backup-config-source.dto';
 import { CreateBackupConfigDto } from './dto/create-backup-config.dto';
@@ -32,8 +33,6 @@ import { BackupConfigSource } from './entities/backup-config-source.entity';
 import { BackupConfig } from './entities/backup-config.entity';
 import { BackupSaveDestination } from './entities/backup-save-destination.entity';
 import { BackupSave } from './entities/backup-save.entity';
-import {SchedulerRegistry} from "@nestjs/schedule";
-import {CronJob} from "cron";
 
 @Injectable()
 export class BackupsService {
@@ -48,7 +47,7 @@ export class BackupsService {
     private backupSaveRepository: Repository<BackupSave>,
     @InjectRepository(BackupSaveDestination)
     private backupSaveDestinationRepository: Repository<BackupSaveDestination>,
-    private schedulerRegistry: SchedulerRegistry
+    private schedulerRegistry: SchedulerRegistry,
   ) {}
 
   createConfig(createBackupConfigDto: CreateBackupConfigDto) {
@@ -153,10 +152,10 @@ export class BackupsService {
       backupSave.filename = path.basename(filePath);
       let mimeType = mime.lookup(filePath);
 
-      if(!mimeType){
+      if (!mimeType) {
         mimeType = 'application/octet-stream';
       }
-      backupSave.mimetype = mimeType
+      backupSave.mimetype = mimeType;
 
       const destinations = backupConfig.destinations;
       for (const destination of destinations) {
@@ -230,11 +229,13 @@ export class BackupsService {
       archive.pipe(outputStream);
 
       for (const result of results) {
-        const isDirectory:boolean = fs.statSync(result.absolutePath).isDirectory();
-        if(isDirectory){
+        const isDirectory: boolean = fs
+          .statSync(result.absolutePath)
+          .isDirectory();
+        if (isDirectory) {
           archive.directory(result.absolutePath, result.temporaryFile);
-        }else {
-          archive.file(result.absolutePath, {name: result.temporaryFile});
+        } else {
+          archive.file(result.absolutePath, { name: result.temporaryFile });
         }
       }
       archive.finalize();
@@ -248,10 +249,10 @@ export class BackupsService {
     // We delete all the temporary files
     for (const temporaryFile of temporaryFiles) {
       if (fs.existsSync(temporaryFile)) {
-        const isDirectory:boolean = fs.statSync(temporaryFile).isDirectory();
-        if(isDirectory){
-          fs.rmSync(temporaryFile,{recursive:true});
-        }else{
+        const isDirectory: boolean = fs.statSync(temporaryFile).isDirectory();
+        if (isDirectory) {
+          fs.rmSync(temporaryFile, { recursive: true });
+        } else {
           fs.unlinkSync(temporaryFile);
         }
       }
@@ -259,15 +260,15 @@ export class BackupsService {
 
     // We delete all the saves over the limit
     const maxSaves = backupConfig.to_keep;
-    Logger.debug(`Max save ${maxSaves} / ${backupConfig.saves.length + 1}`)
+    Logger.debug(`Max save ${maxSaves} / ${backupConfig.saves.length + 1}`);
     if (backupConfig.saves.length + 1 > maxSaves) {
-      let savesToDelete:BackupSave[] = backupConfig.saves;
+      let savesToDelete: BackupSave[] = backupConfig.saves;
       savesToDelete = savesToDelete
-        .sort((a:BackupSave, b:BackupSave):number => {
+        .sort((a: BackupSave, b: BackupSave): number => {
           return a.date_created.getTime() - b.date_created.getTime();
         })
         .slice(0, savesToDelete.length - (maxSaves - 1));
-      Logger.debug(`Saves to delete ${savesToDelete.length}`)
+      Logger.debug(`Saves to delete ${savesToDelete.length}`);
       for (const save of savesToDelete) {
         await this.deleteBackupSave(save);
       }
@@ -280,13 +281,13 @@ export class BackupsService {
     // Verification of the sources
     const sources = backupConfig.sources;
     for (const source of sources) {
-      errors.push(...await this.validateSourceConfig(source));
+      errors.push(...(await this.validateSourceConfig(source)));
     }
 
     // Verification of the destinations
     const destinations = backupConfig.destinations;
     for (const destination of destinations) {
-      errors.push(...await this.validateDestinationConfig(destination));
+      errors.push(...(await this.validateDestinationConfig(destination)));
     }
 
     if (errors.length > 0) {
@@ -296,7 +297,7 @@ export class BackupsService {
   }
 
   async validateSourceConfig(
-      source: CreateBackupConfigSourceDto | BackupConfigSource,
+    source: CreateBackupConfigSourceDto | BackupConfigSource,
   ): Promise<BackupParameterErrorInterface[]> {
     const errors: BackupParameterErrorInterface[] = [];
     const backupType = await this.getBackupType(source.type);
@@ -325,7 +326,7 @@ export class BackupsService {
   }
 
   async validateDestinationConfig(
-      destination: CreateBackupConfigDestinationDto | BackupConfigDestination,
+    destination: CreateBackupConfigDestinationDto | BackupConfigDestination,
   ): Promise<BackupParameterErrorInterface[]> {
     const errors: BackupParameterErrorInterface[] = [];
     const backupType = await this.getBackupType(destination.type);
@@ -354,7 +355,6 @@ export class BackupsService {
   }
 
   async getBackupType(code: string): Promise<AbstractType> {
-
     const backupTypes = await types.getTypes();
     for (const backupType of backupTypes) {
       if (backupType.getConfig().code === code) {
@@ -365,7 +365,7 @@ export class BackupsService {
   }
 
   private async runBackupSource(
-      source: BackupConfigSource,
+    source: BackupConfigSource,
   ): Promise<BackupSourceResultInterface> {
     const backupType = await this.getBackupType(source.type);
     if (instanceOfBackupSource(backupType)) {
@@ -376,8 +376,8 @@ export class BackupsService {
   }
 
   private async runBackupDestination(
-      destination: BackupConfigDestination,
-      fileAbsolutePath: string,
+    destination: BackupConfigDestination,
+    fileAbsolutePath: string,
   ) {
     const backupType = await this.getBackupType(destination.type);
     if (instanceOfBackupDestination(backupType)) {
@@ -388,7 +388,7 @@ export class BackupsService {
   }
 
   public async getI18n(lang: BackupTypeLangType): Promise<any> {
-    let i18n: any = {};
+    const i18n: any = {};
     const backupTypes = await types.getTypes();
     for (const backupType of backupTypes) {
       i18n[backupType.getConfig().code] = backupType.getI18n(lang);
@@ -408,37 +408,33 @@ export class BackupsService {
     return this.backupConfigDestinationRepository.delete(id);
   }
 
-
-
   async refreshCron() {
-    Logger.log('Refreshing cron','CRON')
-    const currentCrons:Map<string,CronJob> = this.schedulerRegistry.getCronJobs();
+    Logger.log('Refreshing cron', 'CRON');
+    const currentCrons: Map<string, CronJob> =
+      this.schedulerRegistry.getCronJobs();
 
-    const configs:BackupConfig[] = await this.findAllConfig();
+    const configs: BackupConfig[] = await this.findAllConfig();
 
     //Delete all cron
-    const cronKeys:string[] = Array.from(currentCrons.keys());
+    const cronKeys: string[] = Array.from(currentCrons.keys());
 
     for (const cronKey of cronKeys) {
       const cron = currentCrons.get(cronKey);
-      if(cron){
+      if (cron) {
         this.schedulerRegistry.deleteCronJob(cronKey);
       }
     }
 
     //Create all cron
     for (const config of configs) {
-      if(config.enabled) {
+      if (config.enabled) {
         const cron = new CronJob(config.frequency, () => {
-          Logger.log(`Running config ${config.name} - ${config.id}`, 'CRON')
+          Logger.log(`Running config ${config.name} - ${config.id}`, 'CRON');
           this.runBackup(config);
         });
         this.schedulerRegistry.addCronJob(config.id, cron);
         cron.start();
       }
     }
-
-
-
   }
 }

@@ -63,8 +63,11 @@ export class BackupsController {
   }
 
   @Post('config')
-  @ApiBearerAuth() async createConfig(@Body() createBackupConfigDto: CreateBackupConfigDto) {
-    const config = await this.backupsService.createConfig(createBackupConfigDto);
+  @ApiBearerAuth()
+  async createConfig(@Body() createBackupConfigDto: CreateBackupConfigDto) {
+    const config = await this.backupsService.createConfig(
+      createBackupConfigDto,
+    );
     await this.backupsService.refreshCron();
     return config;
   }
@@ -144,11 +147,12 @@ export class BackupsController {
   }
 
   @Post('config/validate/source')
-  @ApiBearerAuth() async validateSource(
-      @Body() createBackupConfigSource: CreateBackupConfigSourceDto,
+  @ApiBearerAuth()
+  async validateSource(
+    @Body() createBackupConfigSource: CreateBackupConfigSourceDto,
   ) {
     const errors = await this.backupsService.validateSourceConfig(
-        createBackupConfigSource,
+      createBackupConfigSource,
     );
     return {
       valid: errors.length === 0,
@@ -157,11 +161,12 @@ export class BackupsController {
   }
 
   @Post('config/validate/destination')
-  @ApiBearerAuth() async validateDestination(
-      @Body() createBackupConfigDestination: CreateBackupConfigDestinationDto,
+  @ApiBearerAuth()
+  async validateDestination(
+    @Body() createBackupConfigDestination: CreateBackupConfigDestinationDto,
   ) {
     const errors = await this.backupsService.validateDestinationConfig(
-        createBackupConfigDestination,
+      createBackupConfigDestination,
     );
     return {
       valid: errors.length === 0,
@@ -180,7 +185,10 @@ export class BackupsController {
     @Param('id') id: string,
     @Body() updateBackupConfigDto: UpdateBackupConfigDto,
   ) {
-    const config = await this.backupsService.updateConfig(id, updateBackupConfigDto);
+    const config = await this.backupsService.updateConfig(
+      id,
+      updateBackupConfigDto,
+    );
     await this.backupsService.refreshCron();
     return config;
   }
