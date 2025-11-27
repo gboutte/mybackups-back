@@ -35,8 +35,8 @@ jobs:
           separator: " "
           json: false
           files: |
-            **/*.ts
-            **/*.html
+            **/client/*.ts
+            **/client/*.html
           files_ignore: |
             **/proxy.conf.ts
             **/*.spec.ts
@@ -52,8 +52,8 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli
 
-      - name: Format Check - Changed files only
-        id: format_check
+      - name: Format list argument
+        id: format_args
         run: |
           FILES="${{ steps.changed_files.outputs.all_changed_files }}"
           if [ -z "$FILES" ]; then
@@ -62,15 +62,17 @@ jobs:
           else
             ARGS=""
             for f in $FILES; do
-              ARGS="$ARGS --lint-file-patterns=$f"
+              ARGS="$ARGS $f"
             done
 
             # Export ARGS as step output
             echo "ARGS=$ARGS" >> $GITHUB_OUTPUT
-
-            ng lint $ARGS
           fi
 
+      - name: Code Format
+        id: codeFormat
+        run: |
+          npm run lint:check
 
 
       - name: Add Code Format Fail Comment
