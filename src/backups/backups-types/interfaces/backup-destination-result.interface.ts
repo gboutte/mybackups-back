@@ -1,3 +1,3 @@
 export interface BackupDestinationResultInterface {
-  data: any;
+  data: Record<string, unknown>;
 }

@@ -1,13 +1,32 @@
 import * as os from 'os';
 import slugify from 'slugify';
 import { instanceOfBackupDestination } from './interfaces/backup-destination.interface';
+import { BackupParameterInterface } from './interfaces/backup-parameter.interface';
 import { instanceOfBackupSource } from './interfaces/backup-source.interface';
 import { BackupTypeConfigInterface } from './interfaces/backup-type-config.interface';
 import { BackupTypeI18nInterface } from './interfaces/backup-type-i18n.interface';
 import { BackupTypeLangType } from './interfaces/backup-type-lang.type';
 
+export type ParametersType = Record<string, unknown>;
+
+export type SourceSchema = {
+  isSource: boolean;
+  parameters: BackupParameterInterface[];
+};
+
+export type DestinationSchema = {
+  isDestination: boolean;
+  parameters: BackupParameterInterface[];
+};
+
+export type AbstractTypeSchema = {
+  config: BackupTypeConfigInterface;
+  source: SourceSchema;
+  destination: DestinationSchema;
+};
+
 export abstract class AbstractType {
-  protected parameters: any;
+  protected parameters: ParametersType;
   private configName: string;
 
   constructor() {}
@@ -17,20 +36,20 @@ export abstract class AbstractType {
    * This define the name, code and description of the backup type
    * @returns {BackupTypeConfigInterface}
    */
-  abstract getConfig(): BackupTypeConfigInterface;
+  public abstract getConfig(): BackupTypeConfigInterface;
 
   /**
    * Return the internalizations parameters for this type
    * This is used to return the information to the front-end by the controller
    */
-  abstract getI18n(lang: BackupTypeLangType): BackupTypeI18nInterface;
+  public abstract getI18n(lang: BackupTypeLangType): BackupTypeI18nInterface;
 
   /**
    * This method define the user input to configure the backup type
    * (source and destination)
    * @param parameters
    */
-  public setParameters(parameters: any): void {
+  public setParameters(parameters: ParametersType): void {
     this.parameters = parameters;
   }
 
@@ -38,7 +57,7 @@ export abstract class AbstractType {
    * This method return the backup type definition in json schema
    * This is used to return the information to the front-end by the controller
    */
-  public getJsonSchema(): any {
+  public getJsonSchema(): AbstractTypeSchema {
     return {
       config: this.getConfig(),
       source: this.getSourceJsonSchema(),
@@ -51,7 +70,7 @@ export abstract class AbstractType {
    * This method can be called by the child class to get the parameters while running the backup source or destination
    * @protected
    */
-  protected getParameters(): any {
+  protected getParameters(): ParametersType {
     return this.parameters;
   }
 
@@ -61,8 +80,8 @@ export abstract class AbstractType {
    * @param key
    * @protected
    */
-  protected getParameter(key: string): any {
-    return this.parameters[key];
+  protected getParameter<T>(key: string): T {
+    return this.parameters[key] as T;
   }
 
   /**
@@ -86,7 +105,7 @@ export abstract class AbstractType {
     return os.tmpdir();
   }
 
-  private getSourceJsonSchema(): any {
+  private getSourceJsonSchema(): SourceSchema {
     if (instanceOfBackupSource(this)) {
       return {
         isSource: true,
@@ -95,11 +114,12 @@ export abstract class AbstractType {
     } else {
       return {
         isSource: false,
+        parameters: [],
       };
     }
   }
 
-  private getDestinationJsonSchema(): any {
+  private getDestinationJsonSchema(): DestinationSchema {
     if (instanceOfBackupDestination(this)) {
       return {
         isDestination: true,
@@ -108,6 +128,7 @@ export abstract class AbstractType {
     } else {
       return {
         isDestination: false,
+        parameters: [],
       };
     }
   }

@@ -7,7 +7,7 @@ export class CreateBackupConfigSourceDto {
     example: 'local',
   })
   @IsString()
-  readonly type: string;
+  public readonly type: string;
 
   @ApiProperty({
     description: 'The parameters of the backup source',
@@ -16,5 +16,5 @@ export class CreateBackupConfigSourceDto {
     },
   })
   @IsObject()
-  readonly parameters: any;
+  public readonly parameters: Record<string, unknown>;
 }

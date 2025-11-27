@@ -57,7 +57,7 @@ import { UsersModule } from './users/users.module';
 })
 export class AppModule implements OnModuleInit {
   constructor(private backupService: BackupsService) {}
-  onModuleInit() {
+  public onModuleInit(): void {
     this.backupService.refreshCron();
   }
 }

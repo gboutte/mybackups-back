@@ -13,6 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { AuthenticatedRequest } from '../common/types/fastify-request.types';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -48,8 +49,8 @@ export class UsersController {
   @Get('me')
   @ApiBearerAuth()
   @UseInterceptors(ClassSerializerInterceptor) // Intercept response (User) to remove password field
-  async getMe(@Request() req): Promise<User> {
-    const user = await this.usersService.findOne(req.user.userId);
+  public async getMe(@Request() req: AuthenticatedRequest): Promise<User> {
+    const user: User | null = await this.usersService.findOne(req.user.userId);
     if (user !== null) {
       return user;
     } else {

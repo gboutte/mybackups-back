@@ -7,11 +7,11 @@ export class LoginUserDto {
     example: 'admin',
   })
   @IsString()
-  readonly username: string;
+  public readonly username: string;
   @ApiProperty({
     description: 'The password of your account.',
     example: 'P@$$w0rd',
   })
   @IsString()
-  readonly password: string;
+  public readonly password: string;
 }

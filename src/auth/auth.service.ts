@@ -11,13 +11,17 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOneByUsername(username);
+  public async validateUser(
+    username: string,
+    pass: string,
+  ): Promise<Omit<User, 'password'> | null> {
+    const user: User | undefined =
+      await this.usersService.findOneByUsername(username);
     if (user) {
-      const isMatch = await bcrypt.compare(pass, user.password);
+      const isMatch: boolean = await bcrypt.compare(pass, user.password);
       if (isMatch) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { password, ...result } = user;
+        const { password: _, ...result }: User = user;
         return result;
       } else {
         return null;
@@ -26,9 +30,12 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User) {
-    const payload = { username: user.username, sub: user.id };
-    const access_token = this.jwtService.sign(payload);
+  public async login(user: User): Promise<{ access_token: string }> {
+    const payload: { username: string; sub: string } = {
+      username: user.username,
+      sub: user.id,
+    };
+    const access_token: string = this.jwtService.sign(payload);
 
     await this.usersService.save(user);
     return {

@@ -11,7 +11,7 @@ export interface BackupSourceInterface {
 }
 
 export function instanceOfBackupSource(
-  object: any,
+  object: object,
 ): object is BackupSourceInterface {
   return (
     'getSourceParameters' in object &&

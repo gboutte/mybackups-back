@@ -1,5 +1,6 @@
 import { Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { LocalAuthenticatedRequest } from '../common/types/fastify-request.types';
 import { Public } from '../global/decorators/public.decorator';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
@@ -18,7 +19,9 @@ export class AuthController {
   @Post('login')
   @ApiBody({ type: LoginUserDto })
   @Public()
-  async login(@Request() req) {
+  public async login(
+    @Request() req: LocalAuthenticatedRequest,
+  ): Promise<{ access_token: string }> {
     return this.authService.login(req.user);
   }
 }
