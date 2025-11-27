@@ -72,7 +72,7 @@ jobs:
       - name: Code Format
         id: codeFormat
         run: |
-          npm run lint:check
+          cd client && npm run lint:check
 
 
       - name: Add Code Format Fail Comment
