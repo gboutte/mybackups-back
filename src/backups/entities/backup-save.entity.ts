@@ -16,13 +16,20 @@ export class BackupSave {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public date_created: Date;
 
-  @ManyToOne(() => BackupConfig, (config) => config.saves)
+  @ManyToOne(
+    () => BackupConfig,
+    (config: BackupConfig): BackupSave[] => config.saves,
+  )
   public config: BackupConfig;
 
-  @OneToMany(() => BackupSaveDestination, (destination) => destination.save, {
-    cascade: true,
-    eager: true,
-  })
+  @OneToMany(
+    () => BackupSaveDestination,
+    (destination: BackupSaveDestination): BackupSave => destination.save,
+    {
+      cascade: true,
+      eager: true,
+    },
+  )
   public destinations: BackupSaveDestination[];
 
   @Column({ nullable: false })

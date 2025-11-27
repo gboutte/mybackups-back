@@ -38,7 +38,7 @@ export class UsersController {
     description: 'The uuid of the user',
   })
   public async get(@Param('id') id: string): Promise<User> {
-    const user = await this.usersService.findOne(id);
+    const user: User | null = await this.usersService.findOne(id);
     if (user !== null) {
       return user;
     } else {
@@ -82,7 +82,7 @@ export class UsersController {
   ): Promise<User> {
     //Check if the user exists
 
-    const user = await this.usersService.findOneByUsername(
+    const user: User | null = await this.usersService.findOneByUsername(
       createUserDto.username,
     );
     console.log(user);

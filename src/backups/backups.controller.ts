@@ -10,6 +10,7 @@ import {
   StreamableFile,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ReadStream } from 'fs';
 import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
 import { Public } from '../global/decorators/public.decorator';
 import {
@@ -31,6 +32,7 @@ import { BackupConfigDestination } from './entities/backup-config-destination.en
 import { BackupConfigSource } from './entities/backup-config-source.entity';
 import { BackupConfig } from './entities/backup-config.entity';
 import { BackupSaveDestination } from './entities/backup-save-destination.entity';
+import { BackupSave } from './entities/backup-save.entity';
 
 @Controller('backups')
 @ApiTags('backups')
@@ -48,7 +50,9 @@ export class BackupsController {
   public async getTypes(): Promise<AbstractTypeSchema[]> {
     const backupTypes: AbstractType[] = await types.getTypes();
 
-    return backupTypes.map((type): AbstractTypeSchema => type.getJsonSchema());
+    return backupTypes.map(
+      (type: AbstractType): AbstractTypeSchema => type.getJsonSchema(),
+    );
   }
   @Get('i18n/:lang')
   @Public()
@@ -66,7 +70,8 @@ export class BackupsController {
     description: 'The uuid of the backup config',
   })
   public async getOneConfig(@Param('id') id: string): Promise<BackupConfig> {
-    const backupConfig = await this.backupsService.findOneConfig(id);
+    const backupConfig: BackupConfig | null =
+      await this.backupsService.findOneConfig(id);
     if (backupConfig !== null) {
       return backupConfig;
     } else {
@@ -218,7 +223,7 @@ export class BackupsController {
     description: 'The uuid of the backup config',
   })
   public async delete(@Param('id') id: string): Promise<DeleteResult> {
-    const result = await this.backupsService.delete(id);
+    const result: DeleteResult = await this.backupsService.delete(id);
     await this.backupsService.refreshCron();
     return result;
   }
@@ -230,7 +235,7 @@ export class BackupsController {
     description: 'The uuid of the backup source',
   })
   public async deleteSource(@Param('id') id: string): Promise<DeleteResult> {
-    const result = await this.backupsService.deleteSource(id);
+    const result: DeleteResult = await this.backupsService.deleteSource(id);
     await this.backupsService.refreshCron();
     return result;
   }
@@ -245,7 +250,8 @@ export class BackupsController {
   public async deleteDestination(
     @Param('id') id: string,
   ): Promise<DeleteResult> {
-    const result = await this.backupsService.deleteDestination(id);
+    const result: DeleteResult =
+      await this.backupsService.deleteDestination(id);
     await this.backupsService.refreshCron();
     return result;
   }
@@ -258,7 +264,8 @@ export class BackupsController {
     description: 'The uuid of the backup config',
   })
   public async runBackup(@Param('id') id: string): Promise<void> {
-    const backupConfig = await this.backupsService.findOneConfig(id);
+    const backupConfig: BackupConfig | null =
+      await this.backupsService.findOneConfig(id);
     if (backupConfig !== null) {
       return this.backupsService.runBackup(backupConfig);
     } else {
@@ -274,11 +281,12 @@ export class BackupsController {
     description: 'The uuid of the backup config save destination',
   })
   public async download(@Param('id') id: string): Promise<StreamableFile> {
-    const backupSave = await this.backupsService.findOneBackupSave(id);
+    const backupSave: BackupSave | null =
+      await this.backupsService.findOneBackupSave(id);
     if (backupSave !== null) {
-      let file = null;
+      let file: ReadStream | null = null;
       const destinations: BackupSaveDestination[] = backupSave.destinations;
-      const index = 0;
+      const index: number = 0;
       while (file === null && index < destinations.length) {
         try {
           file = await this.backupsService.getBackupFile(destinations[index]);
@@ -308,7 +316,8 @@ export class BackupsController {
     description: 'The uuid of the backup config save destination',
   })
   public async deleteSave(@Param('id') id: string): Promise<void> {
-    const backupSave = await this.backupsService.findOneBackupSave(id);
+    const backupSave: BackupSave | null =
+      await this.backupsService.findOneBackupSave(id);
     if (backupSave !== null) {
       await this.backupsService.deleteBackupSave(backupSave);
     } else {

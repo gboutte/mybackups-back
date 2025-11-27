@@ -15,20 +15,23 @@ export class InstalledJwtGuard extends AuthGuard('jwt') {
     super();
   }
 
-  async canActivate(context: ExecutionContext) {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+  public async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic: boolean | undefined =
+      this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+        context.getHandler(),
+        context.getClass(),
+      ]);
 
-    const isInstalled = (await this.usersService.getNumberOfUsers()) > 0;
+    const isInstalled: boolean =
+      (await this.usersService.getNumberOfUsers()) > 0;
 
-    const isInstallation = this.reflector.get(
+    const isInstallation: boolean | undefined = this.reflector.get<boolean>(
       IS_INSTALL_KEY,
       context.getHandler(),
     );
 
-    const accessWithoutJwt = (isInstallation && !isInstalled) || isPublic;
+    const accessWithoutJwt: boolean =
+      (isInstallation && !isInstalled) || isPublic;
 
     if (accessWithoutJwt) {
       return true;
@@ -39,13 +42,15 @@ export class InstalledJwtGuard extends AuthGuard('jwt') {
     }
 
     // Check if the result is an Observable
-    const result = super.canActivate(context);
+    const result: boolean | Promise<boolean> | Observable<boolean> =
+      super.canActivate(context);
 
     if (result instanceof Observable) {
       // Convert the Observable to a Promise
-      const observableResult = result as Observable<boolean>;
-      return new Promise<boolean>((resolve) => {
-        observableResult.subscribe((value) => {
+      const observableResult: Observable<boolean> =
+        result as Observable<boolean>;
+      return new Promise<boolean>((resolve: (value: boolean) => void) => {
+        observableResult.subscribe((value: boolean) => {
           resolve(value);
         });
       });

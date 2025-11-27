@@ -15,8 +15,12 @@ export class BackupConfigSource {
   @Column('simple-json')
   public parameters: Record<string, unknown>;
 
-  @ManyToOne(() => BackupConfig, (config) => config.sources, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(
+    () => BackupConfig,
+    (config: BackupConfig): BackupConfigSource[] => config.sources,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
   public config: BackupConfig;
 }

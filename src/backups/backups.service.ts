@@ -20,6 +20,7 @@ import { AbstractType } from './backups-types/abstract-type';
 import { BackupDestinationResultInterface } from './backups-types/interfaces/backup-destination-result.interface';
 import { instanceOfBackupDestination } from './backups-types/interfaces/backup-destination.interface';
 import { BackupParameterErrorInterface } from './backups-types/interfaces/backup-parameter-error.interface';
+import { BackupParameterInterface } from './backups-types/interfaces/backup-parameter.interface';
 import { BackupSourceResultInterface } from './backups-types/interfaces/backup-source-result.interface';
 import { instanceOfBackupSource } from './backups-types/interfaces/backup-source.interface';
 import { BackupTypeI18nInterface } from './backups-types/interfaces/backup-type-i18n.interface';
@@ -162,7 +163,7 @@ export class BackupsService {
       } else {
         filePath = results[0].absolutePath;
       }
-      const backupSave = new BackupSave();
+      const backupSave: BackupSave = new BackupSave();
       backupSave.destinations = [];
       backupSave.config = backupConfig;
       backupSave.filename = path.basename(filePath);
@@ -232,38 +233,40 @@ export class BackupsService {
   public createBackupArchive(
     results: BackupSourceResultInterface[],
   ): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const tmpDir: string = os.tmpdir();
-      const archiveName: string =
-        'backup-' + moment().format('DDMMYYYYHHmmss') + '.zip';
-      const archivePath: string = path.join(tmpDir, archiveName);
+    return new Promise(
+      (resolve: (value: string) => void, reject: (reason?: Error) => void) => {
+        const tmpDir: string = os.tmpdir();
+        const archiveName: string =
+          'backup-' + moment().format('DDMMYYYYHHmmss') + '.zip';
+        const archivePath: string = path.join(tmpDir, archiveName);
 
-      const outputStream: fs.WriteStream = fs.createWriteStream(archivePath);
-      const archive: archiver.Archiver = archiver('zip', {
-        zlib: { level: 9 },
-      });
-      outputStream.on('close', function () {
-        resolve(archivePath);
-      });
-      archive.on('error', function (err) {
-        Logger.error(err);
-        reject(err);
-      });
+        const outputStream: fs.WriteStream = fs.createWriteStream(archivePath);
+        const archive: archiver.Archiver = archiver('zip', {
+          zlib: { level: 9 },
+        });
+        outputStream.on('close', function () {
+          resolve(archivePath);
+        });
+        archive.on('error', function (err: Error) {
+          Logger.error(err);
+          reject(err);
+        });
 
-      archive.pipe(outputStream);
+        archive.pipe(outputStream);
 
-      for (const result of results) {
-        const isDirectory: boolean = fs
-          .statSync(result.absolutePath)
-          .isDirectory();
-        if (isDirectory) {
-          archive.directory(result.absolutePath, result.temporaryFile);
-        } else {
-          archive.file(result.absolutePath, { name: result.temporaryFile });
+        for (const result of results) {
+          const isDirectory: boolean = fs
+            .statSync(result.absolutePath)
+            .isDirectory();
+          if (isDirectory) {
+            archive.directory(result.absolutePath, result.temporaryFile);
+          } else {
+            archive.file(result.absolutePath, { name: result.temporaryFile });
+          }
         }
-      }
-      archive.finalize();
-    });
+        archive.finalize();
+      },
+    );
   }
 
   public async cleanBackupConfig(
@@ -283,7 +286,7 @@ export class BackupsService {
     }
 
     // We delete all the saves over the limit
-    const maxSaves = backupConfig.to_keep;
+    const maxSaves: number = backupConfig.to_keep;
     Logger.debug(`Max save ${maxSaves} / ${backupConfig.saves.length + 1}`);
     if (backupConfig.saves.length + 1 > maxSaves) {
       let savesToDelete: BackupSave[] = backupConfig.saves;
@@ -300,16 +303,16 @@ export class BackupsService {
   }
 
   public async validate(backupConfig: BackupConfig): Promise<boolean> {
-    const errors = [];
+    const errors: BackupParameterErrorInterface[] = [];
 
     // Verification of the sources
-    const sources = backupConfig.sources;
+    const sources: BackupConfigSource[] = backupConfig.sources;
     for (const source of sources) {
       errors.push(...(await this.validateSourceConfig(source)));
     }
 
     // Verification of the destinations
-    const destinations = backupConfig.destinations;
+    const destinations: BackupConfigDestination[] = backupConfig.destinations;
     for (const destination of destinations) {
       errors.push(...(await this.validateDestinationConfig(destination)));
     }
@@ -324,10 +327,11 @@ export class BackupsService {
     source: CreateBackupConfigSourceDto | BackupConfigSource,
   ): Promise<BackupParameterErrorInterface[]> {
     const errors: BackupParameterErrorInterface[] = [];
-    const backupType = await this.getBackupType(source.type);
+    const backupType: AbstractType = await this.getBackupType(source.type);
     if (instanceOfBackupSource(backupType)) {
       // We verify that all the required parameters are present
-      const sourceParameters = backupType.getSourceParameters();
+      const sourceParameters: BackupParameterInterface[] =
+        backupType.getSourceParameters();
 
       for (const parameter of sourceParameters) {
         if (parameter.required && !source.parameters[parameter.code]) {
@@ -340,7 +344,8 @@ export class BackupsService {
       }
       if (errors.length === 0) {
         backupType.setParameters(source.parameters);
-        const validationResult = backupType.validateSourceParameters();
+        const validationResult: true | BackupParameterErrorInterface[] =
+          backupType.validateSourceParameters();
         if (validationResult !== true) {
           errors.push(...validationResult);
         }
@@ -353,10 +358,11 @@ export class BackupsService {
     destination: CreateBackupConfigDestinationDto | BackupConfigDestination,
   ): Promise<BackupParameterErrorInterface[]> {
     const errors: BackupParameterErrorInterface[] = [];
-    const backupType = await this.getBackupType(destination.type);
+    const backupType: AbstractType = await this.getBackupType(destination.type);
     if (instanceOfBackupDestination(backupType)) {
       // We verify that all the required parameters are present
-      const destinationParameters = backupType.getDestinationParameters();
+      const destinationParameters: BackupParameterInterface[] =
+        backupType.getDestinationParameters();
 
       for (const parameter of destinationParameters) {
         if (parameter.required && !destination.parameters[parameter.code]) {
@@ -369,7 +375,8 @@ export class BackupsService {
       }
       if (errors.length === 0) {
         backupType.setParameters(destination.parameters);
-        const validationResult = backupType.validateDestinationParameters();
+        const validationResult: true | BackupParameterErrorInterface[] =
+          backupType.validateDestinationParameters();
         if (validationResult !== true) {
           errors.push(...validationResult);
         }
@@ -379,7 +386,7 @@ export class BackupsService {
   }
 
   public async getBackupType(code: string): Promise<AbstractType> {
-    const backupTypes = await types.getTypes();
+    const backupTypes: AbstractType[] = await types.getTypes();
     for (const backupType of backupTypes) {
       if (backupType.getConfig().code === code) {
         return backupType;
@@ -391,7 +398,7 @@ export class BackupsService {
   private async runBackupSource(
     source: BackupConfigSource,
   ): Promise<BackupSourceResultInterface> {
-    const backupType = await this.getBackupType(source.type);
+    const backupType: AbstractType = await this.getBackupType(source.type);
     if (instanceOfBackupSource(backupType)) {
       backupType.setParameters(source.parameters);
       backupType.setConfigName(source.config.name);
@@ -403,7 +410,7 @@ export class BackupsService {
     destination: BackupConfigDestination,
     fileAbsolutePath: string,
   ): Promise<BackupDestinationResultInterface> {
-    const backupType = await this.getBackupType(destination.type);
+    const backupType: AbstractType = await this.getBackupType(destination.type);
     if (instanceOfBackupDestination(backupType)) {
       backupType.setParameters(destination.parameters);
       backupType.setConfigName(destination.config.name);
@@ -415,7 +422,7 @@ export class BackupsService {
     lang: BackupTypeLangType,
   ): Promise<Record<string, BackupTypeI18nInterface>> {
     const i18n: Record<string, BackupTypeI18nInterface> = {};
-    const backupTypes = await types.getTypes();
+    const backupTypes: AbstractType[] = await types.getTypes();
     for (const backupType of backupTypes) {
       i18n[backupType.getConfig().code] = backupType.getI18n(lang);
     }
@@ -445,7 +452,7 @@ export class BackupsService {
     const cronKeys: string[] = Array.from(currentCrons.keys());
 
     for (const cronKey of cronKeys) {
-      const cron = currentCrons.get(cronKey);
+      const cron: CronJob | undefined = currentCrons.get(cronKey);
       if (cron) {
         this.schedulerRegistry.deleteCronJob(cronKey);
       }
@@ -454,7 +461,7 @@ export class BackupsService {
     //Create all cron
     for (const config of configs) {
       if (config.enabled) {
-        const cron = new CronJob(config.frequency, () => {
+        const cron: CronJob = new CronJob(config.frequency, () => {
           Logger.log(`Running config ${config.name} - ${config.id}`, 'CRON');
           this.runBackup(config);
         });

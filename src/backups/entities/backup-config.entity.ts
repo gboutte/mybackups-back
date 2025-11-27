@@ -23,21 +23,29 @@ export class BackupConfig {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public date_created: Date;
 
-  @OneToMany(() => BackupSave, (save) => save.config, {
+  @OneToMany(() => BackupSave, (save: BackupSave) => save.config, {
     cascade: true,
     eager: true,
   })
   public saves: BackupSave[];
 
-  @OneToMany(() => BackupConfigSource, (save) => save.config, {
-    cascade: true,
-    eager: true,
-  })
+  @OneToMany(
+    () => BackupConfigSource,
+    (save: BackupConfigSource) => save.config,
+    {
+      cascade: true,
+      eager: true,
+    },
+  )
   public sources: BackupConfigSource[];
 
-  @OneToMany(() => BackupConfigDestination, (save) => save.config, {
-    cascade: true,
-    eager: true,
-  })
+  @OneToMany(
+    () => BackupConfigDestination,
+    (save: BackupConfigDestination) => save.config,
+    {
+      cascade: true,
+      eager: true,
+    },
+  )
   public destinations: BackupConfigDestination[];
 }
