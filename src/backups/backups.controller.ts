@@ -10,7 +10,14 @@ import {
   StreamableFile,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { DeleteResult } from 'typeorm/query-builder/result/DeleteResult';
 import { Public } from '../global/decorators/public.decorator';
+import {
+  AbstractType,
+  AbstractTypeSchema,
+} from './backups-types/abstract-type';
+import { BackupParameterErrorInterface } from './backups-types/interfaces/backup-parameter-error.interface';
+import { BackupTypeI18nInterface } from './backups-types/interfaces/backup-type-i18n.interface';
 import { BackupTypeLangType } from './backups-types/interfaces/backup-type-lang.type';
 import types from './backups-types/types';
 import { BackupsService } from './backups.service';
@@ -20,7 +27,10 @@ import { CreateBackupConfigDto } from './dto/create-backup-config.dto';
 import { UpdateBackupConfigDestinationDto } from './dto/update-backup-config-destination.dto';
 import { UpdateBackupConfigSourceDto } from './dto/update-backup-config-source.dto';
 import { UpdateBackupConfigDto } from './dto/update-backup-config.dto';
+import { BackupConfigDestination } from './entities/backup-config-destination.entity';
+import { BackupConfigSource } from './entities/backup-config-source.entity';
 import { BackupConfig } from './entities/backup-config.entity';
+import { BackupSaveDestination } from './entities/backup-save-destination.entity';
 
 @Controller('backups')
 @ApiTags('backups')
@@ -29,20 +39,22 @@ export class BackupsController {
 
   @Get('config')
   @ApiBearerAuth()
-  getAllConfig() {
+  public getAllConfig(): Promise<BackupConfig[]> {
     return this.backupsService.findAllConfig();
   }
 
   @Get('types')
   @ApiBearerAuth()
-  async getTypes() {
-    const backupTypes = await types.getTypes();
+  public async getTypes(): Promise<AbstractTypeSchema[]> {
+    const backupTypes: AbstractType[] = await types.getTypes();
 
-    return backupTypes.map((type) => type.getJsonSchema());
+    return backupTypes.map((type): AbstractTypeSchema => type.getJsonSchema());
   }
   @Get('i18n/:lang')
   @Public()
-  async getI18n(@Param('lang') lang: BackupTypeLangType) {
+  public async getI18n(
+    @Param('lang') lang: BackupTypeLangType,
+  ): Promise<Record<string, BackupTypeI18nInterface>> {
     return this.backupsService.getI18n(lang);
   }
 
@@ -53,7 +65,7 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config',
   })
-  async getOneConfig(@Param('id') id: string): Promise<BackupConfig> {
+  public async getOneConfig(@Param('id') id: string): Promise<BackupConfig> {
     const backupConfig = await this.backupsService.findOneConfig(id);
     if (backupConfig !== null) {
       return backupConfig;
@@ -64,8 +76,10 @@ export class BackupsController {
 
   @Post('config')
   @ApiBearerAuth()
-  async createConfig(@Body() createBackupConfigDto: CreateBackupConfigDto) {
-    const config = await this.backupsService.createConfig(
+  public async createConfig(
+    @Body() createBackupConfigDto: CreateBackupConfigDto,
+  ): Promise<BackupConfig> {
+    const config: BackupConfig = await this.backupsService.createConfig(
       createBackupConfigDto,
     );
     await this.backupsService.refreshCron();
@@ -79,14 +93,15 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config',
   })
-  async createConfigSource(
+  public async createConfigSource(
     @Param('id') idBackupConfig: string,
     @Body() createBackupConfigSource: CreateBackupConfigSourceDto,
-  ) {
-    const source = await this.backupsService.createBackupSource(
-      idBackupConfig,
-      createBackupConfigSource,
-    );
+  ): Promise<BackupConfigSource> {
+    const source: BackupConfigSource =
+      await this.backupsService.createBackupSource(
+        idBackupConfig,
+        createBackupConfigSource,
+      );
     await this.backupsService.refreshCron();
     return source;
   }
@@ -97,14 +112,15 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup source',
   })
-  async updateConfigSource(
+  public async updateConfigSource(
     @Param('id') idSource: string,
     @Body() createBackupConfigSource: UpdateBackupConfigSourceDto,
-  ) {
-    const source = await this.backupsService.updateBackupConfigSource(
-      idSource,
-      createBackupConfigSource,
-    );
+  ): Promise<BackupConfigSource> {
+    const source: BackupConfigSource =
+      await this.backupsService.updateBackupConfigSource(
+        idSource,
+        createBackupConfigSource,
+      );
     await this.backupsService.refreshCron();
     return source;
   }
@@ -116,14 +132,15 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config',
   })
-  async createConfigDestination(
+  public async createConfigDestination(
     @Param('id') idBackupConfig: string,
     @Body() createBackupConfigDestination: CreateBackupConfigDestinationDto,
-  ) {
-    const destination = await this.backupsService.createBackupDestination(
-      idBackupConfig,
-      createBackupConfigDestination,
-    );
+  ): Promise<BackupConfigDestination> {
+    const destination: BackupConfigDestination =
+      await this.backupsService.createBackupDestination(
+        idBackupConfig,
+        createBackupConfigDestination,
+      );
     await this.backupsService.refreshCron();
     return destination;
   }
@@ -134,26 +151,26 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup destination',
   })
-  async updateConfigDestination(
+  public async updateConfigDestination(
     @Param('id') idDest: string,
     @Body() updateBackupConfigDestinationDto: UpdateBackupConfigDestinationDto,
-  ) {
-    const destination = await this.backupsService.updateBackupConfigDestination(
-      idDest,
-      updateBackupConfigDestinationDto,
-    );
+  ): Promise<BackupConfigDestination> {
+    const destination: BackupConfigDestination =
+      await this.backupsService.updateBackupConfigDestination(
+        idDest,
+        updateBackupConfigDestinationDto,
+      );
     await this.backupsService.refreshCron();
     return destination;
   }
 
   @Post('config/validate/source')
   @ApiBearerAuth()
-  async validateSource(
+  public async validateSource(
     @Body() createBackupConfigSource: CreateBackupConfigSourceDto,
-  ) {
-    const errors = await this.backupsService.validateSourceConfig(
-      createBackupConfigSource,
-    );
+  ): Promise<{ valid: boolean; errors: BackupParameterErrorInterface[] }> {
+    const errors: BackupParameterErrorInterface[] =
+      await this.backupsService.validateSourceConfig(createBackupConfigSource);
     return {
       valid: errors.length === 0,
       errors: errors,
@@ -162,12 +179,13 @@ export class BackupsController {
 
   @Post('config/validate/destination')
   @ApiBearerAuth()
-  async validateDestination(
+  public async validateDestination(
     @Body() createBackupConfigDestination: CreateBackupConfigDestinationDto,
-  ) {
-    const errors = await this.backupsService.validateDestinationConfig(
-      createBackupConfigDestination,
-    );
+  ): Promise<{ valid: boolean; errors: BackupParameterErrorInterface[] }> {
+    const errors: BackupParameterErrorInterface[] =
+      await this.backupsService.validateDestinationConfig(
+        createBackupConfigDestination,
+      );
     return {
       valid: errors.length === 0,
       errors: errors,
@@ -181,11 +199,11 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config',
   })
-  async update(
+  public async update(
     @Param('id') id: string,
     @Body() updateBackupConfigDto: UpdateBackupConfigDto,
-  ) {
-    const config = await this.backupsService.updateConfig(
+  ): Promise<BackupConfig> {
+    const config: BackupConfig = await this.backupsService.updateConfig(
       id,
       updateBackupConfigDto,
     );
@@ -199,7 +217,7 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config',
   })
-  async delete(@Param('id') id: string) {
+  public async delete(@Param('id') id: string): Promise<DeleteResult> {
     const result = await this.backupsService.delete(id);
     await this.backupsService.refreshCron();
     return result;
@@ -211,7 +229,7 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup source',
   })
-  async deleteSource(@Param('id') id: string) {
+  public async deleteSource(@Param('id') id: string): Promise<DeleteResult> {
     const result = await this.backupsService.deleteSource(id);
     await this.backupsService.refreshCron();
     return result;
@@ -224,7 +242,9 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup destination',
   })
-  async deleteDestination(@Param('id') id: string) {
+  public async deleteDestination(
+    @Param('id') id: string,
+  ): Promise<DeleteResult> {
     const result = await this.backupsService.deleteDestination(id);
     await this.backupsService.refreshCron();
     return result;
@@ -237,7 +257,7 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config',
   })
-  async runBackup(@Param('id') id: string) {
+  public async runBackup(@Param('id') id: string): Promise<void> {
     const backupConfig = await this.backupsService.findOneConfig(id);
     if (backupConfig !== null) {
       return this.backupsService.runBackup(backupConfig);
@@ -253,11 +273,11 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config save destination',
   })
-  async download(@Param('id') id: string): Promise<StreamableFile> {
+  public async download(@Param('id') id: string): Promise<StreamableFile> {
     const backupSave = await this.backupsService.findOneBackupSave(id);
     if (backupSave !== null) {
       let file = null;
-      const destinations = backupSave.destinations;
+      const destinations: BackupSaveDestination[] = backupSave.destinations;
       const index = 0;
       while (file === null && index < destinations.length) {
         try {
@@ -287,7 +307,7 @@ export class BackupsController {
     required: true,
     description: 'The uuid of the backup config save destination',
   })
-  async deleteSave(@Param('id') id: string) {
+  public async deleteSave(@Param('id') id: string): Promise<void> {
     const backupSave = await this.backupsService.findOneBackupSave(id);
     if (backupSave !== null) {
       await this.backupsService.deleteBackupSave(backupSave);

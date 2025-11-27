@@ -7,7 +7,7 @@ export class StatusService {
     @Inject(UsersService) private readonly usersService: UsersService,
   ) {}
 
-  async isInstalled(): Promise<boolean> {
+  public async isInstalled(): Promise<boolean> {
     return (await this.usersService.getNumberOfUsers()) > 0;
   }
 }

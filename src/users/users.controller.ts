@@ -26,7 +26,7 @@ export class UsersController {
 
   @Get()
   @ApiBearerAuth()
-  getAll() {
+  public getAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
@@ -37,7 +37,7 @@ export class UsersController {
     required: true,
     description: 'The uuid of the user',
   })
-  async get(@Param('id') id: string): Promise<User> {
+  public async get(@Param('id') id: string): Promise<User> {
     const user = await this.usersService.findOne(id);
     if (user !== null) {
       return user;
@@ -65,21 +65,21 @@ export class UsersController {
     required: true,
     description: 'The uuid of the user',
   })
-  update(
+  public update(
     @Param('id')
     id: string,
     @Body()
     updateUserDto: UpdateUserDto,
-  ) {
+  ): Promise<User> {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Post()
   @ApiBearerAuth()
-  async create(
+  public async create(
     @Body()
     createUserDto: CreateUserDto,
-  ) {
+  ): Promise<User> {
     //Check if the user exists
 
     const user = await this.usersService.findOneByUsername(
