@@ -19,7 +19,7 @@ export interface BackupDestinationInterface {
 }
 
 export function instanceOfBackupDestination(
-  object: any,
+  object: object,
 ): object is BackupDestinationInterface {
   return (
     'deleteBackup' in object &&

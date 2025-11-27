@@ -3,44 +3,47 @@ import * as glob from 'glob';
 import * as path from 'path';
 import { AbstractType } from '../abstract-type';
 
-
 export type BackupClass = new () => AbstractType;
 
-class BackupTypesManager{
+class BackupTypesManager {
+  private static _loadedTypes: BackupClass[] = [];
+  private static _instanciatedTypes: AbstractType[];
 
-  private static _loadedTypes:BackupClass[]=[];
-  private static _instanciatedTypes : AbstractType[];
+  private static _isInstanciated: boolean = false;
+  private static _isLoaded: boolean = false;
 
-  private static _isInstanciated = false;
-  private static _isLoaded = false;
-
-
-  public static async loadTypes() {
+  public static async loadTypes(): Promise<void> {
     Logger.debug('Loading backup types', 'MyBackups');
-    const typesPath = path.join(__dirname, 'implementations');
-    const files = glob(typesPath + '/**/*.ts', {sync: true});
-    const importedFiles = await Promise.all(
-        files.map((file) => {
-          return import(file.replace(__dirname, '.').replace('.d.ts', ''));
-        }),
+    const typesPath: string = path.join(__dirname, 'implementations');
+    const files: string[] = glob(typesPath + '/**/*.ts', { sync: true });
+    const importedFiles: Record<string, BackupClass>[] = await Promise.all(
+      files.map((file: string) => {
+        return import(file.replace(__dirname, '.').replace('.d.ts', ''));
+      }),
     );
-    const types:(BackupClass|null)[] = importedFiles.map((file) => {
-      for (const key in file) {
-        if (file[key].prototype instanceof AbstractType) {
-          Logger.log(`Loading backup type ${key}`, 'MyBackups');
-          return file[key];
+    const types: (BackupClass | null)[] = importedFiles.map(
+      (file: Record<string, BackupClass>) => {
+        for (const key in file) {
+          if (file[key].prototype instanceof AbstractType) {
+            Logger.log(`Loading backup type ${key}`, 'MyBackups');
+            return file[key];
+          }
         }
-      }
-      return null;
-    });
+        return null;
+      },
+    );
 
-    BackupTypesManager._loadedTypes = types.filter((type) => type !== null);
+    BackupTypesManager._loadedTypes = types.filter(
+      (type: BackupClass | null) => type !== null,
+    ) as BackupClass[];
     BackupTypesManager._isLoaded = true;
   }
 
-  public static async instanciateTypes() {
+  public static async instanciateTypes(): Promise<void> {
     Logger.log('Instanciating backup types', 'MyBackups');
-    BackupTypesManager._instanciatedTypes = BackupTypesManager._loadedTypes.map((type) => new type());
+    BackupTypesManager._instanciatedTypes = BackupTypesManager._loadedTypes.map(
+      (type: BackupClass) => new type(),
+    );
     BackupTypesManager._isInstanciated = true;
   }
 
@@ -50,7 +53,6 @@ class BackupTypesManager{
     }
 
     return BackupTypesManager._instanciatedTypes;
-
   }
 
   public static isLoaded(): boolean {
@@ -60,17 +62,14 @@ class BackupTypesManager{
   public static isInstanciated(): boolean {
     return BackupTypesManager._isInstanciated;
   }
-
 }
-
 
 export default {
   getTypes: async (): Promise<AbstractType[]> => {
-
-    if(!BackupTypesManager.isLoaded()){
+    if (!BackupTypesManager.isLoaded()) {
       await BackupTypesManager.loadTypes();
     }
-    if(!BackupTypesManager.isInstanciated()){
+    if (!BackupTypesManager.isInstanciated()) {
       await BackupTypesManager.instanciateTypes();
     }
     return BackupTypesManager.getTypes();

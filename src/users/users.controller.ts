@@ -13,6 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { AuthenticatedRequest } from '../common/types/fastify-request.types';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -25,7 +26,7 @@ export class UsersController {
 
   @Get()
   @ApiBearerAuth()
-  getAll() {
+  public getAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
@@ -36,8 +37,8 @@ export class UsersController {
     required: true,
     description: 'The uuid of the user',
   })
-  async get(@Param('id') id: string): Promise<User> {
-    const user = await this.usersService.findOne(id);
+  public async get(@Param('id') id: string): Promise<User> {
+    const user: User | null = await this.usersService.findOne(id);
     if (user !== null) {
       return user;
     } else {
@@ -48,8 +49,8 @@ export class UsersController {
   @Get('me')
   @ApiBearerAuth()
   @UseInterceptors(ClassSerializerInterceptor) // Intercept response (User) to remove password field
-  async getMe(@Request() req): Promise<User> {
-    const user = await this.usersService.findOne(req.user.userId);
+  public async getMe(@Request() req: AuthenticatedRequest): Promise<User> {
+    const user: User | null = await this.usersService.findOne(req.user.userId);
     if (user !== null) {
       return user;
     } else {
@@ -64,24 +65,24 @@ export class UsersController {
     required: true,
     description: 'The uuid of the user',
   })
-  update(
+  public update(
     @Param('id')
     id: string,
     @Body()
     updateUserDto: UpdateUserDto,
-  ) {
+  ): Promise<User> {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Post()
   @ApiBearerAuth()
-  async create(
+  public async create(
     @Body()
     createUserDto: CreateUserDto,
-  ) {
+  ): Promise<User> {
     //Check if the user exists
 
-    const user = await this.usersService.findOneByUsername(
+    const user: User | null = await this.usersService.findOneByUsername(
       createUserDto.username,
     );
     console.log(user);

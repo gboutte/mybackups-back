@@ -11,23 +11,30 @@ import { BackupSaveDestination } from './backup-save-destination.entity';
 @Entity()
 export class BackupSave {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  public id: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  date_created: Date;
+  public date_created: Date;
 
-  @ManyToOne(() => BackupConfig, (config) => config.saves)
-  config: BackupConfig;
+  @ManyToOne(
+    () => BackupConfig,
+    (config: BackupConfig): BackupSave[] => config.saves,
+  )
+  public config: BackupConfig;
 
-  @OneToMany(() => BackupSaveDestination, (destination) => destination.save, {
-    cascade: true,
-    eager: true,
-  })
-  destinations: BackupSaveDestination[];
+  @OneToMany(
+    () => BackupSaveDestination,
+    (destination: BackupSaveDestination): BackupSave => destination.save,
+    {
+      cascade: true,
+      eager: true,
+    },
+  )
+  public destinations: BackupSaveDestination[];
 
   @Column({ nullable: false })
-  filename: string;
+  public filename: string;
 
   @Column({ nullable: false })
-  mimetype: string;
+  public mimetype: string;
 }

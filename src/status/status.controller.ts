@@ -10,7 +10,7 @@ export class StatusController {
 
   @Get()
   @Public()
-  async getStatus() {
+  public async getStatus(): Promise<{ isInstalled: boolean }> {
     return {
       isInstalled: await this.statusService.isInstalled(),
     };

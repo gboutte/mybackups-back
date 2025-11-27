@@ -4,19 +4,23 @@ import { BackupConfig } from './backup-config.entity';
 @Entity()
 export class BackupConfigSource {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  public id: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  date_created: Date;
+  public date_created: Date;
 
   @Column()
-  type: string;
+  public type: string;
 
   @Column('simple-json')
-  parameters: any;
+  public parameters: Record<string, unknown>;
 
-  @ManyToOne(() => BackupConfig, (config) => config.sources, {
-    onDelete: 'CASCADE',
-  })
-  config: BackupConfig;
+  @ManyToOne(
+    () => BackupConfig,
+    (config: BackupConfig): BackupConfigSource[] => config.sources,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
+  public config: BackupConfig;
 }

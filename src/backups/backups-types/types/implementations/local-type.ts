@@ -21,11 +21,15 @@ export class LocalType
   extends AbstractType
   implements BackupSourceInterface, BackupDestinationInterface
 {
-  validateDestinationParameters(): true | BackupParameterErrorInterface[] {
+  public validateDestinationParameters():
+    | true
+    | BackupParameterErrorInterface[] {
     const errors: BackupParameterErrorInterface[] = [];
-    const dirPath = this.createAbsolutePath(this.getParameter('path'));
+    const dirPath: string = this.createAbsolutePath(
+      this.getParameter<string>('path'),
+    );
 
-    const writableCheck = this.checkDirectoryWritable(dirPath);
+    const writableCheck: true | string = this.checkDirectoryWritable(dirPath);
     if (writableCheck !== true) {
       errors.push({
         parameter: 'path',
@@ -47,7 +51,7 @@ export class LocalType
       // Check if the path exists
       if (fs.existsSync(dirPath)) {
         // Path exists, check if it's a directory
-        const stats = fs.statSync(dirPath);
+        const stats: fs.Stats = fs.statSync(dirPath);
         if (!stats.isDirectory()) {
           return `The path "${dirPath}" exists but is not a directory.`;
         }
@@ -56,8 +60,8 @@ export class LocalType
         return true;
       } else {
         // Path doesn't exist, find the first existing ancestor directory
-        let currentPath = dirPath;
-        let parentPath = path.dirname(currentPath);
+        let currentPath: string = dirPath;
+        let parentPath: string = path.dirname(currentPath);
 
         // Keep going up until we find an existing directory or reach the root
         while (!fs.existsSync(parentPath) && parentPath !== currentPath) {
@@ -68,7 +72,7 @@ export class LocalType
         // Check if we found an existing ancestor
         if (fs.existsSync(parentPath)) {
           // Check if the existing ancestor is a directory
-          const stats = fs.statSync(parentPath);
+          const stats: fs.Stats = fs.statSync(parentPath);
           if (!stats.isDirectory()) {
             return `The ancestor path "${parentPath}" exists but is not a directory.`;
           }
@@ -84,12 +88,12 @@ export class LocalType
       return `The path "${dirPath}" isn't writable or cannot be created.`;
     }
   }
-  makeid(length) {
-    let result = '';
-    const characters =
+  private makeid(length: number): string {
+    let result: string = '';
+    const characters: string =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    let counter = 0;
+    const charactersLength: number = characters.length;
+    let counter: number = 0;
     while (counter < length) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
       counter += 1;
@@ -97,47 +101,52 @@ export class LocalType
     return result;
   }
 
-  async doDestination(
+  public async doDestination(
     absolutePathToTemporaryBackup: string,
   ): Promise<BackupDestinationResultInterface> {
-    const backupConfigName = this.getSlugConfigName();
-    return new Promise((resolve, reject) => {
-      const newName =
-        backupConfigName +
-        '-' +
-        moment().format('DDMMYYYYHHmmss') +
-        '-' +
-        this.makeid(10) +
-        path.extname(absolutePathToTemporaryBackup);
+    const backupConfigName: string = this.getSlugConfigName();
+    return new Promise(
+      (
+        resolve: (value: BackupDestinationResultInterface) => void,
+        reject: (reason?: Error) => void,
+      ) => {
+        const newName: string =
+          backupConfigName +
+          '-' +
+          moment().format('DDMMYYYYHHmmss') +
+          '-' +
+          this.makeid(10) +
+          path.extname(absolutePathToTemporaryBackup);
 
-      const destinationPath = this.createAbsolutePath(
-        this.getParameter('path'),
-      );
+        const destinationPath: string = this.createAbsolutePath(
+          this.getParameter<string>('path'),
+        );
 
-      // Create directory if it doesn't exist
-      if (!fs.existsSync(destinationPath)) {
-        fs.mkdirSync(destinationPath, { recursive: true });
-      }
+        // Create directory if it doesn't exist
+        if (!fs.existsSync(destinationPath)) {
+          fs.mkdirSync(destinationPath, { recursive: true });
+        }
 
-      fs.copyFile(
-        absolutePathToTemporaryBackup,
-        path.join(destinationPath, newName),
-        (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve({
-              data: {
-                absolutePath: path.join(destinationPath, newName),
-              },
-            });
-          }
-        },
-      );
-    });
+        fs.copyFile(
+          absolutePathToTemporaryBackup,
+          path.join(destinationPath, newName),
+          (err: NodeJS.ErrnoException | null) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve({
+                data: {
+                  absolutePath: path.join(destinationPath, newName),
+                },
+              });
+            }
+          },
+        );
+      },
+    );
   }
 
-  getDestinationParameters(): BackupParameterInterface[] {
+  public getDestinationParameters(): BackupParameterInterface[] {
     return [
       {
         code: 'path',
@@ -147,13 +156,13 @@ export class LocalType
     ];
   }
 
-  getConfig(): BackupTypeConfigInterface {
+  public getConfig(): BackupTypeConfigInterface {
     return {
       code: 'local',
     };
   }
 
-  getI18n(lang: BackupTypeLangType): BackupTypeI18nInterface {
+  public getI18n(lang: BackupTypeLangType): BackupTypeI18nInterface {
     if (lang === 'fr') {
       return this.getI18nFr();
     } else {
@@ -204,67 +213,84 @@ export class LocalType
     };
   }
 
-  validateSourceParameters(): true | BackupParameterErrorInterface[] {
+  public validateSourceParameters(): true | BackupParameterErrorInterface[] {
     const errors: BackupParameterErrorInterface[] = [];
-    const path = this.createAbsolutePath(this.getParameter('path'));
+    const pathStr: string = this.createAbsolutePath(
+      this.getParameter<string>('path'),
+    );
     try {
-      fs.accessSync(path, fs.constants.R_OK);
-    } catch (err) {
+      fs.accessSync(pathStr, fs.constants.R_OK);
+    } catch {
       errors.push({
         parameter: 'path',
-        message: `The path "${path}" isn't readable.`,
+        message: `The path "${pathStr}" isn't readable.`,
       });
     }
 
     return errors.length > 0 ? errors : true;
   }
 
-  doSource(): Promise<BackupSourceResultInterface> {
-    const backupConfigName = this.getSlugConfigName();
-    const tmpDir = this.getTemporaryDirectory();
-    const absolutePath = this.createAbsolutePath(this.getParameter('path'));
+  public doSource(): Promise<BackupSourceResultInterface> {
+    const backupConfigName: string = this.getSlugConfigName();
+    const tmpDir: string = this.getTemporaryDirectory();
+    const absolutePath: string = this.createAbsolutePath(
+      this.getParameter<string>('path'),
+    );
 
-    return new Promise((resolve, reject) => {
-      const newName =
-        backupConfigName +
-        '-' +
-        moment().format('DDMMYYYYHHmmss') +
-        '-' +
-        this.makeid(10) +
-        path.extname(absolutePath);
-      const isDirectory = fs.statSync(absolutePath).isDirectory();
+    return new Promise(
+      (
+        resolve: (value: BackupSourceResultInterface) => void,
+        reject: (reason?: Error) => void,
+      ) => {
+        const newName: string =
+          backupConfigName +
+          '-' +
+          moment().format('DDMMYYYYHHmmss') +
+          '-' +
+          this.makeid(10) +
+          path.extname(absolutePath);
+        const isDirectory: boolean = fs.statSync(absolutePath).isDirectory();
 
-      const newAbsolutePath:string = path.join(tmpDir, newName);
+        const newAbsolutePath: string = path.join(tmpDir, newName);
 
-      if(isDirectory){
-        fs.cp(absolutePath,newAbsolutePath,{recursive:true},(err) => {
-          if (err) {
-            Logger.debug('error copy')
-            reject(err);
-          } else {
-            resolve({
-              temporaryFile: newName,
-              absolutePath: newAbsolutePath,
-            });
-          }
-        });
-      }else {
-
-        fs.copyFile(absolutePath,newAbsolutePath , (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve({
-              temporaryFile: newName,
-              absolutePath: newAbsolutePath,
-            });
-          }
-        });
-      }
-    });
+        if (isDirectory) {
+          fs.cp(
+            absolutePath,
+            newAbsolutePath,
+            { recursive: true },
+            (err: NodeJS.ErrnoException | null) => {
+              if (err) {
+                Logger.debug('error copy');
+                reject(err);
+              } else {
+                resolve({
+                  temporaryFile: newName,
+                  absolutePath: newAbsolutePath,
+                });
+              }
+            },
+          );
+        } else {
+          fs.copyFile(
+            absolutePath,
+            newAbsolutePath,
+            (err: NodeJS.ErrnoException | null) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve({
+                  temporaryFile: newName,
+                  absolutePath: newAbsolutePath,
+                });
+              }
+            },
+          );
+        }
+      },
+    );
   }
 
-  getSourceParameters(): BackupParameterInterface[] {
+  public getSourceParameters(): BackupParameterInterface[] {
     return [
       {
         code: 'path',
@@ -278,20 +304,24 @@ export class LocalType
     return path.resolve(paramPath);
   }
 
-  getBackup(backupSave: BackupSaveDestination): Promise<ReadStream> {
-    return new Promise((resolve, reject) => {
-      const absolutePath = backupSave.parameters['absolutePath'];
-      const readStream = fs.createReadStream(absolutePath);
+  public getBackup(backupSave: BackupSaveDestination): Promise<ReadStream> {
+    return new Promise((resolve: (value: ReadStream) => void) => {
+      const absolutePath: string = backupSave.parameters[
+        'absolutePath'
+      ] as string;
+      const readStream: ReadStream = fs.createReadStream(absolutePath);
 
       resolve(readStream);
     });
   }
 
-  deleteBackup(backupSave: BackupSaveDestination): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      const absolutePath = backupSave.parameters['absolutePath'];
+  public deleteBackup(backupSave: BackupSaveDestination): Promise<boolean> {
+    return new Promise((resolve: (value: boolean) => void) => {
+      const absolutePath: string = backupSave.parameters[
+        'absolutePath'
+      ] as string;
       if (fileExistsSync(absolutePath)) {
-        fs.unlink(absolutePath, (err) => {
+        fs.unlink(absolutePath, (err: NodeJS.ErrnoException | null) => {
           if (err) {
             resolve(false);
           } else {

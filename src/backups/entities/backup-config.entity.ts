@@ -6,38 +6,46 @@ import { BackupSave } from './backup-save.entity';
 @Entity()
 export class BackupConfig {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  public id: string;
 
   @Column()
-  name: string;
+  public name: string;
 
   @Column()
-  to_keep: number;
+  public to_keep: number;
 
   @Column()
-  frequency: string;
+  public frequency: string;
 
   @Column()
-  enabled: boolean;
+  public enabled: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  date_created: Date;
+  public date_created: Date;
 
-  @OneToMany(() => BackupSave, (save) => save.config, {
+  @OneToMany(() => BackupSave, (save: BackupSave) => save.config, {
     cascade: true,
     eager: true,
   })
-  saves: BackupSave[];
+  public saves: BackupSave[];
 
-  @OneToMany(() => BackupConfigSource, (save) => save.config, {
-    cascade: true,
-    eager: true,
-  })
-  sources: BackupConfigSource[];
+  @OneToMany(
+    () => BackupConfigSource,
+    (save: BackupConfigSource) => save.config,
+    {
+      cascade: true,
+      eager: true,
+    },
+  )
+  public sources: BackupConfigSource[];
 
-  @OneToMany(() => BackupConfigDestination, (save) => save.config, {
-    cascade: true,
-    eager: true,
-  })
-  destinations: BackupConfigDestination[];
+  @OneToMany(
+    () => BackupConfigDestination,
+    (save: BackupConfigDestination) => save.config,
+    {
+      cascade: true,
+      eager: true,
+    },
+  )
+  public destinations: BackupConfigDestination[];
 }

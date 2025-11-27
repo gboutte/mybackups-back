@@ -4,14 +4,15 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
-async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter(),
-  );
+async function bootstrap(): Promise<void> {
+  const app: NestFastifyApplication =
+    await NestFactory.create<NestFastifyApplication>(
+      AppModule,
+      new FastifyAdapter(),
+    );
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // Every property that is not in the DTO will be removed
@@ -23,7 +24,7 @@ async function bootstrap() {
     }),
   );
   app.setGlobalPrefix('api');
-  const config = new DocumentBuilder()
+  const config: Omit<OpenAPIObject, 'paths'> = new DocumentBuilder()
     .setTitle('MyBackups api')
     .setDescription('MyBackups api')
     .setVersion('1.0')
@@ -32,7 +33,7 @@ async function bootstrap() {
       description: 'You can get the token on the /auth/login endpoint',
     })
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document: OpenAPIObject = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('api', app, document, {
     swaggerOptions: {

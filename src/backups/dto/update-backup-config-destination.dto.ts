@@ -11,5 +11,5 @@ export class UpdateBackupConfigDestinationDto extends PartialType(
   })
   @IsString()
   @IsOptional()
-  readonly id: string;
+  public readonly id: string;
 }

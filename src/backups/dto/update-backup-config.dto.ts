@@ -18,14 +18,14 @@ export class UpdateBackupConfigDto {
   })
   @IsString()
   @IsOptional()
-  readonly name: string;
+  public readonly name: string;
   @ApiProperty({
     description: 'The number of backups to keep.',
     example: 3,
   })
   @IsInt()
   @IsOptional()
-  readonly to_keep: number;
+  public readonly to_keep: number;
 
   @ApiProperty({
     description: 'The frequency as a cron string.',
@@ -33,7 +33,7 @@ export class UpdateBackupConfigDto {
   })
   @IsString()
   @IsOptional()
-  readonly frequency: string;
+  public readonly frequency: string;
 
   @ApiProperty({
     description: 'Whether the backup config is enabled.',
@@ -41,7 +41,7 @@ export class UpdateBackupConfigDto {
   })
   @IsBoolean()
   @IsOptional()
-  readonly enabled: boolean;
+  public readonly enabled: boolean;
 
   @ApiProperty({
     description: 'The sources config.',
@@ -50,7 +50,7 @@ export class UpdateBackupConfigDto {
   @ValidateNested()
   @Type(() => UpdateBackupConfigSourceDto)
   @IsOptional()
-  readonly sources: UpdateBackupConfigSourceDto[];
+  public readonly sources: UpdateBackupConfigSourceDto[];
 
   @ApiProperty({
     description: 'The destinations config.',
@@ -59,5 +59,5 @@ export class UpdateBackupConfigDto {
   @ValidateNested()
   @Type(() => UpdateBackupConfigDestinationDto)
   @IsOptional()
-  readonly destinations: UpdateBackupConfigDestinationDto[];
+  public readonly destinations: UpdateBackupConfigDestinationDto[];
 }
