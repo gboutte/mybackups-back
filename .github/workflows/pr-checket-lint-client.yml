@@ -63,6 +63,8 @@ jobs:
           else
             ARGS=""
             for f in $FILES; do
+              # Remove 'client/' prefix if present
+              f="${f#client/}"
               ARGS="$ARGS --lint-file-patterns=$f"
             done
 
