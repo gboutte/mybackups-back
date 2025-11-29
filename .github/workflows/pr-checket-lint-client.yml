@@ -62,7 +62,7 @@ jobs:
           else
             ARGS=""
             for f in $FILES; do
-              ARGS="$ARGS $f"
+              ARGS="$ARGS --lint-file-patterns=$f"
             done
 
             # Export ARGS as step output
