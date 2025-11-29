@@ -95,7 +95,7 @@ jobs:
             ```
             npm run lint -- ${{ steps.format_args.outputs.ARGS }}
             ```
-          comment-tag: backend_lint_check
+          comment-tag: client_lint_check
           mode: recreate
 
       - name: Remove Code Format Comment on Success
@@ -103,5 +103,5 @@ jobs:
         uses: thollander/actions-comment-pull-request@v3
         with:
           message: ""
-          comment-tag: backend_lint_check
+          comment-tag: client_lint_check
           mode: delete
