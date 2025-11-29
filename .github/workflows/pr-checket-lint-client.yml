@@ -48,6 +48,7 @@ jobs:
             **/environment.ts
             **/environment.*.ts
             **/*.routes.ts
+            **/src/index.html
 
       - name: Install Angular CLI
         run: npm install -g @angular/cli
