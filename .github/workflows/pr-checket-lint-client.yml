@@ -35,8 +35,8 @@ jobs:
           separator: " "
           json: false
           files: |
-            **/client/*.ts
-            **/client/*.html
+            **/client/**/*.ts
+            **/client/**/*.html
           files_ignore: |
             **/proxy.conf.ts
             **/*.spec.ts
