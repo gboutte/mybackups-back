@@ -1,0 +1,166 @@
+{
+	"dashboard": {
+		"backups": {
+			"title": "Configurations de backups",
+			"actions": {
+				"add": "Ajouter une configuration"
+			},
+			"config": {
+				"sources": "{{sourcesCount}} source(s)",
+				"destinations": "{{destinationsCount}} destination(s)",
+				"saves": "{{savesCount}} sauvegardes(s)"
+			},
+			"modal": {
+				"add": {
+					"form": {
+						"name": "Nom",
+						"frequency": "Frequence",
+						"enabled": "Activé",
+						"to_keep": "Nombre de backups à conserver",
+						"submit": "Créer"
+					},
+					"title": "Créer une configuration"
+				},
+				"edit": {
+					"form": {
+						"submit": "Sauvegarder"
+					},
+					"title": "Modifier la configuration"
+				},
+				"saves": {
+					"save_card": {
+						"title": "Sauvegarde du {{dateCreated}}"
+					},
+					"title": "Liste des sauvegardes"
+				},
+				"delete": {
+					"title": "Supprimer la configuration",
+					"description": "Etes vous sur de vouloir supprimer la configuration \"{{name}}\" ? Cette action est irréversible.",
+					"yes": "Oui, supprimer",
+					"no": "Non, annuler"
+				},
+				"run": {
+					"title": "Lancer la sauvegarde",
+					"description": "Etes vous sur de vouloir lancer la sauvegarde ?",
+					"yes": "Oui, lancer",
+					"no": "Non, annuler"
+				}
+			}
+		},
+		"backups-settings": {
+			"back": "Retour",
+			"title": "Configuration de \"{{name}}\"",
+			"add-source": "Ajouter une source",
+			"add-destination": "Ajouter une destination",
+			"sources": "Sources",
+			"destination": "Destinations",
+			"modal": {
+				"endpoint": {
+					"submit": {
+						"validating": "Valitation...",
+						"edit": "Sauvegarder",
+						"add": "Créer"
+					},
+					"form": {
+						"error": {
+							"description": "Un des champs est invalide. Veuillez vérifier les informations saisies.",
+							"title": "Erreur"
+						},
+						"success": {
+							"description": "La configuration a été sauvegardée.",
+							"title": "Sauvegarde réussie"
+						}
+					}
+				},
+				"source": {
+					"add": {
+						"title": "Ajouter une source"
+					},
+					"edit": {
+						"title": "Modifier la source"
+					},
+					"delete": {
+						"title": "Supprimer la source",
+						"message": "Etes vous sur de vouloir supprimer la source ? Cette action est irréversible."
+					}
+				},
+				"destination": {
+					"delete": {
+						"title": "Supprimer la destination",
+						"message": "Etes vous sur de vouloir supprimer la destination ? Cette action est irréversible."
+					},
+					"add": {
+						"title": "Ajouter une destination"
+					},
+					"edit": {
+						"title": "Modifier la destination"
+					}
+				}
+			}
+		},
+		"users": {
+			"modal": {
+				"add": {
+					"form": {
+						"username": "Nom d'utilisateur",
+						"password": "Mot de passe",
+						"submit": "Créer"
+					},
+					"title": "Ajouter un utilisateur"
+				},
+				"edit": {
+					"form": {
+						"submit": "Sauvegarder"
+					},
+					"title": "Modifier {{username}}"
+				}
+			},
+			"title": "Utilisateurs",
+			"actions": {
+				"add": "Ajouter un utilisateur"
+			},
+			"table": {
+				"username": "Nom d'utilisateur",
+				"date_created": "Date de création"
+			}
+		}
+	},
+	"installation": {
+		"title": "Installation",
+		"form": {
+			"username": "Nom d'utilisateur",
+			"password": "Mot de passe"
+		},
+		"toast": {
+			"success": {
+				"description": "Vous pouvez maintenant vous connecter.",
+				"title": "Installation réussie"
+			},
+			"error": {
+				"description": "Une erreur est survenue lors de l'installation. Veuillez réessayer.",
+				"title": "Erreur"
+			}
+		}
+	},
+	"login": {
+		"title": "Connexion",
+		"form": {
+			"username": "Nom d'utilisateur",
+			"password": "Mot de passe",
+			"submit": "Se connecter"
+		},
+		"toast": {
+			"error": {
+				"description": "Nom d'utilisateur ou mot de passe incorrect. Veuillez réessayer.",
+				"title": "Erreur"
+			}
+		}
+	},
+	"menu": {
+		"links": {
+			"home": "Accueil",
+			"users": "Utilisateurs",
+			"backups": "Backups"
+		}
+	}
+}

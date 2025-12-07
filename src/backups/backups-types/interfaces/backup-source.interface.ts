@@ -1,0 +1,21 @@
+import { BackupParameterErrorInterface } from './backup-parameter-error.interface';
+import { BackupParameterInterface } from './backup-parameter.interface';
+import { BackupSourceResultInterface } from './backup-source-result.interface';
+
+export interface BackupSourceInterface {
+  getSourceParameters(): BackupParameterInterface[];
+
+  doSource(): Promise<BackupSourceResultInterface>;
+
+  validateSourceParameters(): true | BackupParameterErrorInterface[];
+}
+
+export function instanceOfBackupSource(
+  object: object,
+): object is BackupSourceInterface {
+  return (
+    'getSourceParameters' in object &&
+    'doSource' in object &&
+    'validateSourceParameters' in object
+  );
+}

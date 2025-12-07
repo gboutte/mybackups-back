@@ -1,0 +1,166 @@
+{
+	"dashboard": {
+		"backups": {
+			"title": "Backups configurations",
+			"actions": {
+				"add": "Create a backup config"
+			},
+			"config": {
+				"sources": "{{sourcesCount}} source(s)",
+				"destinations": "{{destinationsCount}} destinsation(s)",
+				"saves": "{{savesCount}} saves(s)"
+			},
+			"modal": {
+				"add": {
+					"form": {
+						"name": "Name",
+						"frequency": "Frequency",
+						"enabled": "Enabled",
+						"to_keep": "Number of backups to keep",
+						"submit": "Add"
+					},
+					"title": "Create a backup config"
+				},
+				"edit": {
+					"form": {
+						"submit": "Save"
+					},
+					"title": "Edit backup config"
+				},
+				"saves": {
+					"save_card": {
+						"title": "Save of {{dateCreated}}"
+					},
+					"title": "List of saves"
+				},
+				"delete": {
+					"title": "Delete backup config",
+					"description": "Are you sure you want to delete the backup config \"{{name}}\"? This action is irreversible.",
+					"yes": "Yes, delete",
+					"no": "No, cancel"
+				},
+				"run": {
+					"title": "Run backup",
+					"description": "Are you sure you want to run the backup ?",
+					"yes": "Yes, run",
+					"no": "No, cancel"
+				}
+			}
+		},
+		"backups-settings": {
+			"back": "Back",
+			"title": "Settings of \"{{name}}\"",
+			"add-source": "Add source",
+			"add-destination": "Add destination",
+			"sources": "Sources",
+			"destination": "Destination",
+			"modal": {
+				"endpoint": {
+					"submit": {
+						"validating": "Validating...",
+						"edit": "Save",
+						"add": "Add"
+					},
+					"form": {
+						"error": {
+							"description": "A field is invalid. Please check the form and try again.",
+							"title": "Error"
+						},
+						"success": {
+							"description": "Configuration saved successfully.",
+							"title": "Success"
+						}
+					}
+				},
+				"source": {
+					"add": {
+						"title": "Add source"
+					},
+					"edit": {
+						"title": "Edit source"
+					},
+					"delete": {
+						"title": "dashboard.backups-settings.modal.source.delete.title",
+						"message": "dashboard.backups-settings.modal.source.delete.message"
+					}
+				},
+				"destination": {
+					"delete": {
+						"title": "dashboard.backups-settings.modal.destination.delete.title",
+						"message": "dashboard.backups-settings.modal.destination.delete.message"
+					},
+					"add": {
+						"title": "Add destination"
+					},
+					"edit": {
+						"title": "Edit destination"
+					}
+				}
+			}
+		},
+		"users": {
+			"modal": {
+				"add": {
+					"form": {
+						"username": "Username",
+						"password": "Password",
+						"submit": "Add"
+					},
+					"title": "Add user"
+				},
+				"edit": {
+					"form": {
+						"submit": "Save"
+					},
+					"title": "Edit {{username}}"
+				}
+			},
+			"title": "Users",
+			"actions": {
+				"add": "Add user"
+			},
+			"table": {
+				"username": "Username",
+				"date_created": "Date created"
+			}
+		}
+	},
+	"installation": {
+		"title": "Installation",
+		"form": {
+			"username": "Username",
+			"password": "Password"
+		},
+		"toast": {
+			"success": {
+				"description": "User created successfully",
+				"title": "Installation successful"
+			},
+			"error": {
+				"description": "An error occurred while creating the user. Please try again.",
+				"title": "Installation failed"
+			}
+		}
+	},
+	"login": {
+		"title": "Login",
+		"form": {
+			"username": "Username",
+			"password": "Password",
+			"submit": "Log"
+		},
+		"toast": {
+			"error": {
+				"description": "Password or username is incorrect. Please try again.",
+				"title": "Login failed"
+			}
+		}
+	},
+	"menu": {
+		"links": {
+			"home": "Home",
+			"users": "Users",
+			"backups": "Backups"
+		}
+	}
+}

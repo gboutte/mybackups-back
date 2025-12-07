@@ -1,0 +1,15 @@
+.type-select{
+  max-width: 200px;
+}
+
+.form{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  .input{
+    .input-description{
+      font-size: 0.8rem;
+      color: #666;
+    }
+  }
+}

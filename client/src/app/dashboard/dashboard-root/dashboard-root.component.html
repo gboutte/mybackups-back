@@ -1,0 +1,15 @@
+@if (loading) {
+  <gl-loader />
+} @else {
+  <gl-navbar key="navbar-mybackups">
+    <div class="logo">
+      <img src="/assets/logos/logo_orange.svg" />
+    </div>
+  </gl-navbar>
+  <gl-sidebar [menu]="menu" key="navbar-mybackups" />
+  <gl-page key="navbar-mybackups">
+    <gl-card class="page-content">
+      <router-outlet />
+    </gl-card>
+  </gl-page>
+}

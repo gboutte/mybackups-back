@@ -1,0 +1,113 @@
+@if (backupConfig === undefined || types === undefined) {
+  <gl-loader />
+} @else {
+  <gl-button routerLink="/dashboard/backups"
+    ><i class="ph ph-arrow-fat-line-left"></i>
+    {{ 'dashboard.backups-settings.back' | translate }}</gl-button
+  >
+  <h1>
+    {{
+      'dashboard.backups-settings.title'
+        | translate: { name: backupConfig.name }
+    }}
+  </h1>
+  <div class="actions">
+    <gl-button (click)="addSource()"
+      ><i class="ph ph-plus"></i>
+      {{ 'dashboard.backups-settings.add-source' | translate }}</gl-button
+    >
+    <gl-button (click)="addDestination()"
+      ><i class="ph ph-plus"></i>
+      {{ 'dashboard.backups-settings.add-destination' | translate }}</gl-button
+    >
+  </div>
+  <div class="endpoints">
+    <gl-card>
+      <div class="sources">
+        <h2>{{ 'dashboard.backups-settings.sources' | translate }}</h2>
+        @for (source of backupConfig.sources; track source) {
+          <gl-card>
+            <div class="endpoint">
+              <div class="details">
+                <div class="name">
+                  {{ 'name' | backupTranslate: source.type }}
+                </div>
+                <div class="parameters">
+                  @for (param of source.parameters | keyvalue; track param) {
+                    <div>
+                      <div class="parameter">
+                        {{ param.key }}: {{ param.value }}
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+              <div class="endpoint-actions">
+                <gl-button [round]="true" (click)="editSource(source)">
+                  <i
+                    class="ph-thin ph-pencil-simple"
+                    style="font-size: 20px"
+                  ></i>
+                </gl-button>
+                <gl-button [round]="true" (click)="deleteSource(source)">
+                  <i
+                    class="ph-thin ph-trash-simple"
+                    style="font-size: 20px"
+                  ></i>
+                </gl-button>
+              </div>
+            </div>
+          </gl-card>
+        }
+      </div>
+    </gl-card>
+    <gl-card>
+      <div class="destinations">
+        <h2>{{ 'dashboard.backups-settings.destination' | translate }}</h2>
+        @for (destination of backupConfig.destinations; track destination) {
+          <gl-card>
+            <div class="endpoint">
+              <div class="details">
+                <div class="name">
+                  {{ 'name' | backupTranslate: destination.type }}
+                </div>
+                <div class="parameters">
+                  @for (
+                    param of destination.parameters | keyvalue;
+                    track param
+                  ) {
+                    <div>
+                      <div class="parameter">
+                        {{ param.key }}: {{ param.value }}
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+              <div class="endpoint-actions">
+                <gl-button
+                  [round]="true"
+                  (click)="editDestination(destination)"
+                >
+                  <i
+                    class="ph-thin ph-pencil-simple"
+                    style="font-size: 20px"
+                  ></i>
+                </gl-button>
+                <gl-button
+                  [round]="true"
+                  (click)="deleteDestination(destination)"
+                >
+                  <i
+                    class="ph-thin ph-trash-simple"
+                    style="font-size: 20px"
+                  ></i>
+                </gl-button>
+              </div>
+            </div>
+          </gl-card>
+        }
+      </div>
+    </gl-card>
+  </div>
+}

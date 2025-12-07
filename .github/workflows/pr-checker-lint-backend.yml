@@ -1,0 +1,95 @@
+name: PR Lint backend checker
+
+on:
+  pull_request:
+    types: [edited, synchronize, opened, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  pr-open-check:
+    permissions:
+      issues: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install packages
+        run: |
+          npm install
+
+      - name: Get changed files
+        id: changed_files
+        uses: tj-actions/changed-files@v44
+        with:
+          separator: " "
+          json: false
+          files: |
+            **/*.ts
+          files_ignore: |
+            **/typeorm.config.ts
+            **/migrations/*.ts
+            **/client/**
+
+
+      - name: Format list argument
+        id: format_args
+        run: |
+          FILES="${{ steps.changed_files.outputs.all_changed_files }}"
+          if [ -z "$FILES" ]; then
+            echo "No TypeScript files changed."
+            echo "ARGS=" >> $GITHUB_OUTPUT
+          else
+            ARGS=""
+            for f in $FILES; do
+              ARGS="$ARGS $f"
+            done
+
+            # Export ARGS as step output
+            echo "ARGS=$ARGS" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Code Format
+        id: codeFormat
+        run: |
+          npm run lint:check
+
+
+
+      - name: Add Code Format Fail Comment
+        if: always() && steps.codeFormat.outcome == 'failure'
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+
+            Thanks for your contribution ! 
+            But your PR does not seem to fit our code format standards for both.
+            Please run the `npm run format` command in the root folder.
+            ```
+            npm run lint
+            ```
+            You can run the lint only on updated files:
+            
+            ```
+            npm run lint -- ${{ steps.format_args.outputs.ARGS }}
+            ```
+          comment-tag: backend_lint_check
+          mode: recreate
+
+      - name: Remove Code Format Comment on Success
+        if: always() && steps.codeFormat.outcome == 'success'
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: ""
+          comment-tag: backend_lint_check
+          mode: delete

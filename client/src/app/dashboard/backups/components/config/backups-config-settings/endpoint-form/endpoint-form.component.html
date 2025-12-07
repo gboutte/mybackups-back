@@ -1,0 +1,74 @@
+<form [formGroup]="endpointForm" (submit)="submit()" class="form">
+  <div class="type-select">
+    <gl-select
+      formControlName="type"
+      label="Type"
+      [options]="selectTypeOptions"
+    />
+  </div>
+
+  @if (type.value !== null) {
+    <gl-card>
+      {{ 'description' | backupTranslate: selectedType }}
+    </gl-card>
+    @for (parameter of selectedType.source.parameters; track parameter) {
+      <div class="input">
+        @if (parameter.type === 'string') {
+          <gl-input
+            [label]="
+              'parameters.source.' + parameter.code + '.name'
+                | backupTranslate: selectedType
+            "
+            [formControl]="getParameterControl(parameter.code)"
+            [showErrors]="true"
+          />
+        }
+        @if (parameter.type === 'number') {
+          <gl-input
+            [label]="
+              'parameters.source.' + parameter.code + '.name'
+                | backupTranslate: selectedType
+            "
+            [formControl]="getParameterControl(parameter.code)"
+            [showErrors]="true"
+          />
+        }
+        @if (parameter.type === 'boolean') {
+          <gl-checkbox
+            [label]="
+              'parameters.source.' + parameter.code + '.name'
+                | backupTranslate: selectedType
+            "
+            [formControl]="getParameterControl(parameter.code)"
+            [showErrors]="true"
+          />
+        }
+        <div class="input-description">
+          {{
+            'parameters.source.' + parameter.code + '.description'
+              | backupTranslate: selectedType
+          }}
+        </div>
+      </div>
+    }
+    <gl-button>
+      @if (validating) {
+        {{
+          'dashboard.backups-settings.modal.endpoint.submit.validating'
+            | translate
+        }}
+      }
+      @if (!validating) {
+        @if (this.modalConfig.data.source) {
+          {{
+            'dashboard.backups-settings.modal.endpoint.submit.edit' | translate
+          }}
+        } @else {
+          {{
+            'dashboard.backups-settings.modal.endpoint.submit.add' | translate
+          }}
+        }
+      }
+    </gl-button>
+  }
+</form>
