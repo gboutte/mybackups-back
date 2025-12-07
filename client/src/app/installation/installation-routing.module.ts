@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { InstallComponent } from './components/install/install.component';
+
 
 const routes: Routes = [
   {
     path: '',
-    component: InstallComponent,
+    loadComponent: () => import('./components/install/install.component').then(m => m.InstallComponent),
   },
 ];
 

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BackupsComponent } from './components/backups/backups.component';
-import { BackupsConfigSettingsComponent } from './components/config/backups-config-settings/backups-config-settings.component';
+
+
 const routes: Routes = [
   {
     path: '',
-    component: BackupsComponent,
+    loadComponent: () => import('./components/backups/backups.component').then(m => m.BackupsComponent),
   },
   {
     path: ':id/settings',
-    component: BackupsConfigSettingsComponent,
+    loadComponent: () => import('./components/config/backups-config-settings/backups-config-settings.component').then(m => m.BackupsConfigSettingsComponent),
   },
 ];
 

@@ -1,5 +1,5 @@
 import {Routes} from "@angular/router";
-import {DashboardRootComponent} from "./app/dashboard/dashboard-root/dashboard-root.component";
+
 import {AuthGuard} from "./app/auth/auth.guard";
 
 export const routes: Routes = [
@@ -20,7 +20,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardRootComponent,
+    loadComponent: () => import('./app/dashboard/dashboard-root/dashboard-root.component').then(m => m.DashboardRootComponent),
     canActivate: [AuthGuard],
     loadChildren: () =>
       import('./app/dashboard/dashboard.module').then((m) => m.DashboardModule),
