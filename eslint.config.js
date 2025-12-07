@@ -95,5 +95,5 @@ module.exports = defineConfig([
             ],
         },
     },
-    globalIgnores(['**/.eslintrc.js']),
+    globalIgnores(['**/.eslintrc.js','**/client/**']),
 ]);
