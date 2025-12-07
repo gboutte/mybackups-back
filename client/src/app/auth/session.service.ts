@@ -4,6 +4,7 @@ import moment, { Moment } from 'moment';
 import { User } from '../dashboard/users/models/user.model';
 import { AuthService } from './auth.service';
 import { SessionStore } from './session.store';
+import {SsrCookieService} from "ngx-cookie-service-ssr";
 
 interface JWTPayload {
   //Id utilisateur
@@ -24,12 +25,13 @@ interface JWTPayload {
 
 @Injectable()
 export class SessionService {
+  private cookieService: SsrCookieService = inject(SsrCookieService);
   private authService: AuthService = inject(AuthService);
   private sessionStore: SessionStore = inject(SessionStore);
 
   public get access_expires_at(): moment.Moment | null {
     const access_expires_at: string | null =
-      localStorage.getItem('access_expires_at');
+      this.cookieService.get('access_expires_at');
     let result: moment.Moment | null;
     if (access_expires_at !== null) {
       result = moment(parseInt(access_expires_at));
@@ -44,15 +46,15 @@ export class SessionService {
   }
 
   public get access_token(): string {
-    return localStorage.getItem('access_token') ?? '';
+    return this.cookieService.get('access_token') ?? '';
   }
 
   public setTokens(access_token: string): void {
-    localStorage.setItem('access_token', access_token);
+    this.cookieService.set('access_token', access_token);
 
     const payload: JWTPayload = jwtDecode(access_token);
     const expiresAt: Moment = moment.unix(payload.exp);
-    localStorage.setItem(
+    this.cookieService.set(
       'access_expires_at',
       JSON.stringify(expiresAt.valueOf()),
     );
@@ -95,8 +97,8 @@ export class SessionService {
   }
 
   public logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('access_expires_at');
+    this.cookieService.delete('access_token');
+    this.cookieService.delete('access_expires_at');
   }
 
   public getUsername(): string {

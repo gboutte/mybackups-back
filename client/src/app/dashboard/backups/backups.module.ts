@@ -41,6 +41,11 @@ import { BackupsService } from './services/backups.service';
 })
 export class BackupsModule {
   constructor(backupsService: BackupsService) {
-    backupsService.loadBackupsStore().subscribe();
+    backupsService.loadBackupsStore().subscribe({
+      next: () => {},
+      error: () => {
+        console.log('error loading types');
+      },
+    });
   }
 }

@@ -1,5 +1,5 @@
 import {ApplicationConfig, importProvidersFrom} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
+import {BrowserModule, provideClientHydration, withEventReplay} from "@angular/platform-browser";
 import {provideRouter, RouterOutlet} from "@angular/router";
 import {ConfigModule} from "./app/config/config.module";
 import {AuthModule} from "./app/auth/auth.module";
@@ -37,6 +37,6 @@ export const appConfig:ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: RetryInterceptor,
       multi: true,
-    },
+    }, provideClientHydration(withEventReplay()),
   ]
 }
