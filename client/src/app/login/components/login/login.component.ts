@@ -17,17 +17,16 @@ import { AuthService, LoginTokens } from '../../../auth/auth.service';
 import { SessionService } from '../../../auth/session.service';
 
 @Component({
-  selector: 'mb-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  standalone: true,
-  imports: [
-    ContentModule,
-    ReactiveFormsModule,
-    InputsModule,
-    ButtonsModule,
-    TranslateModule,
-  ],
+    selector: 'mb-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    imports: [
+        ContentModule,
+        ReactiveFormsModule,
+        InputsModule,
+        ButtonsModule,
+        TranslateModule,
+    ]
 })
 export class LoginComponent implements OnInit {
   protected loginForm: FormGroup = new FormGroup({

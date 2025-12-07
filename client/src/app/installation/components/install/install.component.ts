@@ -17,17 +17,16 @@ import { AuthService } from '../../../auth/auth.service';
 import { ConfigService } from '../../../config/config.service';
 
 @Component({
-  selector: 'mb-install',
-  templateUrl: './install.component.html',
-  styleUrls: ['./install.component.scss'],
-  standalone: true,
-  imports: [
-    ContentModule,
-    ReactiveFormsModule,
-    InputsModule,
-    ButtonsModule,
-    TranslateModule,
-  ],
+    selector: 'mb-install',
+    templateUrl: './install.component.html',
+    styleUrls: ['./install.component.scss'],
+    imports: [
+        ContentModule,
+        ReactiveFormsModule,
+        InputsModule,
+        ButtonsModule,
+        TranslateModule,
+    ]
 })
 export class InstallComponent {
   protected registerForm: FormGroup = new FormGroup({

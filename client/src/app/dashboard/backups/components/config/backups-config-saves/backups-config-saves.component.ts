@@ -15,11 +15,10 @@ import { BackupsService } from '../../../services/backups.service';
 import { BackupsStore } from '../../../store/backups.store';
 
 @Component({
-  selector: 'mb-backups-config-saves',
-  templateUrl: './backups-config-saves.component.html',
-  styleUrls: ['./backups-config-saves.component.scss'],
-  standalone: true,
-  imports: [ContentModule, ButtonsModule, TranslateModule],
+    selector: 'mb-backups-config-saves',
+    templateUrl: './backups-config-saves.component.html',
+    styleUrls: ['./backups-config-saves.component.scss'],
+    imports: [ContentModule, ButtonsModule, TranslateModule]
 })
 export class BackupsConfigSavesComponent {
   private backupsService: BackupsService = inject(BackupsService);

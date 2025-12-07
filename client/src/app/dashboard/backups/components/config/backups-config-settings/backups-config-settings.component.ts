@@ -13,18 +13,17 @@ import { BackupsStore } from '../../../store/backups.store';
 import { EndpointFormComponent } from './endpoint-form/endpoint-form.component';
 
 @Component({
-  selector: 'mb-backups-config-settings',
-  templateUrl: './backups-config-settings.component.html',
-  styleUrls: ['./backups-config-settings.component.scss'],
-  standalone: true,
-  imports: [
-    ContentModule,
-    ButtonsModule,
-    RouterLink,
-    KeyValuePipe,
-    TranslateModule,
-    BackupTranslatePipe,
-  ],
+    selector: 'mb-backups-config-settings',
+    templateUrl: './backups-config-settings.component.html',
+    styleUrls: ['./backups-config-settings.component.scss'],
+    imports: [
+        ContentModule,
+        ButtonsModule,
+        RouterLink,
+        KeyValuePipe,
+        TranslateModule,
+        BackupTranslatePipe,
+    ]
 })
 export class BackupsConfigSettingsComponent implements OnInit {
   private backupsService: BackupsService = inject(BackupsService);

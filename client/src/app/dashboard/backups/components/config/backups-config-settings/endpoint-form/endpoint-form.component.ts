@@ -34,20 +34,19 @@ import { BackupsService } from '../../../../services/backups.service';
 import { BackupsStore } from '../../../../store/backups.store';
 
 @Component({
-  selector: 'mb-endpoint-form',
-  templateUrl: './endpoint-form.component.html',
-  styleUrls: ['./endpoint-form.component.scss'],
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    SelectsModule,
-    ContentModule,
-    InputsModule,
-    CheckboxModule,
-    ButtonsModule,
-    TranslateModule,
-    BackupTranslatePipe,
-  ],
+    selector: 'mb-endpoint-form',
+    templateUrl: './endpoint-form.component.html',
+    styleUrls: ['./endpoint-form.component.scss'],
+    imports: [
+        ReactiveFormsModule,
+        SelectsModule,
+        ContentModule,
+        InputsModule,
+        CheckboxModule,
+        ButtonsModule,
+        TranslateModule,
+        BackupTranslatePipe,
+    ]
 })
 export class EndpointFormComponent implements OnInit {
   private backupsService: BackupsService = inject(BackupsService);

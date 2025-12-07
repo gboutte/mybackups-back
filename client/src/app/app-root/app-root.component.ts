@@ -4,11 +4,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfigService } from '../config/config.service';
 
 @Component({
-  selector: 'mb-app-root',
-  templateUrl: './app-root.component.html',
-  styleUrls: ['./app-root.component.scss'],
-  standalone: true,
-  imports: [RouterOutlet],
+    selector: 'mb-app-root',
+    templateUrl: './app-root.component.html',
+    styleUrls: ['./app-root.component.scss'],
+    imports: [RouterOutlet]
 })
 export class AppRootComponent {
   public translate: TranslateService = inject(TranslateService);
