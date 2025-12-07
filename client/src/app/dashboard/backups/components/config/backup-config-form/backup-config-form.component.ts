@@ -18,16 +18,16 @@ import { BackupConfigUpdateDto } from '../../../dto/backup-config-update.dto';
 import { BackupsService } from '../../../services/backups.service';
 
 @Component({
-    selector: 'mb-backup-config-form',
-    templateUrl: './backup-config-form.component.html',
-    styleUrls: ['./backup-config-form.component.scss'],
-    imports: [
-        ReactiveFormsModule,
-        InputsModule,
-        CheckboxModule,
-        ButtonsModule,
-        TranslateModule,
-    ]
+  selector: 'mb-backup-config-form',
+  templateUrl: './backup-config-form.component.html',
+  styleUrls: ['./backup-config-form.component.scss'],
+  imports: [
+    ReactiveFormsModule,
+    InputsModule,
+    CheckboxModule,
+    ButtonsModule,
+    TranslateModule,
+  ],
 })
 export class BackupConfigFormComponent {
   private backupsService: BackupsService = inject(BackupsService);

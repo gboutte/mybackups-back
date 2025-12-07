@@ -16,10 +16,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UsersService } from '../../services/users.service';
 
 @Component({
-    selector: 'mb-user-form',
-    templateUrl: './user-form.component.html',
-    styleUrls: ['./user-form.component.scss'],
-    imports: [ReactiveFormsModule, InputsModule, ButtonsModule, TranslateModule]
+  selector: 'mb-user-form',
+  templateUrl: './user-form.component.html',
+  styleUrls: ['./user-form.component.scss'],
+  imports: [ReactiveFormsModule, InputsModule, ButtonsModule, TranslateModule],
 })
 export class UserFormComponent {
   protected userForm: FormGroup = new FormGroup({

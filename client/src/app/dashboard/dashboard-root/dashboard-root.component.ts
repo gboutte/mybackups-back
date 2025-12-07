@@ -7,10 +7,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { SessionService } from '../../auth/session.service';
 
 @Component({
-    selector: 'mb-dashboard-root',
-    templateUrl: './dashboard-root.component.html',
-    styleUrls: ['./dashboard-root.component.scss'],
-    imports: [ContentModule, NavigationModule, RouterOutlet]
+  selector: 'mb-dashboard-root',
+  templateUrl: './dashboard-root.component.html',
+  styleUrls: ['./dashboard-root.component.scss'],
+  imports: [ContentModule, NavigationModule, RouterOutlet],
 })
 export class DashboardRootComponent implements OnInit {
   protected loading: boolean = true;

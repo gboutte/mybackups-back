@@ -8,10 +8,10 @@ import { BackupConfigFormComponent } from '../config/backup-config-form/backup-c
 import { BackupsConfigSavesComponent } from '../config/backups-config-saves/backups-config-saves.component';
 
 @Component({
-    selector: 'mb-backups',
-    templateUrl: './backups.component.html',
-    styleUrls: ['./backups.component.scss'],
-    imports: [ButtonsModule, ContentModule, RouterLink, TranslateModule]
+  selector: 'mb-backups',
+  templateUrl: './backups.component.html',
+  styleUrls: ['./backups.component.scss'],
+  imports: [ButtonsModule, ContentModule, RouterLink, TranslateModule],
 })
 export class BackupsComponent implements OnInit {
   private backupsService: BackupsService = inject(BackupsService);

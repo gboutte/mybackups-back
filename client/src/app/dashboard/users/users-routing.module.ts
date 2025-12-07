@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-
 const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./components/users/users.component').then(m => m.UsersComponent),
+    loadComponent: () =>
+      import('./components/users/users.component').then(
+        (m) => m.UsersComponent,
+      ),
   },
 ];
 

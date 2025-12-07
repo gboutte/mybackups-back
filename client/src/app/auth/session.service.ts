@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import moment, { Moment } from 'moment';
+import { SsrCookieService } from 'ngx-cookie-service-ssr';
 import { User } from '../dashboard/users/models/user.model';
 import { AuthService } from './auth.service';
 import { SessionStore } from './session.store';
-import {SsrCookieService} from "ngx-cookie-service-ssr";
 
 interface JWTPayload {
   //Id utilisateur

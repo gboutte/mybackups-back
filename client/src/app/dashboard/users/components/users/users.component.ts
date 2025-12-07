@@ -7,10 +7,10 @@ import { UsersService } from '../../services/users.service';
 import { UserFormComponent } from '../user-form/user-form.component';
 
 @Component({
-    selector: 'mb-users',
-    templateUrl: './users.component.html',
-    styleUrls: ['./users.component.scss'],
-    imports: [ContentModule, ButtonsModule, DatePipe, TranslateModule]
+  selector: 'mb-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss'],
+  imports: [ContentModule, ButtonsModule, DatePipe, TranslateModule],
 })
 export class UsersComponent implements OnInit {
   protected users!: User[];
