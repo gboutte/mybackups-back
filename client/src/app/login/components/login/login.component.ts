@@ -1,4 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -15,6 +16,7 @@ import {
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService, LoginTokens } from '../../../auth/auth.service';
 import { SessionService } from '../../../auth/session.service';
+import { ConfigStore } from '../../../config/config.store';
 
 @Component({
   selector: 'mb-login',
@@ -39,6 +41,8 @@ export class LoginComponent implements OnInit {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private toastService: ToastService = inject(ToastService);
   private translate: TranslateService = inject(TranslateService);
+  private configStore: ConfigStore = inject(ConfigStore);
+  private destroyRef: DestroyRef = inject(DestroyRef);
 
   protected get username(): FormControl {
     return this.loginForm.get('username') as FormControl;
@@ -49,6 +53,8 @@ export class LoginComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.loadConfigIsInstalled();
+
     //If has logout query param, logout
     if (this.route.snapshot.queryParamMap.get('logout') !== null) {
       this.sessionService.logout();
@@ -66,6 +72,16 @@ export class LoginComponent implements OnInit {
     ) {
       this.router.navigate(['/dashboard']);
     }
+  }
+
+  private loadConfigIsInstalled(): void {
+    this.configStore.isInstalled$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((isInstalled: boolean | null) => {
+        if (isInstalled !== null && !isInstalled) {
+          this.router.navigate(['/installation']);
+        }
+      });
   }
 
   protected login(): void {

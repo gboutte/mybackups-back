@@ -2,6 +2,50 @@ import {Routes} from "@angular/router";
 
 import {AuthGuard} from "./app/auth/auth.guard";
 
+
+
+const backupRoutes: Routes = [
+  {
+    path: '',
+    loadComponent: () =>
+      import('./app/dashboard/backups/components/backups/backups.component').then(
+        (m) => m.BackupsComponent,
+      ),
+  },
+  {
+    path: ':id/settings',
+    loadComponent: () =>
+      import(
+        './app/dashboard/backups/components/config/backups-config-settings/backups-config-settings.component'
+        ).then((m) => m.BackupsConfigSettingsComponent),
+  },
+];
+
+const dashboardRoutes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'home',
+  },
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./app/dashboard/home/components/home/home.component').then((m) => m.HomeComponent),
+  },
+  {
+    path: 'users',
+    loadComponent: () =>
+      import('./app/dashboard/users/components/users/users.component').then(
+        (m) => m.UsersComponent,
+      ),
+  },
+  {
+    path: 'backups',
+    loadChildren: (): any =>
+      import('./app/dashboard/backups/backups.module').then((m): any => m.BackupsModule),
+  },
+];
+
 export const routes: Routes = [
   {
     // Redirect to login page
@@ -15,21 +59,23 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () =>
-      import('./app/login/login.module').then((m) => m.LoginModule),
+    loadComponent: () =>
+      import('./app/login/components/login/login.component').then(
+        (m) => m.LoginComponent,
+      ),
   },
   {
     path: 'dashboard',
     loadComponent: () => import('./app/dashboard/dashboard-root/dashboard-root.component').then(m => m.DashboardRootComponent),
     canActivate: [AuthGuard],
-    loadChildren: () =>
-      import('./app/dashboard/dashboard.module').then((m) => m.DashboardModule),
+    children: dashboardRoutes,
   },
   {
     path: 'installation',
-    loadChildren: () =>
-      import('./app/installation/installation.module').then(
-        (m) => m.InstallationModule,
+
+    loadComponent: () =>
+      import('./app/installation/components/install/install.component').then(
+        (m) => m.InstallComponent,
       ),
   },
 ];
