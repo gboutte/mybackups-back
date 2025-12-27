@@ -41,8 +41,7 @@ const dashboardRoutes: Routes = [
   },
   {
     path: 'backups',
-    loadChildren: (): any =>
-      import('./app/dashboard/backups/backups.module').then((m): any => m.BackupsModule),
+    children: backupRoutes,
   },
 ];
 
